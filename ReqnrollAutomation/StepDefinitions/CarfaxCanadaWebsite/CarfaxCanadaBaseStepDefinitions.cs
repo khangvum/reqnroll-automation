@@ -7,33 +7,31 @@
 
 using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
 
-namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
+namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite;
+public class CarfaxCanadaBaseStepDefinitions : BaseStepDefinitions
 {
-    public class CarfaxCanadaBaseStepDefinitions : BaseStepDefinitions
+    #region Private Attributes
+    // Pages
+    private HomePage? _homePage;
+    #endregion
+
+    #region Public Properties
+    /// <summary>
+    /// Lazy initialization of the LoginPage instance.
+    /// </summary>
+    public HomePage HomePage
     {
-        #region Private Attributes
-        // Pages
-        private HomePage? _homePage;
-        #endregion
-
-        #region Public Properties
-        /// <summary>
-        /// Lazy initialization of the LoginPage instance.
-        /// </summary>
-        public HomePage HomePage
+        get
         {
-            get
-            {
-                _homePage ??= new(Driver);
-                return _homePage;
-            }
+            _homePage ??= new(Driver);
+            return _homePage;
         }
-        #endregion
-
-        #region Constructor
-        public CarfaxCanadaBaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
-        {
-        }
-        #endregion
     }
+    #endregion
+
+    #region Constructor
+    public CarfaxCanadaBaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
+    {
+    }
+    #endregion
 }
