@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+
 /// <summary>
 /// A class that represents a navigation link with section, subsection, and expected URL.
 /// </summary>
