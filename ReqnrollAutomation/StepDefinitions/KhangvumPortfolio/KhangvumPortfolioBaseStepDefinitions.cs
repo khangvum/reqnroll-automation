@@ -7,38 +7,36 @@
 
 using ReqnrollAutomation.Pages.KhangvumPortfolio;
 
-namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
+namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio;
+public class KhangvumPortfolioBaseStepDefinitions : BaseStepDefinitions
 {
-    public class KhangvumPortfolioBaseStepDefinitions : BaseStepDefinitions
+    #region Private Attributes
+    // Pages
+    private PortfolioPage? _portfolioPage;
+    #endregion
+
+    #region Protected Attributes
+    // Context Keys
+    protected const string ProjectCardKey = nameof(ProjectCardKey);
+    #endregion
+
+    #region Public Properties
+    /// <summary>
+    /// Lazy initialization of the LoginPage instance.
+    /// </summary>
+    public PortfolioPage PortfolioPage
     {
-        #region Private Attributes
-        // Pages
-        private PortfolioPage? _portfolioPage;
-        #endregion
-
-        #region Protected Attributes
-        // Context Keys
-        protected const string ProjectCardKey = nameof(ProjectCardKey);
-        #endregion
-
-        #region Public Properties
-        /// <summary>
-        /// Lazy initialization of the LoginPage instance.
-        /// </summary>
-        public PortfolioPage PortfolioPage
+        get
         {
-            get
-            {
-                _portfolioPage ??= new(Driver);
-                return _portfolioPage;
-            }
+            _portfolioPage ??= new(Driver);
+            return _portfolioPage;
         }
-        #endregion
-
-        #region Constructor
-        public KhangvumPortfolioBaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
-        {
-        }
-        #endregion
     }
+    #endregion
+
+    #region Constructor
+    public KhangvumPortfolioBaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
+    {
+    }
+    #endregion
 }
