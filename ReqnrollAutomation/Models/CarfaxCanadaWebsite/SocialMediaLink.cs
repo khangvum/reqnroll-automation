@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+
 /// <summary>
 /// A class that represents a social media link with platform name and expected URL.
 /// </summary>
