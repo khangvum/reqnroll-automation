@@ -8,84 +8,82 @@
 using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Helpers;
 
-namespace ReqnrollAutomation.Pages.SwagLabs
+namespace ReqnrollAutomation.Pages.SwagLabs;
+/// <summary>
+/// A class that represents the login page of Swag Labs.
+/// </summary>
+public class LoginPage : BasePage
 {
-    /// <summary>
-    /// A class that represents the login page of Swag Labs.
-    /// </summary>
-    public class LoginPage : BasePage
+    #region Public Properties
+    // URL
+    public override string PageUrl => "https://www.saucedemo.com/";
+
+    // Registry
+    public enum ValidationKey
     {
-        #region Public Properties
-        // URL
-        public override string PageUrl => "https://www.saucedemo.com/";
-
-        // Registry
-        public enum ValidationKey
-        {
-            SuccessfulLoginUrl,
-            LockoutMessage,
-            InvalidCredentialsMessage
-        }
-
-        public readonly Dictionary<ValidationKey, string> Registry;
-        #endregion
-
-        #region Page Locators
-        private readonly By _usernameFieldLocator = By.Id("user-name");
-        private readonly By _passwordFieldLocator = By.Id("password");
-        private readonly By _loginButtonLocator = By.Id("login-button");
-        private readonly By _errorMessageContainerLocator = By.CssSelector(".error-message-container.error h3[data-test='error']");
-        #endregion
-        
-        #region Page Elements
-        private IWebElement UsernameField => _driver.WaitAndFindElement(_usernameFieldLocator);
-        private IWebElement PasswordField => _driver.WaitAndFindElement(_passwordFieldLocator);
-        private IWebElement LoginButton => _driver.WaitAndFindElement(_loginButtonLocator);
-        private IWebElement ErrorMessageContainer => _driver.WaitAndFindElement(_errorMessageContainerLocator);
-        #endregion
-
-        #region Constructor
-        public LoginPage(IWebDriver driver) : base(driver)
-        {
-            Registry = new()
-            {
-                { ValidationKey.SuccessfulLoginUrl, (new InventoryPage(driver)).PageUrl },
-                { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
-                { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
-            };
-        }
-        #endregion
-
-        #region Public Methods
-        /// <summary>
-        /// Logs in using the credentials associated with the specified role.
-        /// </summary>
-        /// <param name="role">The role for which to use credentials.</param>
-        public void LoginAsRole(string role)
-        {
-            string username = CredentialManager.GetUsername(role);
-            string password = CredentialManager.GetSharedPassword();
-
-            LoginWithCredentials(username, password);
-        }
-
-        /// <summary>
-        /// Logs in using the specified username and password.
-        /// </summary>
-        /// <param name="username">The username to use for login.</param>
-        /// <param name="password">The password to use for login.</param>
-        public void LoginWithCredentials(string username, string password)
-        {
-            UsernameField.SendKeys(username);
-            PasswordField.SendKeys(password);
-            LoginButton.Click();
-        }
-
-        /// <summary>
-        /// Retrieves the error message displayed on the login page, if any.
-        /// </summary>
-        /// <returns></returns>
-        public string GetErrorMessage() => ErrorMessageContainer.Text;
-        #endregion
+        SuccessfulLoginUrl,
+        LockoutMessage,
+        InvalidCredentialsMessage
     }
+
+    public readonly Dictionary<ValidationKey, string> Registry;
+    #endregion
+
+    #region Page Locators
+    private readonly By _usernameFieldLocator = By.Id("user-name");
+    private readonly By _passwordFieldLocator = By.Id("password");
+    private readonly By _loginButtonLocator = By.Id("login-button");
+    private readonly By _errorMessageContainerLocator = By.CssSelector(".error-message-container.error h3[data-test='error']");
+    #endregion
+    
+    #region Page Elements
+    private IWebElement UsernameField => _driver.WaitAndFindElement(_usernameFieldLocator);
+    private IWebElement PasswordField => _driver.WaitAndFindElement(_passwordFieldLocator);
+    private IWebElement LoginButton => _driver.WaitAndFindElement(_loginButtonLocator);
+    private IWebElement ErrorMessageContainer => _driver.WaitAndFindElement(_errorMessageContainerLocator);
+    #endregion
+
+    #region Constructor
+    public LoginPage(IWebDriver driver) : base(driver)
+    {
+        Registry = new()
+        {
+            { ValidationKey.SuccessfulLoginUrl, (new InventoryPage(driver)).PageUrl },
+            { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
+            { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
+        };
+    }
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Logs in using the credentials associated with the specified role.
+    /// </summary>
+    /// <param name="role">The role for which to use credentials.</param>
+    public void LoginAsRole(string role)
+    {
+        string username = CredentialManager.GetUsername(role);
+        string password = CredentialManager.GetSharedPassword();
+
+        LoginWithCredentials(username, password);
+    }
+
+    /// <summary>
+    /// Logs in using the specified username and password.
+    /// </summary>
+    /// <param name="username">The username to use for login.</param>
+    /// <param name="password">The password to use for login.</param>
+    public void LoginWithCredentials(string username, string password)
+    {
+        UsernameField.SendKeys(username);
+        PasswordField.SendKeys(password);
+        LoginButton.Click();
+    }
+
+    /// <summary>
+    /// Retrieves the error message displayed on the login page, if any.
+    /// </summary>
+    /// <returns></returns>
+    public string GetErrorMessage() => ErrorMessageContainer.Text;
+    #endregion
 }
