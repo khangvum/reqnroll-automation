@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using ReqnrollAutomation.Core.Config;
 
 namespace ReqnrollAutomation.Config;
+
 /// <summary>
 /// A class that manages the configuration settings for the Reqnroll automation framework.
 /// </summary>
