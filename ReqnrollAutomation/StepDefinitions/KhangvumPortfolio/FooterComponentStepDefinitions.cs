@@ -10,58 +10,56 @@ using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
  * Description:     A class that defines the step definitions for the footer component verification feature on the Khangvum Portfolio website.
  */
 
-namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
+namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio;
+/// <summary>
+/// A class that defines the step definitions for the footer component verification feature on the Khangvum Portfolio website.
+/// </summary>
+[Binding]
+public class FooterComponentStepDefinitions : KhangvumPortfolioBaseStepDefinitions
 {
-    /// <summary>
-    /// A class that defines the step definitions for the footer component verification feature on the Khangvum Portfolio website.
-    /// </summary>
-    [Binding]
-    public class FooterComponentStepDefinitions : KhangvumPortfolioBaseStepDefinitions
+    #region Constructor
+    public FooterComponentStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
     {
-        #region Constructor
-        public FooterComponentStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
-        {
-        }
-        #endregion
+    }
+    #endregion
 
-        #region Given Steps
-        [Given(@"the Khangvum Portfolio website footer contains links to social media pages")]
-        public void GivenTheKhangvumPortfolioWebsiteFooterContainsLinksToSocialMediaPages()
-        {
-            PortfolioPage.ScrollToFooter();
-        }
-        #endregion
+    #region Given Steps
+    [Given(@"the Khangvum Portfolio website footer contains links to social media pages")]
+    public void GivenTheKhangvumPortfolioWebsiteFooterContainsLinksToSocialMediaPages()
+    {
+        PortfolioPage.ScrollToFooter();
+    }
+    #endregion
 
 
-        #region Then Steps
-        [Then(@"all Khangvum Portfolio website social media links should navigate to their expected destinations")]
-        public void ThenAllKhangvumPortfolioWebsiteSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
+    #region Then Steps
+    [Then(@"all Khangvum Portfolio website social media links should navigate to their expected destinations")]
+    public void ThenAllKhangvumPortfolioWebsiteSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
+    {
+        for (int i = 0; i < PortfolioPage.SocialMediaLinks.Count; i++)
         {
-            for (int i = 0; i < PortfolioPage.SocialMediaLinks.Count; i++)
+            SocialMediaLink socialMediaLink = PortfolioPage.SocialMediaLinks[i];
+
+            // Skip Gmail link verification as it opens the default email client instead of a web page
+            if (socialMediaLink.ExpectedUrl.StartsWith("mailto:"))
             {
-                SocialMediaLink socialMediaLink = PortfolioPage.SocialMediaLinks[i];
+                continue;
+            }
 
-                // Skip Gmail link verification as it opens the default email client instead of a web page
-                if (socialMediaLink.ExpectedUrl.StartsWith("mailto:"))
-                {
-                    continue;
-                }
+            // Click the social media link & switch to the new tab
+            PortfolioPage.ClickFooterSocialMediaButton(socialMediaLink.Platform);
+            PortfolioPage.SwitchToNewTab();
 
-                // Click the social media link & switch to the new tab
-                PortfolioPage.ClickFooterSocialMediaButton(socialMediaLink.Platform);
-                PortfolioPage.SwitchToNewTab();
+            // Verify if the new tab navigates to the expected URL
+            string actualUrl = PortfolioPage.WaitForUrlToStabilize();
+            Assert.AreEqual(socialMediaLink.ExpectedUrl, actualUrl, $"The Khangvum Portfolio {socialMediaLink.Platform} link did not navigate to the expected URL.");
 
-                // Verify if the new tab navigates to the expected URL
-                string actualUrl = PortfolioPage.WaitForUrlToStabilize();
-                Assert.AreEqual(socialMediaLink.ExpectedUrl, actualUrl, $"The Khangvum Portfolio {socialMediaLink.Platform} link did not navigate to the expected URL.");
-
-                // Close the new tab and switch back to the original tab
-                if (i < PortfolioPage.SocialMediaLinks.Count - 1)
-                {
-                    PortfolioPage.CloseCurrentTabAndSwitchBackToOriginalTab();
-                }
+            // Close the new tab and switch back to the original tab
+            if (i < PortfolioPage.SocialMediaLinks.Count - 1)
+            {
+                PortfolioPage.CloseCurrentTabAndSwitchBackToOriginalTab();
             }
         }
-        #endregion
     }
+    #endregion
 }
