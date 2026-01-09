@@ -39,10 +39,10 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
         [Given(@"I am on a random CARFAX Canada subpage")]
         public void GivenIAmOnARandomCarfaxCanadaSubpage()
         {
-            // Filter out Support link from the list of header links
+            // Filter out Support & Car Care links from the list of header links
             // since it is not a subpage of www.carfax.ca
             List<string> subpageLinks = HeaderLinks
-                .Where(link => link.SubSection != "Support")
+                .Where(link => link.SubSection != "Support" && link.SubSection != "Car Care")
                 .Select(link => link.ExpectedUrl)
                 .ToList();
 
