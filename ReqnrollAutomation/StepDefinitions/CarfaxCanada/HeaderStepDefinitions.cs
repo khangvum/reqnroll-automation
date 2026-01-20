@@ -1,8 +1,4 @@
-﻿
-
-using Microsoft.CodeAnalysis;
-
-/**
+﻿/**
  * Program:         HeaderStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-07-21
@@ -95,6 +91,14 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
                     HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
                 }
             }
+        }
+
+        [Then(@"I should be redirected to the CARFAX Canada home page")]
+        public void ThenIShouldBeRedirectedToTheCarfaxCanadaHomePage()
+        {
+            string expectedUrl = HomePage.PageUrl;
+            string actualUrl = HomePage.WaitForUrlToStabilize();
+            Assert.AreEqual(expectedUrl, actualUrl, "Clicking the CARFAX Canada logo did not redirect to the home page.");
         }
         #endregion
     }
