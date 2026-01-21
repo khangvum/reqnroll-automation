@@ -59,7 +59,11 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
         #endregion
 
         #region When Steps
-
+        [When(@"I click on the CARFAX Canada logo")]
+        public void WhenIClickOnTheCarfaxCanadaLogo()
+        {
+            HomePage.ClickHeaderLogo();
+        }
         #endregion
 
         #region Then Steps
