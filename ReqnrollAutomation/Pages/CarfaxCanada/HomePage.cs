@@ -51,6 +51,14 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
             IWebElement sectionElement = _driver.WaitAndFindElement(GetHeaderSectionLocator(sectionName));
             sectionElement.Hover();
         }
+        
+        /// <summary>
+        /// Clicks on the header logo.
+        /// </summary>
+        public void ClickHeaderLogo()
+        {
+            HeaderLogo.Click();
+        }
 
         /// <summary>
         /// Clicks on a subsection in the header based on the provided subsection name.
