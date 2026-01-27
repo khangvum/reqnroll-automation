@@ -49,6 +49,12 @@ namespace ReqnrollAutomation.Pages
         public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
 
         /// <summary>
+        /// Navigates to the specified URL.
+        /// </summary>
+        /// <param name="url">The URL to navigate to.</param>
+        public void Navigate(string url) => _driver.Navigate().GoToUrl(url);
+
+        /// <summary>
         /// Switches to the newly opened tab in the browser, storing the original window handle for later use.
         /// </summary>
         /// <exception cref="InvalidOperationException">Throws if the new window handle is not found.</exception>
