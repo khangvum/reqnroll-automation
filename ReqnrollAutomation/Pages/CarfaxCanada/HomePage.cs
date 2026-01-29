@@ -109,6 +109,18 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         public string GetMainHeadingColor() => MainHeading.GetCssValue("color");
 
         /// <summary>
+        /// Gets the 'target' attribute of a subsection link in the header based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection.</param>
+        /// <returns>The 'target' attribute of the subsection link.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the 'target' attribute is not found on the subsection link.</exception>
+        public string GetHeaderSubsectionLinkTarget(string subSectionName)
+        {
+            IWebElement subSectionElement = _driver.WaitAndFindElement(GetHeaderSubsectionLocator(subSectionName));
+            return subSectionElement.GetAttribute("target") ?? throw new InvalidOperationException($"The 'target' attribute is not found on the subsection '{subSectionName}'.");
+        }
+
+        /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.
         /// </summary>
         public void ToggleLanguage() => LanguageToggle.Click();
