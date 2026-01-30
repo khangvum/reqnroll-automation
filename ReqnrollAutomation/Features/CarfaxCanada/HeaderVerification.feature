@@ -27,3 +27,14 @@ Examples: What's My Car Worth Links
 	| section             | sub_section         | expected_URL                                                 |
 	| What’s My Car Worth | Car Value           | https://www.carfax.ca/whats-my-car-worth/car-value/ymm       |
 	| What’s My Car Worth | History Based Value | https://www.carfax.ca/whats-my-car-worth/history-based-value |
+
+Examples: Tools Links
+	| section | sub_section  | expected_URL                             |
+	| Tools   | VIN Decoder  | https://www.carfax.ca/tools/vin-decode   |
+	| Tools   | Recall Check | https://www.carfax.ca/tools/recall-check |
+	| Tools   | Car Care     | https://www.carfax.ca/Service            |
+
+Examples: Resources Links
+	| section   | sub_section | expected_URL                              |
+	| Resources | Learn       | https://www.carfax.ca/learn               |
+	| Resources | Support     | https://support.carfax.ca/en/support/home |
