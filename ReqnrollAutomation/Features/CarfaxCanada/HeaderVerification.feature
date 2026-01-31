@@ -1,8 +1,9 @@
 ﻿@regression @carfaxcanada @header
 Feature: Header Verification
-  As a user
-  I want to ensure the header links are functioning properly
-  So that I can navigate to the correct pages from the header
+
+As a user
+I want to ensure the header links are functioning properly
+So that I can navigate to the correct pages from the header
 
 @smoke
 Scenario Outline: Header navigation links redirect to the correct pages
