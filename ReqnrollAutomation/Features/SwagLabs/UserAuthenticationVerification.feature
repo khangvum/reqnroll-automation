@@ -1,4 +1,4 @@
-﻿@regression
+﻿@regression @userauthentication
 Feature: User Authentication Verification
 
 As a QA engineer
