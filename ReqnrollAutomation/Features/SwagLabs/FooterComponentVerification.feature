@@ -1,4 +1,4 @@
-﻿@smoke @regression
+﻿@smoke @regression @footer
 Feature: Footer Component Verification
 
 As a user
