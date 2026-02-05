@@ -1,4 +1,4 @@
-﻿@regression
+﻿@regression @carfaxcanada @header
 Feature: Header Verification
 
 As a user
@@ -10,6 +10,7 @@ So that I can navigate to the correct pages from the header
 #	When I click on the Carfax Canada logo
 #	Then I should be redirected to the home page
 
+@smoke
 Scenario Outline: Vehicle History links redirect to the correct pages
 	Given I am on the CARFAX Canada home page
 	When I hover over the Vehicle History section in the header
