@@ -32,3 +32,14 @@ Examples:
 	| What is VIN Fraud?              | https://www.carfax.ca/what-is-vin-fraud               |
 	| VIN Fraud Check                 | https://www.carfax.ca/vin-fraud-check                 |
 	| Vehicle Monitoring Subscription | https://www.carfax.ca/vehicle-monitoring-subscription |
+
+Scenario Outline: What's My Car Worth links redirect to the correct pages
+	Given I am on the CARFAX Canada home page
+	When I hover over the What’s My Car Worth section in the header
+	And I click on the <sub_section> subsection in the header
+	Then the <sub_section> link should navigate to "<expected_URL>"
+
+Examples:
+	| sub_section         | expected_URL                                                 |
+	| Car Value           | https://www.carfax.ca/whats-my-car-worth/car-value/ymm       |
+	| History Based Value | https://www.carfax.ca/whats-my-car-worth/history-based-value |
