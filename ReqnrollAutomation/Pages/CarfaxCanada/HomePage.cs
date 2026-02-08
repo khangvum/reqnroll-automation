@@ -1,4 +1,4 @@
-﻿using ReqnrollAutomation.Core.Extenstions;
+﻿using ReqnrollAutomation.Core.Extensions;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanada
@@ -13,6 +13,10 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         // Accessbility locators
         private readonly By _languageToggleLocator = By.CssSelector("a.cfc-header_lang");
         private readonly By _accessibilityToggleLocator = By.Id("cfc-theme-toggle");
+
+        // Header locators
+        private static By GetHeaderSectionLocator(string sectionName) => By.XPath($"//button[contains(@class,'cfc-header-title') and normalize-space(text())='{sectionName}']");
+        private static By GetHeaderSubsectionLocator(string subSectionName) => By.XPath($"//a[contains(@class,'cfc-header-link') and normalize-space(text())='{subSectionName}']");
 
         // Main body locators
         private readonly By _mainHeadingLocator = By.CssSelector("h1.cfc-heading-text-type-");
@@ -34,6 +38,26 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Clicks on a section in the header based on the provided section name.
+        /// </summary>
+        /// <param name="sectionName">The name of the section to click.</param>
+        public void HoverHeaderSection(string sectionName)
+        {
+            IWebElement sectionElement = _driver.WaitAndFindElement(GetHeaderSectionLocator(sectionName));
+            sectionElement.Hover();
+        }
+
+        /// <summary>
+        /// Clicks on a subsection in the header based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection to click.</param>
+        public void ClickHeaderSubsection(string subSectionName)
+        {
+            IWebElement subSectionElement = _driver.WaitAndFindElement(GetHeaderSubsectionLocator(subSectionName));
+            subSectionElement.Click();
+        }
+
         /// <summary>
         /// Gets the current language code of the website by retrieving the 'lang' attribute from the <html> element.
         /// </summary>
