@@ -1,7 +1,7 @@
 ﻿/**
  * Program:         DriverFactory.cs
  * Author:          Manh Khang Vu
- * Date:            2026-05-06
+ * Date:            May 07, 2026
  * Description:     A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
  */
 
@@ -11,6 +11,9 @@ using System.Diagnostics;
 
 namespace ReqnrollProject2.Drivers
 {
+    /// <summary>
+    /// A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
+    /// </summary>
     public class DriverFactory
     {
         // Private attributes
