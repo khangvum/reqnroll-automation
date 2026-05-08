@@ -1,0 +1,13 @@
+﻿# C# files
+x64/
+x86/
+bin/
+obj/
+
+# Visual Studio files
+[Dd]ebug/
+[Rr]elease/
+.vs/
+
+# Visual Studio Code files
+.vscode/
