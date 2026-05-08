@@ -9,7 +9,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Diagnostics;
 
-namespace ReqnrollProject2.Drivers
+namespace reqnroll_automation.Drivers
 {
     /// <summary>
     /// A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
