@@ -18,6 +18,27 @@ namespace reqnroll_automation.Hooks
     internal class TestHooks
     {
         /// <summary>
+        /// Runs before the entire test run to perform any global setup.
+        /// </summary>
+        #region Test Run Hooks
+        [BeforeTestRun]
+        public static void BeforeTestRun()
+        {
+            // Any global setup can be done here, such as initializing logging or configuration.
+        }
+
+        /// <summary>
+        /// Runs after the entire test run to perform any global cleanup.
+        /// </summary>
+        [AfterTestRun]
+        public static void AfterTestRun()
+        {
+            // Any global cleanup can be done here, such as closing resources or generating reports.
+        }
+        #endregion
+
+        #region Scenario Hooks
+        /// <summary>
         /// Runs before each test scenario to initialize the WebDriver and 
         /// store it in the scenario context to be used in step definitions.
         /// </summary>
@@ -41,5 +62,6 @@ namespace reqnroll_automation.Hooks
                 driver.Quit();
             }
         }
+        #endregion
     }
 }
