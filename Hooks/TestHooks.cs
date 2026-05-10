@@ -37,6 +37,20 @@ namespace reqnroll_automation.Hooks
         }
         #endregion
 
+        #region Feature Hooks
+        [BeforeFeature]
+        public static void BeforeFeature()
+        {
+            // Any setup specific to a feature can be done here, such as initializing feature-specific data.
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            // Any cleanup specific to a feature can be done here, such as clearing feature-specific data.
+        }
+        #endregion
+
         #region Scenario Hooks
         /// <summary>
         /// Runs before each test scenario to initialize the WebDriver and 
