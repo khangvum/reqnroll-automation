@@ -17,6 +17,20 @@ namespace reqnroll_automation.Hooks
     [Binding]
     internal class TestHooks
     {
+        #region Private Attributes
+        private static IWebDriver? _driver;
+        private readonly ScenarioContext _scenarioContext;
+        private readonly FeatureContext _featureContext;
+        #endregion
+
+        #region Constructor
+        public TestHooks(FeatureContext featureContext, ScenarioContext scenarioContext)
+        {
+            _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
+            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
+        }
+        #endregion
+
         /// <summary>
         /// Runs before the entire test run to perform any global setup.
         /// </summary>
@@ -24,7 +38,14 @@ namespace reqnroll_automation.Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            // Any global setup can be done here, such as initializing logging or configuration.
+            try
+            {
+                // Any global setup can be done here, such as initializing logging or configuration.                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during BeforeTestRun: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -33,7 +54,15 @@ namespace reqnroll_automation.Hooks
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            // Any global cleanup can be done here, such as closing resources or generating reports.
+            try
+            {
+                // Any global cleanup can be done here, such as closing resources or generating reports.
+                DriverFactory.QuitDriver();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during AfterTestRun: {ex.Message}");
+            }
         }
         #endregion
 
@@ -58,10 +87,17 @@ namespace reqnroll_automation.Hooks
         /// </summary>
         /// <param name="scenarioContext">The scenario context.</param>
         [BeforeScenario]
-        public static void BeforeScenario(ScenarioContext scenarioContext)
+        public void BeforeScenario()
         {
-            IWebDriver driver = DriverFactory.GetDriver();
-            scenarioContext.Set(driver);
+            try
+            {
+                IWebDriver driver = DriverFactory.GetDriver();
+                _scenarioContext.Set(driver);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during BeforeScenario: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -69,11 +105,18 @@ namespace reqnroll_automation.Hooks
         /// </summary>
         /// <param name="scenarioContext">The scenario context.</param>
         [AfterScenario]
-        public static void AfterScenario(ScenarioContext scenarioContext)
+        public void AfterScenario()
         {
-            if (scenarioContext.TryGetValue<IWebDriver>(out var driver))
+            try
             {
-                driver.Quit();
+                if (_scenarioContext.TestError != null)
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during AfterScenario: {ex.Message}");
             }
         }
         #endregion
