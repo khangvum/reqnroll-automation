@@ -1,7 +1,7 @@
 ﻿/**
  * Program:         DriverFactory.cs
  * Author:          Manh Khang Vu
- * Date:            May 07, 2026
+ * Date:            2026-05-07
  * Description:     A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
  */
 
@@ -50,7 +50,7 @@ namespace reqnroll_automation.Drivers
                 }
             }
 
-            return _driver!;
+            return _driver;
         }
 
         /// <summary>
@@ -82,10 +82,7 @@ namespace reqnroll_automation.Drivers
                     try { _driver.Quit(); } catch { }
                     try { _driver.Dispose(); } catch { }
                 }
-                catch
-                {
-                    // Ignore
-                }
+                catch { }
 
                 // Final fallback: Kill any orphan chromedriver processes to avoid zombie browsers
                 try
