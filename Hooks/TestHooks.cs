@@ -5,6 +5,7 @@
  * Description:     A class that provides hooks for setting up and tearing down test environments using Selenium WebDriver.
  */
 
+using AventStack.ExtentReports;
 using OpenQA.Selenium;
 using Reqnroll;
 using reqnroll_automation.Drivers;
@@ -18,11 +19,22 @@ namespace reqnroll_automation.Hooks
     internal class TestHooks
     {
         #region Private Attributes
+        // Driver & context
         private static IWebDriver? _driver;
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
 
+        // Logging & Reports
+        private readonly string _timestamp;
+        private string? _scenarioLogFilePath;
+        private static string? _testRunDirectoryPath;
+        private static string? _mainLogFilePath;
+        private static readonly object _fileLock = new();
 
+        // Extent Reports
+        private static ExtentReports? _extentReports;
+        private static ExtentTest? _featureNode;
+        private ExtentTest? _scenarioNode;
         #endregion
 
         #region Constructor
@@ -30,6 +42,8 @@ namespace reqnroll_automation.Hooks
         {
             _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
+
+            _timestamp = DateTime.Now.ToString("HHmmss");
         }
         #endregion
 
