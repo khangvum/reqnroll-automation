@@ -21,6 +21,8 @@ namespace reqnroll_automation.Hooks
         private static IWebDriver? _driver;
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
+
+
         #endregion
 
         #region Constructor
@@ -91,8 +93,7 @@ namespace reqnroll_automation.Hooks
         {
             try
             {
-                IWebDriver driver = DriverFactory.GetDriver();
-                _scenarioContext.Set(driver);
+                _driver = DriverFactory.GetDriver();
             }
             catch (Exception ex)
             {
