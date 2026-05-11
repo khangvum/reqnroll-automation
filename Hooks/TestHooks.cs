@@ -34,7 +34,13 @@ namespace reqnroll_automation.Hooks
         // Extent Reports
         private static ExtentReports? _extentReports;
         private static ExtentTest? _featureNode;
-        private ExtentTest? _scenarioNode;
+        private ExtentTest _scenarioNode;
+
+        // Configuration Flags
+        private static readonly bool _takeScreenshotOnFailure = true;
+        private static readonly bool _takeScreenshotOnPass = false;
+        private static readonly bool _takeScreenshotOnStep = false;
+        private static readonly bool _isDetailedLoggingEnabled = true;
         #endregion
 
         #region Constructor
@@ -56,7 +62,11 @@ namespace reqnroll_automation.Hooks
         {
             try
             {
-                // Any global setup can be done here, such as initializing logging or configuration.                
+                // Any global setup can be done here, such as initializing logging or configuration.
+                //ReportManager.InitReport();
+                //_extent = ReportManager.GetExtent();
+
+                //_testRunDirectoryPath = PathHelper.GetBaseDir();
             }
             catch (Exception ex)
             {
@@ -84,13 +94,14 @@ namespace reqnroll_automation.Hooks
 
         #region Feature Hooks
         [BeforeFeature]
-        public static void BeforeFeature()
+        public static void BeforeFeature(FeatureContext featureContext)
         {
             // Any setup specific to a feature can be done here, such as initializing feature-specific data.
+            _featureNode = _extentReports.CreateTest(featureContext.FeatureInfo.Title);
         }
 
         [AfterFeature]
-        public static void AfterFeature()
+        public static void AfterFeature(FeatureContext featureContext)
         {
             // Any cleanup specific to a feature can be done here, such as clearing feature-specific data.
         }
