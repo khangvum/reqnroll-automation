@@ -1,7 +1,7 @@
 ﻿/**
  * Program:         TestHooks.cs
  * Author:          Manh Khang Vu
- * Date:            May 07, 2026
+ * Date:            2026-05-08
  * Description:     A class that provides hooks for setting up and tearing down test environments using Selenium WebDriver.
  */
 
@@ -34,7 +34,7 @@ namespace reqnroll_automation.Hooks
         // Extent Reports
         private static ExtentReports? _extentReports;
         private static ExtentTest? _featureNode;
-        private ExtentTest _scenarioNode;
+        private ExtentTest? _scenarioNode;
 
         // Configuration Flags
         private static readonly bool _takeScreenshotOnFailure = true;
@@ -97,7 +97,7 @@ namespace reqnroll_automation.Hooks
         public static void BeforeFeature(FeatureContext featureContext)
         {
             // Any setup specific to a feature can be done here, such as initializing feature-specific data.
-            _featureNode = _extentReports.CreateTest(featureContext.FeatureInfo.Title);
+            _featureNode = _extentReports?.CreateTest(featureContext.FeatureInfo.Title);
         }
 
         [AfterFeature]
@@ -112,7 +112,6 @@ namespace reqnroll_automation.Hooks
         /// Runs before each test scenario to initialize the WebDriver and 
         /// store it in the scenario context to be used in step definitions.
         /// </summary>
-        /// <param name="scenarioContext">The scenario context.</param>
         [BeforeScenario]
         public void BeforeScenario()
         {
@@ -129,7 +128,6 @@ namespace reqnroll_automation.Hooks
         /// <summary>
         /// Runs after each test scenario to clean up the WebDriver instance.
         /// </summary>
-        /// <param name="scenarioContext">The scenario context.</param>
         [AfterScenario]
         public void AfterScenario()
         {
