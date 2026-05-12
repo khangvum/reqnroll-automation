@@ -8,9 +8,9 @@
 using AventStack.ExtentReports;
 using OpenQA.Selenium;
 using Reqnroll;
-using reqnroll_automation.Drivers;
+using ReqnrollAutomation.Drivers;
 
-namespace reqnroll_automation.Hooks
+namespace ReqnrollAutomation.Hooks
 {
     /// <summary>
     /// A class that provides hooks for setting up and tearing down test environments using Selenium WebDriver.
