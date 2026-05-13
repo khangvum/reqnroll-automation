@@ -1,0 +1,60 @@
+﻿/**
+ * Program:         ReportManager.cs
+ * Author:          Manh Khang Vu
+ * Date:            2026-05-14
+ * Description:     A class that manages the creation and configuration of ExtentReports
+ *                  for test reporting in the Reqnroll automation framework.
+ */
+
+using AventStack.ExtentReports;
+using AventStack.ExtentReports.Reporter;
+using AventStack.ExtentReports.Reporter.Config;
+
+namespace ReqnrollAutomation.Helpers
+{
+    /// <summary>
+    /// A class that manages the creation and configuration of ExtentReports
+    /// for test reporting in the Reqnroll automation framework.
+    /// </summary>
+    internal static class ReportManager
+    {
+        #region Private Attributes
+        private static ExtentReports? _extentReports;
+        private static ExtentSparkReporter? _extentSparkReporter;
+        private static string _reportPath = "";
+        #endregion
+
+        #region Public Properties
+        public static string ReportPath => _reportPath;
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Initializes the ExtentReports and configures the report settings.
+        /// </summary>
+        public static void InitializeReport()
+        {
+            // Set up the report path
+            string reportDir = PathHelper.GetReportDirectoryPath();
+            _reportPath = Path.Combine(reportDir, "ExtentReport.html");
+            Console.WriteLine($"Extent Report Path: {_reportPath}");
+
+            // Set up the ExtentSparkReporter
+            _extentSparkReporter = new(_reportPath);
+            _extentSparkReporter.Config.DocumentTitle = "Reqnroll Automation Test Report";
+            _extentSparkReporter.Config.ReportName = "Reqnroll Automation Tests";
+            _extentSparkReporter.Config.Theme = Theme.Dark;
+
+            // Set up the ExtentReports
+            _extentReports = new();
+            _extentReports.AttachReporter(_extentSparkReporter);
+
+            _extentReports.AddSystemInfo("Environment", "QA");
+            _extentReports.AddSystemInfo("Tester", Environment.UserName);
+            _extentReports.AddSystemInfo("OS", Environment.OSVersion.ToString());
+
+            Console.WriteLine("Report initialized successfully.");
+        }
+        #endregion
+    }
+}
