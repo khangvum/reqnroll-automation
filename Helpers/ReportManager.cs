@@ -55,6 +55,19 @@ namespace ReqnrollAutomation.Helpers
 
             Console.WriteLine("Report initialized successfully.");
         }
+
+        /// <summary>
+        /// Gets the singleton instance of the ExtentReports object used for reporting.
+        /// </summary>
+        /// <returns>The singleton instance of the ExtentReports.</returns>
+        public static ExtentReports GetExtentReports()
+        {
+            if (_extentReports == null)
+            {
+                InitializeReport();
+            }
+            return _extentReports!;
+        }
         #endregion
     }
 }
