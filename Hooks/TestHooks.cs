@@ -11,6 +11,7 @@ using Reqnroll;
 using ReqnrollAutomation.Drivers;
 using ReqnrollAutomation.Helpers;
 using System.Diagnostics;
+using System.Text;
 
 namespace ReqnrollAutomation.Hooks
 {
@@ -114,6 +115,10 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Private Logging Methods
+        /// <summary>
+        /// Gets the log file path for the current scenario based on the scenario and feature titles.
+        /// </summary>
+        /// <returns>The log file path for the current scenario.</returns>
         private string GetLogPath()
         {
             // Initialize the log file path based on the scenario and feature titles
@@ -130,6 +135,36 @@ namespace ReqnrollAutomation.Hooks
             string logDirectory = PathHelper.GetLogDirectoryPath();
             string featureLogDirectory = Path.Combine(logDirectory, featureTitle);
             return Path.Combine(featureLogDirectory, fileName);
+        }
+
+        /// <summary>
+        /// Logs the specified message to the scenario log file with a timestamp.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        private void WriteLog(string message)
+        {
+            if (!_isDetailedLoggingEnabled || string.IsNullOrEmpty(_scenarioLogFilePath))
+                return;
+
+            lock (_fileLock)
+            {
+                try
+                {
+                    // Ensure the directory exists before writing to the log file
+                    string? directory = Path.GetDirectoryName(_scenarioLogFilePath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
+
+                    // Log the message with a timestamp
+                    string timestamp = $"[{DateTime.Now:HH:mm:ss.fff}] ";
+                    string logMessage = timestamp + message;
+                    File.AppendAllText(_scenarioLogFilePath, logMessage + Environment.NewLine, Encoding.UTF8);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ERROR] Failed to write to log file: {ex.Message}");
+                }
+            }
         }
         #endregion
 
