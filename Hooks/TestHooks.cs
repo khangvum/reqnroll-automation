@@ -230,8 +230,34 @@ namespace ReqnrollAutomation.Hooks
             catch (Exception ex)
             {
                 WriteLog($"[ERROR] Failed to capture screenshot: {ex.Message}");
-                return "";
             }
+                
+            return "";
+        }
+
+        /// <summary>
+        /// Generates an HTML <img> tag containing a Base64-encoded PNG image from the specified screenshot file path.
+        /// </summary>
+        /// <remarks>This method makes the Extent Report self-contained by embedding the screenshot directly in the report.</remarks>
+        /// <param name="screenshotPath">The path to the screenshot image.</param>
+        /// <returns>A string containing an HTML <img> tag with the screenshot image embedded 
+        /// as a Base64-encoded PNG if successful; otherwise, an empty string.</returns>
+        private string GetBase64ScreenshotHtml(string screenshotPath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(screenshotPath) && File.Exists(screenshotPath))
+                {
+                    string base64String = Convert.ToBase64String(File.ReadAllBytes(screenshotPath));
+                    return $"<br><img src='data:image/png;base64,{base64String}' style='width:75%'/>";
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"[ERROR] Failed to convert screenshot to Base64: {ex.Message}");
+            }
+                
+            return "";
         }
         #endregion
 
