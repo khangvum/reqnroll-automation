@@ -166,6 +166,43 @@ namespace ReqnrollAutomation.Hooks
                 }
             }
         }
+
+        /// <summary>
+        /// Logs the specified message to the main log file with a timestamp.
+        /// </summary>
+        /// <remarks> This is used for logging messages that are relevant to the entire test run, such as 
+        /// setup and teardown messages, or any critical errors that occur outside of individual scenarios.</remarks>
+        /// <param name="message">The message to log.</param>
+        private static void WriteMainLog(string message)
+        {
+            // Ensure the main log file path exists
+            if (string.IsNullOrEmpty(_mainLogFilePath))
+            {
+                string fallbackLogPath = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "Logs");
+                Directory.CreateDirectory(fallbackLogPath);
+                _mainLogFilePath = Path.Combine(fallbackLogPath, $"TestRun_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+            }
+
+            lock (_fileLock)
+            {
+                try
+                {
+                    // Ensure the directory exists before writing to the main log file
+                    string? directory = Path.GetDirectoryName(_mainLogFilePath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
+
+                    // Log the message with a timestamp
+                    string timestamp = $"[{DateTime.Now:HH:mm:ss.fff}] ";
+                    string logMessage = timestamp + message;
+                    File.AppendAllText(_mainLogFilePath, logMessage + Environment.NewLine, Encoding.UTF8);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ERROR] Failed to write to main log file: {ex.Message}");
+                }
+            }
+        }
         #endregion
 
         #region Private Helper Methods
