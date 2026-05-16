@@ -124,15 +124,25 @@ namespace ReqnrollAutomation.Hooks
         }
         #endregion
 
+        /// <summary>
+        /// Runs before each feature to create a node in the Extent Report for the current feature.
+        /// </summary>
+        /// <param name="featureContext">The feature context.</param>
         #region Feature Hooks
         [BeforeFeature]
         public static void BeforeFeature(FeatureContext featureContext)
         {
-            // Create a node for the current feature in the Extent Report
-            _featureNode = _extentReports?.CreateTest(featureContext.FeatureInfo.Title);
+            try
+            {
+                // Create a node for the current feature in the Extent Report
+                _featureNode = _extentReports?.CreateTest(featureContext.FeatureInfo.Title);
 
-            string message = $"[FEATURE] {featureContext.FeatureInfo.Title}";
-            Console.WriteLine(message);
+                WriteMainLog($"[LOG] Feature started: {featureContext.FeatureInfo.Title}");
+            }
+            catch (Exception ex)
+            {
+                WriteMainLog($"[ERROR] BeforeFeature Error: {ex.Message}");
+            }
         }
 
         [AfterFeature]
