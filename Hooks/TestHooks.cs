@@ -9,6 +9,8 @@ using AventStack.ExtentReports;
 using OpenQA.Selenium;
 using Reqnroll;
 using ReqnrollAutomation.Drivers;
+using ReqnrollAutomation.Helpers;
+using System.Diagnostics;
 
 namespace ReqnrollAutomation.Hooks
 {
@@ -60,18 +62,6 @@ namespace ReqnrollAutomation.Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            try
-            {
-                // Any global setup can be done here, such as initializing logging or configuration.
-                //ReportManager.InitReport();
-                //_extent = ReportManager.GetExtent();
-
-                //_testRunDirectoryPath = PathHelper.GetBaseDir();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during BeforeTestRun: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -80,15 +70,6 @@ namespace ReqnrollAutomation.Hooks
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            try
-            {
-                // Any global cleanup can be done here, such as closing resources or generating reports.
-                DriverFactory.QuitDriver();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during AfterTestRun: {ex.Message}");
-            }
         }
         #endregion
 
@@ -96,8 +77,11 @@ namespace ReqnrollAutomation.Hooks
         [BeforeFeature]
         public static void BeforeFeature(FeatureContext featureContext)
         {
-            // Any setup specific to a feature can be done here, such as initializing feature-specific data.
+            // Create a node for the current feature in the Extent Report
             _featureNode = _extentReports?.CreateTest(featureContext.FeatureInfo.Title);
+
+            string message = $"[FEATURE] {featureContext.FeatureInfo.Title}";
+            Console.WriteLine(message);
         }
 
         [AfterFeature]
@@ -115,14 +99,6 @@ namespace ReqnrollAutomation.Hooks
         [BeforeScenario]
         public void BeforeScenario()
         {
-            try
-            {
-                _driver = DriverFactory.GetDriver();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during BeforeScenario: {ex.Message}");
-            }
         }
 
         /// <summary>
@@ -131,17 +107,37 @@ namespace ReqnrollAutomation.Hooks
         [AfterScenario]
         public void AfterScenario()
         {
-            try
-            {
-                if (_scenarioContext.TestError != null)
-                {
+        }
+        #endregion
 
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during AfterScenario: {ex.Message}");
-            }
+        #region Private Screenshot Methods
+        #endregion
+
+        #region Private Helper Methods
+        /// <summary>
+        /// Normalizes a file name by replacing invalid characters with underscores and truncating it to a reasonable length.
+        /// </summary>
+        /// <param name="fileName">The file name to normalize.</param>
+        /// <returns>The normalized file name.</returns>
+        private static string NormalizeFileName(string fileName)
+        {
+            // If the file name is null or empty, return a default name
+            if (string.IsNullOrEmpty(fileName))
+                return "Unknown";
+
+            // Replace invalid characters with underscores
+            char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+            foreach (char invalidChar in invalidFileNameChars)
+                fileName = fileName.Replace(invalidChar, '_');
+
+            // Replace spaces anmd special characters
+            fileName = fileName.Replace(" ", "_")
+                               .Replace(":", "")
+                               .Replace("-", "_")
+                               .Replace("(", "")
+                               .Replace(")", "");
+
+            return fileName.Length > 50 ? fileName.Substring(0, 50) : fileName;
         }
         #endregion
     }
