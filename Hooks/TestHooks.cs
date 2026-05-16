@@ -38,12 +38,6 @@ namespace ReqnrollAutomation.Hooks
         private static ExtentReports? _extentReports;
         private static ExtentTest? _featureNode;
         private ExtentTest? _scenarioNode;
-
-        // Configuration Flags
-        private static readonly bool _takeScreenshotOnFailure = true;
-        private static readonly bool _takeScreenshotOnPass = false;
-        private static readonly bool _takeScreenshotOnStep = false;
-        private static readonly bool _isDetailedLoggingEnabled = true;
         #endregion
 
         #region Constructor
@@ -209,26 +203,27 @@ namespace ReqnrollAutomation.Hooks
                 {
                     // Log the error message to both the Extent Report and the main log
                     message = $"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}";
-                    _scenarioNode?.Log(Status.Error, message);   // Log to Extent Report
-                    WriteMainLog(message);  // Log to main log
+                    //_scenarioNode?.Log(Status.Error, message);
 
-                    // Take a screenshot if the scenario failed
+                    // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {_scenarioContext.TestError.Message} {screenshotHtml}");
+                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}{screenshotHtml}");  // Log to Extent Report
                 }
                 else
                 {
                     // Log the error message to both the Extent Report and the main log
                     message = $"[PASS] Scenario passed";
-                    _scenarioNode?.Log(Status.Pass, message);   // Log to Extent Report
-                    WriteMainLog(message);  // Log to main log
-
-                    // Take a screenshot if the scenario failed
+                    //_scenarioNode?.Log(Status.Pass, message);   
+                    
+                    // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Pass($"[PASS] Scenario passed");
+                    _scenarioNode?.Pass($"[PASS] Scenario passed{screenshotHtml}"); // Log to Extent Report
                 }
+
+                // Log to main log
+                WriteMainLog(message);
 
                 // Log to the scenario log file
                 WriteLog(message);
@@ -265,8 +260,9 @@ namespace ReqnrollAutomation.Hooks
 
         #region Step Hooks
         /// <summary>
-        /// Executes logic before each test step begins.
+        /// Runs before each test step begins.
         /// </summary>
+        [BeforeStep]
         public void BeforeStep()
         {
             try
@@ -277,6 +273,61 @@ namespace ReqnrollAutomation.Hooks
             catch (Exception ex)
             {
                 WriteLog($"[ERROR] BeforeStep Error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Runs after each test step completes to take screenshots after each step.
+        /// </summary>
+        [AfterStep]
+        public void AfterStep()
+        {
+            try
+            {
+                StepInfo stepInfo = _scenarioContext.StepContext.StepInfo;
+                string message;
+                if (_scenarioContext.TestError != null)
+                {
+                    // Log the error message to both the Extent Report and the main log
+                    message = $"[ERROR] Step failed: {_scenarioContext.TestError.Message}";
+
+                    // Take a screenshot if the step failed
+                    string screenshotPath = CaptureScreenshot($"FAILED_{stepInfo.Text}");
+                    string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
+                    _scenarioNode?.Fail($"[ERROR] Step failed: {_scenarioContext.TestError.Message}{screenshotHtml}");
+                }
+                else
+                {
+                    message = $"[PASS] Step passed";
+
+                    // Take a screenshot
+                    string screenshotPath = CaptureScreenshot($"PASSED_{NormalizeFileName($"{stepInfo.StepDefinitionType} {stepInfo.Text}")}");
+                    string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
+                    _scenarioNode?.Pass($"[PASS] Step passed{screenshotHtml}"); // Log to Extent Report
+                }
+
+                // Log to main log
+                WriteMainLog(message);
+
+                // Log to the scenario log file
+                WriteLog(message);
+                WriteLog(new string('-', 75));
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"[ERROR] AfterStep Error: {ex.Message}");
+            }
+            finally
+            {
+                // Flush the Extent Report after each step to ensure logs are written to the file
+                try
+                {
+                    ReportManager.FlushReport();
+                }
+                catch (Exception ex)
+                {
+                    WriteMainLog($"[ERROR] Failed to flush report: {ex.Message}");
+                }
             }
         }
         #endregion
@@ -365,7 +416,7 @@ namespace ReqnrollAutomation.Hooks
         /// <param name="message">The message to log.</param>
         private void WriteLog(string message)
         {
-            if (!_isDetailedLoggingEnabled || string.IsNullOrEmpty(_scenarioLogFilePath))
+            if (string.IsNullOrEmpty(_scenarioLogFilePath))
                 return;
 
             lock (_fileLock)
