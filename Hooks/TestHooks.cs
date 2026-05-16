@@ -145,10 +145,22 @@ namespace ReqnrollAutomation.Hooks
             }
         }
 
+        /// <summary>
+        /// Runs after each feature to perform any necessary cleanup.
+        /// </summary>
+        /// <param name="featureContext">The feature context.</param>
         [AfterFeature]
         public static void AfterFeature(FeatureContext featureContext)
         {
-            // Any cleanup specific to a feature can be done here, such as clearing feature-specific data.
+            // Try-catch block is unnecessary here at the moment, but can be future-proofed
+            try
+            {
+                WriteMainLog($"[LOG] Feature completed");
+            }
+            catch (Exception ex)
+            {
+                WriteMainLog($"[ERROR] AfterFeature Error: {ex.Message}");
+            }
         }
         #endregion
 
