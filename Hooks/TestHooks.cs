@@ -113,6 +113,26 @@ namespace ReqnrollAutomation.Hooks
         #region Private Screenshot Methods
         #endregion
 
+        #region Private Logging Methods
+        private string GetLogPath()
+        {
+            // Initialize the log file path based on the scenario and feature titles
+            string scenarioTitle = NormalizeFileName(_scenarioContext.ScenarioInfo.Title);
+            string featureTitle = NormalizeFileName(_featureContext.FeatureInfo.Title);
+
+            if (string.IsNullOrEmpty(scenarioTitle))
+                scenarioTitle = "UnknownScenario";
+
+            if (string.IsNullOrEmpty(featureTitle))
+                featureTitle = "UnknownFeature";
+
+            string fileName = $"{scenarioTitle}_{_timestamp}.log";
+            string logDirectory = PathHelper.GetLogDirectoryPath();
+            string featureLogDirectory = Path.Combine(logDirectory, featureTitle);
+            return Path.Combine(featureLogDirectory, fileName);
+        }
+        #endregion
+
         #region Private Helper Methods
         /// <summary>
         /// Normalizes a file name by replacing invalid characters with underscores and truncating it to a reasonable length.
