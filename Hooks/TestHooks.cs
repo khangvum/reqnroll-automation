@@ -172,6 +172,28 @@ namespace ReqnrollAutomation.Hooks
         [BeforeScenario]
         public void BeforeScenario()
         {
+            try
+            {
+                // Create a node for the current scenario in the Extent Report under the current feature node
+                _scenarioNode = _featureNode?.CreateNode(_scenarioContext.ScenarioInfo.Title);
+                string message = $"[LOG] Scenario started: {_scenarioContext.ScenarioInfo.Title}";
+                _scenarioNode?.Log(Status.Info, message);   // Log to Extent Report
+                WriteMainLog(message);  // Log to main log
+
+                // Initialize the WebDriver instance and store it in the scenario context
+                _driver = DriverFactory.GetDriver();
+                _scenarioContext["WebDriver"] = _driver;
+
+                // Log to the scenario log file
+                _scenarioLogFilePath = GetLogPath();
+                WriteLog(message);
+                WriteLog($"[LOG] Feature: {_featureContext.FeatureInfo.Title}");
+                WriteLog($"[LOG] Browser: {(_driver as IHasCapabilities)?.Capabilities.GetCapability("browserName")}");
+                WriteLog($"[LOG] Time: {DateTime.Now:HH:mm:ss.fff}");
+            }
+            catch (Exception ex) {
+                WriteMainLog($"[ERROR] BeforeScenario Error: {ex.Message}");
+            }
         }
 
         /// <summary>
