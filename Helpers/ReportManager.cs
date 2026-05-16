@@ -68,6 +68,22 @@ namespace ReqnrollAutomation.Helpers
             }
             return _extentReports!;
         }
+
+        /// <summary>
+        /// Flushes and saves the report.
+        /// </summary>
+        public static void FlushReport()
+        {
+            try
+            {
+                _extentReports?.Flush();
+                Console.WriteLine("Report saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Report failed to save: {ex.Message}");
+            }
+        }
         #endregion
     }
 }
