@@ -1,4 +1,6 @@
-﻿# C# files
+﻿TestResults/
+
+# C# files
 x64/
 x86/
 bin/
