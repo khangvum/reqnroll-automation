@@ -44,10 +44,7 @@ namespace ReqnrollAutomation.Drivers
                 {
                     _driver.Manage().Window.Maximize();
                 }
-                catch
-                {
-                    // Some environments (headless/remote) may not support window operations.
-                }
+                catch { }
             }
 
             return _driver;
@@ -64,7 +61,7 @@ namespace ReqnrollAutomation.Drivers
                 {
                     _driver.Manage().Cookies.DeleteAllCookies();
                 }
-                catch {}
+                catch { }
             }
         }
 
