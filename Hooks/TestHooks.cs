@@ -268,7 +268,9 @@ namespace ReqnrollAutomation.Hooks
             try
             {
                 StepInfo stepInfo = _scenarioContext.StepContext.StepInfo;
-                WriteLog($"[LOG] Step started: {stepInfo.StepDefinitionType} {stepInfo.Text}");
+                string message = $"[LOG] Step started: {stepInfo.StepDefinitionType} {stepInfo.Text}";
+                _scenarioNode?.Log(Status.Info, message);   // Log to Extent Report
+                WriteLog(message); // Log to scenario log file
             }
             catch (Exception ex)
             {
