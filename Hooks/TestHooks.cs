@@ -91,9 +91,6 @@ namespace ReqnrollAutomation.Hooks
                 // Log the end of the test run
                 WriteMainLog("[LOG] Test run completed");
 
-                // Clean up the WebDriver instance
-                DriverFactory.QuitDriver();
-
                 // Flush the Extent Report
                 ReportManager.FlushReport();
 
@@ -149,7 +146,8 @@ namespace ReqnrollAutomation.Hooks
             // Try-catch block is unnecessary here at the moment, but can be future-proofed
             try
             {
-                WriteMainLog($"[LOG] Feature completed");
+                WriteMainLog($"[LOG] Feature completed:  {featureContext.FeatureInfo.Title}");
+                WriteMainLog(new string('=', 100));
             }
             catch (Exception ex)
             {
@@ -224,10 +222,10 @@ namespace ReqnrollAutomation.Hooks
 
                 // Log to main log
                 WriteMainLog(message);
+                WriteMainLog(new string('-', 100));
 
                 // Log to the scenario log file
                 WriteLog(message);
-                WriteLog(new string('-', 75));
             }
             catch (Exception ex)
             {
