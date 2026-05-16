@@ -63,6 +63,27 @@ namespace ReqnrollAutomation.Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
+            try
+            {
+                // Set up Extent Reports
+                ReportManager.InitializeReport();
+                _extentReports = ReportManager.GetExtentReports();
+                //Console.WriteLine("[LOG] Extent Reports initialized successfully.");
+                WriteMainLog("[LOG] Extent Reports initialized successfully.");
+
+                // Set up the directories for reports, screenshots, and logs
+                Directory.CreateDirectory(PathHelper.GetScreenshotsDirectoryPath());
+                Directory.CreateDirectory(PathHelper.GetLogDirectoryPath());
+                _testRunDirectoryPath = PathHelper.BaseDirectory;
+                _mainLogFilePath = Path.Combine(PathHelper.GetLogDirectoryPath(), $"TestRun_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+
+                // Log the start of the test run
+                WriteMainLog("[LOG] Test run started");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] BeforeTestRun Error: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -159,6 +180,7 @@ namespace ReqnrollAutomation.Hooks
                     string timestamp = $"[{DateTime.Now:HH:mm:ss.fff}] ";
                     string logMessage = timestamp + message;
                     File.AppendAllText(_scenarioLogFilePath, logMessage + Environment.NewLine, Encoding.UTF8);
+                    Console.WriteLine(logMessage); // Also write to console for real-time visibility
                 }
                 catch (Exception ex)
                 {
@@ -196,6 +218,7 @@ namespace ReqnrollAutomation.Hooks
                     string timestamp = $"[{DateTime.Now:HH:mm:ss.fff}] ";
                     string logMessage = timestamp + message;
                     File.AppendAllText(_mainLogFilePath, logMessage + Environment.NewLine, Encoding.UTF8);
+                    Console.WriteLine(logMessage); // Also write to console for real-time visibility
                 }
                 catch (Exception ex)
                 {
