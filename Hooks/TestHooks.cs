@@ -202,10 +202,37 @@ namespace ReqnrollAutomation.Hooks
         [AfterScenario]
         public void AfterScenario()
         {
+            
         }
         #endregion
 
         #region Private Screenshot Methods
+        /// <summary>
+        /// Captures a screenshot of the current browser window and saves it to a file with a specified name.
+        /// </summary>
+        /// <param name="name">The base name used to generate the file name.</param>
+        /// <returns>The full file path of the saved screenshot if successful; otherwise, an empty string.</returns>
+        private string CaptureScreenshot(string name)
+        {
+            try
+            {
+                // Set up the file path for the screenshot
+                string screenshotsDirectory = PathHelper.GetScreenshotsDirectoryPath();
+                string fileName = $"{NormalizeFileName(name)}_{DateTime.Now:HHmmss}_{Environment.CurrentManagedThreadId}.png";
+                string filePath = Path.Combine(screenshotsDirectory, fileName);
+
+                // Take the screenshot and save it to the specified file path
+                Screenshot? screenshot = (_driver as ITakesScreenshot)?.GetScreenshot();
+                screenshot?.SaveAsFile(filePath);
+                WriteLog($"[LOG] Screenshot captured: {filePath}");
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"[ERROR] Failed to capture screenshot: {ex.Message}");
+                return "";
+            }
+        }
         #endregion
 
         #region Private Logging Methods
