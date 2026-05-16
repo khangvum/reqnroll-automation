@@ -202,7 +202,64 @@ namespace ReqnrollAutomation.Hooks
         [AfterScenario]
         public void AfterScenario()
         {
-            
+            try
+            {
+                string message;
+                if (_scenarioContext.TestError != null)
+                {
+                    // Log the error message to both the Extent Report and the main log
+                    message = $"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}";
+                    _scenarioNode?.Log(Status.Error, message);   // Log to Extent Report
+                    WriteMainLog(message);  // Log to main log
+
+                    // Take a screenshot if the scenario failed
+                    string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}");
+                    string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
+                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}{screenshotHtml}");
+                }
+                else
+                {
+                    // Log the error message to both the Extent Report and the main log
+                    message = $"[PASS] Scenario passed";
+                    _scenarioNode?.Log(Status.Pass, message);   // Log to Extent Report
+                    WriteMainLog(message);  // Log to main log
+
+                    // Take a screenshot if the scenario failed
+                    string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}");
+                    string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
+                    _scenarioNode?.Pass($"[PASS] Scenario passed{screenshotHtml}");
+                }
+
+                // Log to the scenario log file
+                WriteLog(message);
+                WriteLog(new string('-', 75));
+            }
+            catch (Exception ex)
+            {
+                WriteMainLog($"[ERROR] AfterScenario Error: {ex.Message}");
+            }
+            finally
+            {
+                // Flush the Extent Report after each scenario to ensure logs are written to the file
+                try
+                {
+                    ReportManager.FlushReport();
+                }
+                catch (Exception ex)
+                {
+                    WriteMainLog($"[ERROR] Failed to flush report: {ex.Message}");
+                }
+
+                // Guarantee cleanup of the WebDriver instance
+                try
+                {
+                    DriverFactory.QuitDriver();
+                }
+                catch (Exception ex)
+                {
+                    WriteMainLog($"[ERROR] Failed to quit driver: {ex.Message}");
+                }
+            }
         }
         #endregion
 
