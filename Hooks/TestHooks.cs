@@ -215,7 +215,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot if the scenario failed
                     string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}{screenshotHtml}");
+                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {_scenarioContext.TestError.Message} {screenshotHtml}");
                 }
                 else
                 {
@@ -227,7 +227,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot if the scenario failed
                     string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Pass($"[PASS] Scenario passed{screenshotHtml}");
+                    _scenarioNode?.Pass($"[PASS] Scenario passed");
                 }
 
                 // Log to the scenario log file
@@ -259,6 +259,24 @@ namespace ReqnrollAutomation.Hooks
                 {
                     WriteMainLog($"[ERROR] Failed to quit driver: {ex.Message}");
                 }
+            }
+        }
+        #endregion
+
+        #region Step Hooks
+        /// <summary>
+        /// Executes logic before each test step begins.
+        /// </summary>
+        public void BeforeStep()
+        {
+            try
+            {
+                StepInfo stepInfo = _scenarioContext.StepContext.StepInfo;
+                WriteLog($"[LOG] Step started: {stepInfo.StepDefinitionType} {stepInfo.Text}");
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"[ERROR] BeforeStep Error: {ex.Message}");
             }
         }
         #endregion
