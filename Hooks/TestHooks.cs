@@ -82,7 +82,7 @@ namespace ReqnrollAutomation.Hooks
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] BeforeTestRun Error: {ex.Message}");
+                WriteMainLog($"[ERROR] BeforeTestRun Error: {ex.Message}");
             }
         }
 
@@ -92,6 +92,35 @@ namespace ReqnrollAutomation.Hooks
         [AfterTestRun]
         public static void AfterTestRun()
         {
+            try
+            {
+                // Log the end of the test run
+                WriteMainLog("[LOG] Test run completed");
+
+                // Clean up the WebDriver instance
+                DriverFactory.QuitDriver();
+
+                // Flush the Extent Report
+                ReportManager.FlushReport();
+
+                // Automatically open the Extent Report in the browser if in headfull mode
+                string reportPath = ReportManager.ReportPath;
+                bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
+                if (!isHeadless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
+                {
+                    WriteMainLog($"[LOG] Opening report: {reportPath}");
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = reportPath,
+                        UseShellExecute = true
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WriteMainLog($"[ERROR] AfterTestRun Error: {ex.Message}");
+            }
         }
         #endregion
 
