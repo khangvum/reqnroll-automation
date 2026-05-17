@@ -13,6 +13,27 @@ namespace ReqnrollAutomation.Helpers
     internal class LogMessageFormatter
     {
         /// <summary>
+        /// Formats a standard informational log message with a blue color highlight.
+        /// </summary>
+        /// <param name="message">The message to format.</param>
+        /// <returns>The HTML formatted log message.</returns>
+        public static string FormatLogMessage(string message) => $"<span style='color:#3498db;font-weight:bold;'>{message}</span>";
+
+        /// <summary>
+        /// Formats a success message with a green color highlight.
+        /// </summary>
+        /// <param name="message">The message to format.</param>
+        /// <returns>The HTML formatted pass message.</returns>
+        public static string FormatPassMessage(string message) => $"<span style='color:#2ecc71;font-weight:bold;'>{message}</span>";
+
+        /// <summary>
+        /// Formats an error message with a red color highlight.
+        /// </summary>
+        /// <param name="message">The message to format.</param>
+        /// <returns>The HTML formatted error message.</returns>
+        public static string FormatErrorMessage(string message) => $"<span style='color:#e74c3c;font-weight:bold;'>{message}</span>";
+
+        /// <summary>
         /// Formats an exception into a user-friendly error message and the 
         /// full exception details in a collapsible section for debugging purposes.
         /// </summary>
