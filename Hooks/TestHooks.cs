@@ -169,7 +169,7 @@ namespace ReqnrollAutomation.Hooks
                 // Create a node for the current scenario in the Extent Report under the current feature node
                 _scenarioNode = _featureNode?.CreateNode(_scenarioContext.ScenarioInfo.Title);
                 string message = $"[LOG] Scenario started: {_scenarioContext.ScenarioInfo.Title}";
-                _scenarioNode?.Log(Status.Info, message);   // Log to Extent Report
+                _scenarioNode?.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));   // Log to Extent Report
                 WriteMainLog(message);  // Log to main log
 
                 // Initialize the WebDriver instance and store it in the scenario context
@@ -206,7 +206,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {ErrorMessageHelper.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");  // Log to Extent Report
+                    _scenarioNode?.Fail($"{LogMessageFormatter.FormatErrorMessage("[ERROR] Scenario failed")} {LogMessageFormatter.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");  // Log to Extent Report
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Pass($"[PASS] Scenario passed{screenshotHtml}"); // Log to Extent Report
+                    _scenarioNode?.Pass($"{LogMessageFormatter.FormatPassMessage("[PASS] Scenario passed")}{screenshotHtml}"); // Log to Extent Report
                 }
 
                 // Log to main log
@@ -267,7 +267,7 @@ namespace ReqnrollAutomation.Hooks
             {
                 StepInfo stepInfo = _scenarioContext.StepContext.StepInfo;
                 string message = $"[LOG] Step started: {stepInfo.StepDefinitionType} {stepInfo.Text}";
-                _scenarioNode?.Log(Status.Info, message);   // Log to Extent Report
+                _scenarioNode?.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));   // Log to Extent Report
                 WriteLog(message); // Log to scenario log file
             }
             catch (Exception ex)
@@ -294,7 +294,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot if the step failed
                     string screenshotPath = CaptureScreenshot($"FAILED_{stepInfo.Text}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"[ERROR] Step failed: {ErrorMessageHelper.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");
+                    _scenarioNode?.Fail($"{LogMessageFormatter.FormatErrorMessage("[ERROR] Step failed")} {LogMessageFormatter.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");
                 }
                 else
                 {
@@ -303,7 +303,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"PASSED_{NormalizeFileName($"{stepInfo.StepDefinitionType} {stepInfo.Text}")}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Pass($"[PASS] Step passed{screenshotHtml}"); // Log to Extent Report
+                    _scenarioNode?.Pass($"{LogMessageFormatter.FormatPassMessage("[PASS] Step passed")}{screenshotHtml}"); // Log to Extent Report
                 }
 
                 // Log to main log
