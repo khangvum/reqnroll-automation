@@ -35,6 +35,7 @@ namespace ReqnrollAutomation.Helpers
             return ex.GetType().Name switch
             {
                 "AssertionException" => $"An assertion failed: {ex.Message}",
+                "AssertFailedException" => $"An assertion failed: {ex.Message}",
                 "ElementClickInterceptedException" => "Element was found but could not be clicked. Another element may be covering it (e.g., a modal or overlay) or it may not be interactable.",
                 "ElementNotInteractableException" => "Element was found but is not currently interactable. It may be hidden, disabled, or covered by another element.",
                 "InvalidOperationException" => "The operation is not valid in the current state. This may occur if the WebDriver session has ended or if an action is attempted on a closed browser.",
