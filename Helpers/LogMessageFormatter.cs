@@ -1,16 +1,16 @@
 ﻿/**
- * Program:         ErrorMessageHelper.cs
+ * Program:         LogMessageFormatter.cs
  * Author:          Manh Khang Vu
  * Date:            2026-05-17
- * Description:     A class that includes helper methods for handling error messages and exceptions.
+ * Description:     A class that includes helper methods for formatting HTML log messages and exceptions.
  */
 
 namespace ReqnrollAutomation.Helpers
 {
     /// <summary>
-    /// A class that includes helper methods for handling error messages and exceptions.
+    /// A class that includes helper methods for formatting HTML log messages and exceptions.
     /// </summary>
-    internal class ErrorMessageHelper
+    internal class LogMessageFormatter
     {
         /// <summary>
         /// Formats an exception into a user-friendly error message and the 
@@ -22,7 +22,7 @@ namespace ReqnrollAutomation.Helpers
         {
             string friendlyMessage = GetFriendlyErrorMessage(ex);
             string message = ex.Message;
-            return $"<br><span style='color:#e74c3c;font-weight:bold;'>[ERROR] {friendlyMessage}</span><br><details><summary style='cursor:pointer,color:#888;'>[DETAILS]</summary><pre style='font-size:12px;color:#666;whitespace:pre-wrap;'>{ex}</pre></details>";
+            return $"<br><span style='color:#c0392b;font-weight:bold;'>[ERROR] {friendlyMessage}</span><br><details><summary style='cursor:pointer;color:#888;font-weight:bold;'>[DETAILS]</summary><pre style='font-size:12px;color:#666;whitespace:pre-wrap;'>{message}</pre></details>";
         }
 
         /// <summary>
