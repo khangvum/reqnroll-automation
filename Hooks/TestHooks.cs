@@ -206,7 +206,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}{screenshotHtml}");  // Log to Extent Report
+                    _scenarioNode?.Fail($"[ERROR] Scenario failed: {ErrorMessageHelper.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");  // Log to Extent Report
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace ReqnrollAutomation.Hooks
                     // Take a screenshot if the step failed
                     string screenshotPath = CaptureScreenshot($"FAILED_{stepInfo.Text}");
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"[ERROR] Step failed: {_scenarioContext.TestError.Message}{screenshotHtml}");
+                    _scenarioNode?.Fail($"[ERROR] Step failed: {ErrorMessageHelper.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");
                 }
                 else
                 {

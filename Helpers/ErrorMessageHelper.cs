@@ -13,6 +13,19 @@ namespace ReqnrollAutomation.Helpers
     internal class ErrorMessageHelper
     {
         /// <summary>
+        /// Formats an exception into a user-friendly error message and the 
+        /// full exception details in a collapsible section for debugging purposes.
+        /// </summary>
+        /// <param name="ex">The exception to format.</param>
+        /// <returns>The formatted error message with details.</returns>
+        public static string FormatExceptionMessage(Exception ex)
+        {
+            string friendlyMessage = GetFriendlyErrorMessage(ex);
+            string message = ex.Message;
+            return $"<br><span style='color:#e74c3c;font-weight:bold;'>[ERROR] {friendlyMessage}</span><br><details><summary style='cursor:pointer,color:#888;'>[DETAILS]</summary><pre style='font-size:12px;color:#666;whitespace:pre-wrap;'>{ex}</pre></details>";
+        }
+
+        /// <summary>
         /// Returns a user-friendly error message that describes the specified exception.
         /// </summary>
         /// <param name="ex">The exception for which to generate a user-friendly error message.</param>
