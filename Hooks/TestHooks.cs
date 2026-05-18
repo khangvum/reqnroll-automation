@@ -71,6 +71,9 @@ namespace ReqnrollAutomation.Hooks
                 _testRunDirectoryPath = PathHelper.BaseDirectory;
                 _mainLogFilePath = Path.Combine(PathHelper.GetLogDirectoryPath(), $"TestRun_{DateTime.Now:yyyyMMdd_HHmmss}.log");
 
+                // Clean up old report directories
+                CleanupOldReports();
+
                 // Log the start of the test run
                 WriteMainLog("[LOG] Test run started");
             }
@@ -505,6 +508,46 @@ namespace ReqnrollAutomation.Hooks
                                .Replace(")", "");
 
             return fileName.Length > 50 ? fileName.Substring(0, 50) : fileName;
+        }
+
+        /// <summary>
+        /// Cleans up old report directories, keeping only the 10 most recent ones.
+        /// </summary>
+        private static void CleanupOldReports()
+        {
+            try
+            {
+                // Keep the 10 most recent reports
+                const int numberOfReportsToKeep = 10;
+                string baseDirectory = Directory.GetParent(PathHelper.BaseDirectory)!.FullName; // "TestResults" folder
+                // If the base directory doesn't exist, there's nothing to clean up
+                if (!Directory.Exists(baseDirectory))
+                    return;
+
+                // Delete old report directories, keeping only the most recent ones based on creation time
+                // Folder name format: yyyy-MM-dd_HHmmss
+                List<DirectoryInfo> reportDirectories = Directory.GetDirectories(baseDirectory)
+                                                        .Select(d => new DirectoryInfo(d))
+                                                        .OrderByDescending(d => d.CreationTime)
+                                                        .ToList();
+                foreach (DirectoryInfo dir in reportDirectories.Skip(numberOfReportsToKeep))
+                {
+                    try
+                    {
+                        string reportName = dir.Name;
+                        dir.Delete(true);
+                        WriteMainLog($"[LOG] Deleted old report directory: {reportName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteMainLog($"[ERROR] Failed to delete old report directory: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteMainLog($"[ERROR] Failed to clean up old reports: {ex.Message}");
+            }
         }
         #endregion
     }
