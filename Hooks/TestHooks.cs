@@ -524,6 +524,24 @@ namespace ReqnrollAutomation.Hooks
                 if (!Directory.Exists(baseDirectory))
                     return;
 
+                // Clean up deployment folders created by Reqnroll, which are located in the "TestResults" folder and have names starting with "Deploy_"
+                List<DirectoryInfo> deploymentDirectories = Directory.GetDirectories(baseDirectory, "Deploy_*")
+                                                            .Select(d => new DirectoryInfo(d))
+                                                            .ToList();
+                foreach (DirectoryInfo deploymentDirectory in deploymentDirectories)
+                {
+                    try
+                    {
+                        string deploymentName = deploymentDirectory.Name;
+                        deploymentDirectory.Delete(true);
+                        WriteMainLog($"[LOG] Deleted old deployment directory: {deploymentName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteMainLog($"[ERROR] Failed to delete old deployment directory: {ex.Message}");
+                    }
+                }
+
                 // Delete old report directories, keeping only the most recent ones based on creation time
                 // Folder name format: yyyy-MM-dd_HHmmss
                 List<DirectoryInfo> reportDirectories = Directory.GetDirectories(baseDirectory)
