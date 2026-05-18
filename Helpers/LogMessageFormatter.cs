@@ -12,6 +12,7 @@ namespace ReqnrollAutomation.Helpers
     /// </summary>
     internal class LogMessageFormatter
     {
+        #region Public Methods
         /// <summary>
         /// Formats a standard informational log message with a blue color highlight.
         /// </summary>
@@ -45,7 +46,9 @@ namespace ReqnrollAutomation.Helpers
             string message = ex.Message;
             return $"<br><span style='color:#c0392b;font-weight:bold;'>[ERROR] {friendlyMessage}</span><br><details><summary style='cursor:pointer;color:#888;font-weight:bold;'>[DETAILS]</summary><pre style='font-size:12px;color:#666;whitespace:pre-wrap;'>{message}</pre></details>";
         }
+        #endregion
 
+        #region Private Helper Methods
         /// <summary>
         /// Returns a user-friendly error message that describes the specified exception.
         /// </summary>
@@ -70,5 +73,6 @@ namespace ReqnrollAutomation.Helpers
                 _ => ex.Message,
             };
         }
+        #endregion
     }
 }
