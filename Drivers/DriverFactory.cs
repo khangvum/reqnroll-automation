@@ -14,7 +14,7 @@ namespace ReqnrollAutomation.Drivers
     /// <summary>
     /// A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
     /// </summary>
-    public class DriverFactory
+    internal class DriverFactory
     {
         // Private attributes
         private static IWebDriver? _driver;
@@ -30,9 +30,11 @@ namespace ReqnrollAutomation.Drivers
             {
                 ChromeOptions options = new();
                 // Allow running in headless mode by setting env var HEADLESS=1
-                if (Environment.GetEnvironmentVariable("HEADLESS") == "1")
+                bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
+                if (isHeadless)
                 {
                     options.AddArgument("--headless=new");
+                    options.AddArgument("--window-size=1920,1080");
                 }
                 options.AddArgument("--no-sandbox");
                 options.AddArgument("--disable-gpu");
@@ -42,7 +44,11 @@ namespace ReqnrollAutomation.Drivers
                 _driver = new ChromeDriver(options);
                 try
                 {
-                    _driver.Manage().Window.Maximize();
+                    // Only attempt to maximize if not running headless
+                    if (!isHeadless)
+                    {
+                        _driver.Manage().Window.Maximize();
+                    }
                 }
                 catch { }
             }
