@@ -2,7 +2,7 @@
  * Program:         DriverFactory.cs
  * Author:          Manh Khang Vu
  * Date:            2026-05-07
- * Description:     A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
+ * Description:     A class that provides a factory for creating and managing WebDriver instances for the test automation framework, streamlining parallel test execution and ensuring proper resource management.
  */
 
 using OpenQA.Selenium;
@@ -12,78 +12,73 @@ using System.Diagnostics;
 namespace ReqnrollAutomation.Drivers
 {
     /// <summary>
-    /// A class that provides a singleton instance of the Selenium WebDriver used for automated testing.
+    /// A class that provides a factory for creating and managing WebDriver instances for the test 
+    /// automation framework, streamlining parallel test execution and ensuring proper resource management.
     /// </summary>
     internal class DriverFactory
     {
-        // Private attributes
-        private static IWebDriver? _driver;
-
-        // Public methods
         /// <summary>
-        /// Gets a singleton instance of the Selenium WebDriver.
+        /// Creates a new instance of the Selenium WebDriver.
         /// </summary>
-        /// <returns>The singleton IWebDriver instance.</returns>
-        public static IWebDriver GetDriver()
+        /// <returns>The IWebDriver instance.</returns>
+        public static IWebDriver CreateDriver()
         {
-            if (_driver == null)
+            ChromeOptions options = new();
+            // Allow running in headless mode by setting env var HEADLESS=1
+            bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
+            if (isHeadless)
             {
-                ChromeOptions options = new();
-                // Allow running in headless mode by setting env var HEADLESS=1
-                bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
-                if (isHeadless)
-                {
-                    options.AddArgument("--headless=new");
-                    options.AddArgument("--window-size=1920,1080");
-                }
-                options.AddArgument("--no-sandbox");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--disable-dev-shm-usage");
-
-                // Do not provide a local chromedriver path - let Selenium Manager resolve the matching driver.
-                _driver = new ChromeDriver(options);
-                try
-                {
-                    // Only attempt to maximize if not running headless
-                    if (!isHeadless)
-                    {
-                        _driver.Manage().Window.Maximize();
-                    }
-                }
-                catch { }
+                options.AddArgument("--headless=new");
+                options.AddArgument("--window-size=1920,1080");
             }
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--disable-dev-shm-usage");
 
-            return _driver;
+            IWebDriver driver = new ChromeDriver(options);
+
+            try
+            {
+                // Only attempt to maximize if not running headless
+                if (!isHeadless)
+                {
+                    driver.Manage().Window.Maximize();
+                }
+
+            }
+            catch { }
+
+            return driver;
         }
 
         /// <summary>
         /// Clears all cookies and cache from the current WebDriver instance to ensure a clean state for testing.
         /// </summary>
-        public static void ClearCookiesAndCache()
+        public static void ClearCookiesAndCache(IWebDriver? driver)
         {
-            if (_driver != null)
+            if (driver != null)
             {
                 try
                 {
-                    _driver.Manage().Cookies.DeleteAllCookies();
+                    driver.Manage().Cookies.DeleteAllCookies();
                 }
                 catch { }
             }
         }
 
         /// <summary>
-        /// Closes and disposes the current WebDriver instance, releasing all associated resources and terminating any
-        /// orphaned browser driver processes.
+        /// Closes and disposes the current WebDriver instance, releasing all associated 
+        /// resources and terminating any orphaned browser driver processes.
         /// </summary>
-        public static void QuitDriver()
+        public static void QuitDriver(IWebDriver? driver)
         {
-            if (_driver != null)
+            if (driver != null)
             {
                 try
                 {
                     // Try normal quit/close first
-                    try { _driver.Quit(); } catch { }
-                    try { _driver.Dispose(); } catch { }
+                    try { driver.Quit(); } catch { }
+                    try { driver.Dispose(); } catch { }
                 }
                 catch { }
 
@@ -97,7 +92,6 @@ namespace ReqnrollAutomation.Drivers
                     }
                 }
                 catch { }
-                _driver = null;
             }
         }
     }
