@@ -6,10 +6,13 @@
  */
 
 using AventStack.ExtentReports;
+using AventStack.ExtentReports.Gherkin.Model;
 using OpenQA.Selenium;
 using Reqnroll;
 using ReqnrollAutomation.Drivers;
+using ReqnrollAutomation.Extensions;
 using ReqnrollAutomation.Helpers;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text;
 
@@ -22,8 +25,7 @@ namespace ReqnrollAutomation.Hooks
     internal class TestHooks
     {
         #region Private Attributes
-        // Driver & context
-        private static IWebDriver? _driver;
+        // Context
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
 
@@ -34,9 +36,12 @@ namespace ReqnrollAutomation.Hooks
         private static string? _mainLogFilePath;
         private static readonly object _fileLock = new();
 
-        // Extent Reports
+        // Extent Reports (thread-safe with ConcurrentDictionary)
         private static ExtentReports? _extentReports;
-        private static ExtentTest? _featureNode;
+        private static readonly ConcurrentDictionary<string, ExtentTest> _featureNodes = new();
+        private static readonly object _reportLock = new();
+
+        // Per-scenario test node (stored in ScenarioContext for thread safety)
         private ExtentTest? _scenarioNode;
         #endregion
 
@@ -53,6 +58,7 @@ namespace ReqnrollAutomation.Hooks
         /// <summary>
         /// Runs before the entire test run to perform any global setup.
         /// </summary>
+        /// <exception cref="Exception">Thrown when an error occurs during setup.</exception>
         #region Test Run Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
@@ -86,6 +92,7 @@ namespace ReqnrollAutomation.Hooks
         /// <summary>
         /// Runs after the entire test run to perform any global cleanup.
         /// </summary>
+        /// <exception cref="Exception">Thrown when an error occurs during cleanup.</exception>
         [AfterTestRun]
         public static void AfterTestRun()
         {
@@ -122,14 +129,23 @@ namespace ReqnrollAutomation.Hooks
         /// Runs before each feature to create a node in the Extent Report for the current feature.
         /// </summary>
         /// <param name="featureContext">The feature context.</param>
+        /// <exception cref="Exception">Thrown when an error occurs during feature setup.</exception>
         #region Feature Hooks
         [BeforeFeature]
         public static void BeforeFeature(FeatureContext featureContext)
         {
             try
             {
-                // Create a node for the current feature in the Extent Report
-                _featureNode = _extentReports?.CreateTest(featureContext.FeatureInfo.Title);
+                string featureTitle = featureContext.FeatureInfo.Title;
+
+                // Lock before checking and adding to the report to prevent race conditions where
+                // multiple threads might try to create a node for the same feature at the same time
+                lock (_reportLock)
+                {
+                    // Create a node for the current feature in the Extent Report (thread-safe)
+                    // GetOrAdd() ensures only one feature node is created per feature
+                    _featureNodes.GetOrAdd(featureTitle, key => _extentReports!.CreateTest(key));
+                }
 
                 WriteMainLog($"[LOG] Feature started: {featureContext.FeatureInfo.Title}");
             }
@@ -143,6 +159,7 @@ namespace ReqnrollAutomation.Hooks
         /// Runs after each feature to perform any necessary cleanup.
         /// </summary>
         /// <param name="featureContext">The feature context.</param>
+        /// <exception cref="Exception">Thrown when an error occurs during feature cleanup.</exception>
         [AfterFeature]
         public static void AfterFeature(FeatureContext featureContext)
         {
@@ -164,26 +181,45 @@ namespace ReqnrollAutomation.Hooks
         /// Runs before each test scenario to initialize the WebDriver and 
         /// store it in the scenario context to be used in step definitions.
         /// </summary>
+        /// <exception cref="Exception">Thrown when an error occurs during scenario setup.</exception>
         [BeforeScenario]
         public void BeforeScenario()
         {
             try
             {
-                // Create a node for the current scenario in the Extent Report under the current feature node
-                _scenarioNode = _featureNode?.CreateNode(_scenarioContext.ScenarioInfo.Title);
+                string featureTitle = _featureContext.FeatureInfo.Title;
+
+                // Get the feature node (thread-safe)
+                if (!_featureNodes.TryGetValue(featureTitle, out ExtentTest? feature))
+                {
+                    throw new InvalidOperationException($"Feature node not found for: {featureTitle}");
+                }
+
+                // Create a node for the current scenario under the feature node in the Extent Report (thread-safe)
+                lock (_reportLock)
+                {
+                    _scenarioNode = feature.CreateNode<Scenario>(_scenarioContext.ScenarioInfo.Title);
+                }
+
                 string message = $"[LOG] Scenario started: {_scenarioContext.ScenarioInfo.Title}";
-                _scenarioNode?.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));   // Log to Extent Report
+
+                // Thread-safe logging
+                lock (_reportLock)
+                {
+                    _scenarioNode.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));
+                }
+
                 WriteMainLog(message);  // Log to main log
 
-                // Initialize the WebDriver instance and store it in the scenario context
-                _driver = DriverFactory.GetDriver();
-                _scenarioContext["WebDriver"] = _driver;
+                // Create a new WebDriver instance for this scenario (not shared between scenarios)
+                IWebDriver driver = DriverFactory.CreateDriver();
+                _scenarioContext["WebDriver"] = driver;
 
                 // Log to the scenario log file
                 _scenarioLogFilePath = GetLogPath();
                 WriteLog(message);
                 WriteLog($"[LOG] Feature: {_featureContext.FeatureInfo.Title}");
-                WriteLog($"[LOG] Browser: {(_driver as IHasCapabilities)?.Capabilities.GetCapability("browserName")}");
+                WriteLog($"[LOG] Browser: {(driver as IHasCapabilities)?.Capabilities.GetCapability("browserName")}");
                 WriteLog($"[LOG] Time: {DateTime.Now:HH:mm:ss.fff}");
             }
             catch (Exception ex) {
@@ -194,33 +230,46 @@ namespace ReqnrollAutomation.Hooks
         /// <summary>
         /// Runs after each test scenario to clean up the WebDriver instance.
         /// </summary>
+        /// <exception cref="Exception">Thrown when an error occurs during scenario cleanup.</exception>"
         [AfterScenario]
         public void AfterScenario()
         {
+            IWebDriver? driver = null;
             try
             {
+                // Retrieve the driver from ScenarioContext
+                driver = _scenarioContext.GetDriver();
+
                 string message;
                 if (_scenarioContext.TestError != null)
                 {
                     // Log the error message to both the Extent Report and the main log
                     message = $"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}";
-                    //_scenarioNode?.Log(Status.Error, message);
 
                     // Take a screenshot
-                    string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}");
+                    string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}", driver);
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"{LogMessageFormatter.FormatErrorMessage("[ERROR] Scenario failed")} {LogMessageFormatter.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");  // Log to Extent Report
+
+                    // Thread-safe logging
+                    lock (_reportLock)
+                    {
+                        _scenarioNode?.Fail($"{LogMessageFormatter.FormatErrorMessage("[ERROR] Scenario failed")} {LogMessageFormatter.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");  // Log to Extent Report
+                    }
                 }
                 else
                 {
                     // Log the error message to both the Extent Report and the main log
                     message = $"[PASS] Scenario passed";
-                    //_scenarioNode?.Log(Status.Pass, message);   
                     
                     // Take a screenshot
-                    string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}");
+                    string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}", driver);
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Pass($"{LogMessageFormatter.FormatPassMessage("[PASS] Scenario passed")}{screenshotHtml}"); // Log to Extent Report
+
+                    // Thread-safe logging
+                    lock (_reportLock)
+                    {
+                        _scenarioNode?.Pass($"{LogMessageFormatter.FormatPassMessage("[PASS] Scenario passed")}{screenshotHtml}"); // Log to Extent Report
+                    }
                 }
 
                 // Log to main log
@@ -239,17 +288,30 @@ namespace ReqnrollAutomation.Hooks
                 // Flush the Extent Report after each scenario to ensure logs are written to the file
                 try
                 {
-                    ReportManager.FlushReport();
+                    lock (_reportLock)
+                    {
+                        ReportManager.FlushReport();
+                    }
                 }
                 catch (Exception ex)
                 {
                     WriteMainLog($"[ERROR] Failed to flush report: {ex.Message}");
                 }
 
-                // Guarantee cleanup of the WebDriver instance
+                // Clear cookies and cache to ensure test isolation
                 try
                 {
-                    DriverFactory.QuitDriver();
+                    DriverFactory.ClearCookiesAndCache(driver);
+                }
+                catch (Exception ex)
+                {
+                    WriteMainLog($"[ERROR] Failed to clear cookies and cache: {ex.Message}");
+                }
+
+                // Guarantee cleanup of the WebDriver instance for this scenario
+                try
+                {
+                    DriverFactory.QuitDriver(driver);
                 }
                 catch (Exception ex)
                 {
@@ -263,6 +325,7 @@ namespace ReqnrollAutomation.Hooks
         /// <summary>
         /// Runs before each test step begins.
         /// </summary>
+        /// <exception cref="Exception">Thrown when an error occurs during step setup.</exception>
         [BeforeStep]
         public void BeforeStep()
         {
@@ -270,7 +333,13 @@ namespace ReqnrollAutomation.Hooks
             {
                 StepInfo stepInfo = _scenarioContext.StepContext.StepInfo;
                 string message = $"[LOG] Step started: {stepInfo.StepDefinitionType} {stepInfo.Text}";
-                _scenarioNode?.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));   // Log to Extent Report
+
+                // Thread-safe logging
+                lock (_reportLock)
+                {
+                    _scenarioNode?.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));   // Log to Extent Report
+                }
+                
                 WriteLog(message); // Log to scenario log file
             }
             catch (Exception ex)
@@ -285,8 +354,12 @@ namespace ReqnrollAutomation.Hooks
         [AfterStep]
         public void AfterStep()
         {
+            IWebDriver? driver = null;
             try
             {
+                // Retrieve the driver from ScenarioContext
+                driver = _scenarioContext.GetDriver();
+
                 StepInfo stepInfo = _scenarioContext.StepContext.StepInfo;
                 string message;
                 if (_scenarioContext.TestError != null)
@@ -295,18 +368,28 @@ namespace ReqnrollAutomation.Hooks
                     message = $"[ERROR] Step failed: {_scenarioContext.TestError.Message}";
 
                     // Take a screenshot if the step failed
-                    string screenshotPath = CaptureScreenshot($"FAILED_{stepInfo.Text}");
+                    string screenshotPath = CaptureScreenshot($"FAILED_{stepInfo.Text}", driver);
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Fail($"{LogMessageFormatter.FormatErrorMessage("[ERROR] Step failed")} {LogMessageFormatter.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");
+
+                    // Thread-safe logging
+                    lock (_reportLock)
+                    {
+                        _scenarioNode?.Fail($"{LogMessageFormatter.FormatErrorMessage("[ERROR] Step failed")} {LogMessageFormatter.FormatExceptionMessage(_scenarioContext.TestError)}{screenshotHtml}");  // Log to Extent Report
+                    }
                 }
                 else
                 {
                     message = $"[PASS] Step passed";
 
                     // Take a screenshot
-                    string screenshotPath = CaptureScreenshot($"PASSED_{NormalizeFileName($"{stepInfo.StepDefinitionType} {stepInfo.Text}")}");
+                    string screenshotPath = CaptureScreenshot($"PASSED_{NormalizeFileName($"{stepInfo.StepDefinitionType} {stepInfo.Text}")}", driver);
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
-                    _scenarioNode?.Pass($"{LogMessageFormatter.FormatPassMessage("[PASS] Step passed")}{screenshotHtml}"); // Log to Extent Report
+
+                    // Thread-safe logging
+                    lock (_reportLock)
+                    {
+                        _scenarioNode?.Pass($"{LogMessageFormatter.FormatPassMessage("[PASS] Step passed")}{screenshotHtml}"); // Log to Extent Report
+                    }
                 }
 
                 // Log to main log
@@ -325,7 +408,10 @@ namespace ReqnrollAutomation.Hooks
                 // Flush the Extent Report after each step to ensure logs are written to the file
                 try
                 {
-                    ReportManager.FlushReport();
+                    lock (_reportLock)
+                    {
+                        ReportManager.FlushReport();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -341,7 +427,7 @@ namespace ReqnrollAutomation.Hooks
         /// </summary>
         /// <param name="name">The base name used to generate the file name.</param>
         /// <returns>The full file path of the saved screenshot if successful; otherwise, an empty string.</returns>
-        private string CaptureScreenshot(string name)
+        private string CaptureScreenshot(string name, IWebDriver? driver)
         {
             try
             {
@@ -351,7 +437,7 @@ namespace ReqnrollAutomation.Hooks
                 string filePath = Path.Combine(screenshotsDirectory, fileName);
 
                 // Take the screenshot and save it to the specified file path
-                Screenshot? screenshot = (_driver as ITakesScreenshot)?.GetScreenshot();
+                Screenshot? screenshot = (driver as ITakesScreenshot)?.GetScreenshot();
                 screenshot?.SaveAsFile(filePath);
                 WriteLog($"[LOG] Screenshot captured: {filePath}");
                 return filePath;
@@ -568,5 +654,28 @@ namespace ReqnrollAutomation.Hooks
             }
         }
         #endregion
+    }
+}
+
+namespace ReqnrollAutomation.Extensions
+{
+    public static class ScenarioContextExtensions
+    {
+        /// <summary>
+        /// Gets the WebDriver instance from the current scenario context.
+        /// </summary>
+        /// <remarks>Should be used by step defintions to retrieve the driver instance.</remarks>
+        /// <param name="scenarioContext">The scenario context.</param>
+        /// <returns>The WebDriver instance.</returns>
+        /// <exception cref="InvalidOperationException">Throws if the WebDriver instance is not found in the scenario context.</exception>
+        public static IWebDriver GetDriver(this ScenarioContext scenarioContext)
+        {
+            if (scenarioContext.TryGetValue("WebDriver", out IWebDriver driver) && driver != null)
+            {
+                return driver;
+            }
+
+            throw new InvalidOperationException("WebDriver instance not found in ScenarioContext. Ensure BeforeScenario hook has been executed.");
+        }
     }
 }
