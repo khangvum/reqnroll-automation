@@ -22,6 +22,7 @@ namespace ReqnrollAutomation.Helpers
         private static ExtentReports? _extentReports;
         private static ExtentSparkReporter? _extentSparkReporter;
         private static string _reportPath = "";
+        private static readonly object _flushLock = new();
         #endregion
 
         #region Public Properties
@@ -53,7 +54,7 @@ namespace ReqnrollAutomation.Helpers
             _extentReports.AddSystemInfo("Tester", Environment.UserName);
             _extentReports.AddSystemInfo("OS", Environment.OSVersion.ToString());
 
-            Console.WriteLine("Report initialized successfully.");
+            Console.WriteLine("[LOG] Report initialized successfully.");
         }
 
         /// <summary>
@@ -76,12 +77,15 @@ namespace ReqnrollAutomation.Helpers
         {
             try
             {
-                _extentReports?.Flush();
-                Console.WriteLine("Report saved successfully.");
+                lock (_flushLock)
+                {
+                    _extentReports?.Flush();
+                }
+                Console.WriteLine("[LOG] Report saved successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Report failed to save: {ex.Message}");
+                Console.WriteLine($"[ERROR] Report failed to save: {ex.Message}");
             }
         }
         #endregion
