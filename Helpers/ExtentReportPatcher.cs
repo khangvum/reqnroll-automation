@@ -7,6 +7,7 @@
  *                  the dashboard counts based on the number of test nodes (features) created.
  */
 
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Helpers
@@ -36,8 +37,17 @@ namespace ReqnrollAutomation.Helpers
                 // Read the HTML content of the Extent Report
                 string html = File.ReadAllText(reportPath);
 
+
                 var (passed, failed, skipped) = ExtractCountsFromStepsCard(html);
                 Console.WriteLine($"[LOG] Extracted counts - Passed: {passed}, Failed: {failed}, Skipped: {skipped}");
+
+                // 4. Replace the test counts in the summary cards with the actual scenario counts
+                html = ReplaceSummaryCard(html, "Tests Passed", passed.ToString());
+                html = ReplaceSummaryCard(html, "Tests Failed", failed.ToString());
+
+                // Write the modified HTML back to the report file
+                File.WriteAllText(reportPath, html, Encoding.UTF8);
+                Console.WriteLine($"[LOG] Report patched successfully: {passed} passed, {failed} failed, {skipped} skipped");
             }
             catch (Exception ex)
             {
@@ -105,6 +115,42 @@ namespace ReqnrollAutomation.Helpers
 
             Console.WriteLine($"[ERROR] ExtractBoldNUmber: Pattern not found or invalid number for pattern: {pattern}");
             return 0;
+        }
+
+        /// <summary>
+        /// Replaces the <h3> value that immediately follows the summary card <p> label.
+        /// </summary>
+        /// <remarks>
+        /// Targets this structure:
+        ///     <p class="m-b-0 text-pass">Tests Passed</p>
+        ///     <h3>2</h3>
+        ///     
+        ///     <p class="m-b-0 text-fail">Tests Failed</p>
+        ///     <h3>0</h3>
+        ///     
+        /// This class on the <p> tag varies by status (text-pass, text-fail, text-skip),
+        /// so matches any class attribute value to stay robust across all card types.
+        /// </remarks>
+        /// <param name="html">The HTML content of the Extent Report.</param>
+        /// <param name="label">The label of the summary card to replace.</param>
+        /// <param name="newValue">The new value for the summary card.</param>
+        /// <returns>The updated HTML content.</returns>
+        private static string ReplaceSummaryCard(string html, string label, string newValue)
+        {
+            string pattern = $@"(<p[^>]*>{Regex.Escape(label)}</p>\s*<h3>)\d+(</h3>)";
+            string result = Regex.Replace(
+                html,
+                pattern,
+                $"${{1}}{newValue}${{2}}",
+                RegexOptions.Singleline
+            );
+
+            if (result == html)
+            {
+                Console.WriteLine($"[ERROR] ReplaceSummaryCard: '{label}' card not found - Check the HTML structure of the Extent Report.");
+            }
+
+            return result;
         }
         #endregion
     }
