@@ -1,3 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="parallel.runsettings" />
+    <File Path="sequential.runsettings" />
+  </Folder>
   <Project Path="ReqnrollAutomation/ReqnrollAutomation.csproj" />
 </Solution>
