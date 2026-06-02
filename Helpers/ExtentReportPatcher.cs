@@ -37,6 +37,13 @@ namespace ReqnrollAutomation.Helpers
                 // Read the HTML content of the Extent Report
                 string html = File.ReadAllText(reportPath);
 
+                // 1. Rename the test labels in the card footers to "features" instead of "tests" for better clarity
+                html = ReplaceWordInCard(html, "parent-analysis", "tests passed", "features passed");
+                html = ReplaceWordInCard(html, "parent-analysis", "tests failed", "features failed");
+
+                // 2. Rename the steps labels in the child-analysis card footer to "scenarios" instead of "steps" for better clarity
+                html = ReplaceWordInCard(html, "child-analysis", "steps passed", "scenarios passed");
+                html = ReplaceWordInCard(html, "child-analysis", "steps failed", "scenarios failed");
 
                 var (passed, failed, skipped) = ExtractCountsFromStepsCard(html);
                 Console.WriteLine($"[LOG] Extracted counts - Passed: {passed}, Failed: {failed}, Skipped: {skipped}");
@@ -148,6 +155,45 @@ namespace ReqnrollAutomation.Helpers
             if (result == html)
             {
                 Console.WriteLine($"[ERROR] ReplaceSummaryCard: '{label}' card not found - Check the HTML structure of the Extent Report.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Replaces a specific word/phrase inside a card identified by its canvas ID.
+        /// </summary>
+        /// <remarks>
+        /// Used to rename:
+        ///     - "tests passed" to "features passed"
+        ///     - "steps passed" to "scenarios passed"
+        /// </remarks>
+        /// <param name="html">The HTML content of the Extent Report.</param>
+        /// <param name="cardCanvasId">The canvas ID of the card to modify.</param>
+        /// <param name="oldWord">The word/phrase to replace.</param>
+        /// <param name="newWord">The new word/phrase.</param>
+        /// <returns>The updated HTML content.</returns>
+        private static string ReplaceWordInCard(
+            string html,
+            string cardCanvasId,
+            string oldWord,
+            string newWord)
+        {
+            string cardPattern = $@"(id='{Regex.Escape(cardCanvasId)}'[\s\S]*?card-footer[\s\S]*?)(</div>\s*</div>\s*</div>\s*</div>)";
+            string result = Regex.Replace(
+                html,
+                cardPattern,
+                match =>
+                {
+                    string cardContent = match.Groups[1].Value.Replace(oldWord, newWord);
+                    return cardContent + match.Groups[2].Value;
+                },
+                RegexOptions.Singleline
+            );
+
+            if (result == html)
+            {
+                Console.WriteLine($"[ERROR] ReplaceWordInCard: Card with canvas ID '{cardCanvasId}' not found - Check the HTML structure of the Extent Report.");
             }
 
             return result;
