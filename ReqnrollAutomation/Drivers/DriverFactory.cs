@@ -5,7 +5,6 @@
  * Description:     A class that provides a factory for creating and managing WebDriver instances for the test automation framework, streamlining parallel test execution and ensuring proper resource management.
  */
 
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Diagnostics;
 

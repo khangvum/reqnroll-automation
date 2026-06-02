@@ -7,8 +7,6 @@
 
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
-using OpenQA.Selenium;
-using Reqnroll;
 using ReqnrollAutomation.Drivers;
 using ReqnrollAutomation.Extensions;
 using ReqnrollAutomation.Helpers;
@@ -55,11 +53,11 @@ namespace ReqnrollAutomation.Hooks
         }
         #endregion
 
+        #region Test Run Hooks
         /// <summary>
         /// Runs before the entire test run to perform any global setup.
         /// </summary>
         /// <exception cref="Exception">Thrown when an error occurs during setup.</exception>
-        #region Test Run Hooks
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
@@ -128,12 +126,12 @@ namespace ReqnrollAutomation.Hooks
         }
         #endregion
 
+        #region Feature Hooks
         /// <summary>
         /// Runs before each feature to create a node in the Extent Report for the current feature.
         /// </summary>
         /// <param name="featureContext">The feature context.</param>
         /// <exception cref="Exception">Thrown when an error occurs during feature setup.</exception>
-        #region Feature Hooks
         [BeforeFeature]
         public static void BeforeFeature(FeatureContext featureContext)
         {
