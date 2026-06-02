@@ -63,10 +63,12 @@ namespace ReqnrollAutomation.Hooks
         {
             try
             {
+                // Configure the base directory for reports, screenshots, and logs
+                PathHelper.Configure("ReqnrollAutomation");
+             
                 // Set up Extent Reports
                 ReportManager.InitializeReport();
                 _extentReports = ReportManager.GetExtentReports();
-                //Console.WriteLine("[LOG] Extent Reports initialized successfully.");
                 WriteMainLog("[LOG] Extent Reports initialized successfully.");
 
                 // Set up the directories for reports, screenshots, and logs
@@ -606,7 +608,7 @@ namespace ReqnrollAutomation.Hooks
             {
                 // Keep the 10 most recent reports
                 const int numberOfReportsToKeep = 10;
-                string baseDirectory = Directory.GetParent(PathHelper.BaseDirectory)!.FullName; // "TestResults" folder
+                string baseDirectory = PathHelper.BaseDirectory!;
                 // If the base directory doesn't exist, there's nothing to clean up
                 if (!Directory.Exists(baseDirectory))
                     return;
