@@ -198,6 +198,11 @@ namespace ReqnrollAutomation.Helpers
 
             return result;
         }
+
+        //private static string ReplaceCardTitle(string html, string oldTitle, string newTitle)
+        //{
+        //    string pattern = $@"(<h6[^>]*class=""card-title""[^>]*>){Regex.Escape(oldTitle)}(</h6>)";
+        //}
         #endregion
     }
 }

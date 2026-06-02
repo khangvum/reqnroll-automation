@@ -104,8 +104,11 @@ namespace ReqnrollAutomation.Hooks
                 // Flush the Extent Report
                 ReportManager.FlushReport();
 
-                // Automatically open the Extent Report in the browser if in headfull mode
+                // Patch the Extent Report to reflect the scenario counts
                 string reportPath = ReportManager.ReportPath;
+                ExtentReportPatcher.Patch(reportPath);
+
+                // Automatically open the Extent Report in the browser if in headfull mode
                 bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
                 if (!isHeadless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
                 {

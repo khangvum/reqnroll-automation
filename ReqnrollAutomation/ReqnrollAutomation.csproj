@@ -22,9 +22,7 @@
 	<ItemGroup>
 		<Folder Include="Features\" />
 		<Folder Include="Hooks\" />
-		<Folder Include="Pages\" />
-		<Folder Include="StepDefinitions\" />
-		<Folder Include="Support\" />
+		<Folder Include="TestResults\" />
 	</ItemGroup>
 
 </Project>
