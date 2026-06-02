@@ -614,7 +614,8 @@ namespace ReqnrollAutomation.Hooks
                     return;
 
                 // Clean up deployment folders created by Reqnroll, which are located in the "TestResults" folder and have names starting with "Deploy_"
-                List<DirectoryInfo> deploymentDirectories = Directory.GetDirectories(baseDirectory, "Deploy_*")
+                string testResultsDirectory = Directory.GetParent(baseDirectory)!.FullName;
+                List<DirectoryInfo> deploymentDirectories = Directory.GetDirectories(testResultsDirectory, "Deploy_*")  // "TestResults" folder
                                                             .Select(d => new DirectoryInfo(d))
                                                             .ToList();
                 foreach (DirectoryInfo deploymentDirectory in deploymentDirectories)
