@@ -15,7 +15,7 @@ namespace ReqnrollAutomation.Helpers
         #region Private Attributes
         private static readonly string _timestamp = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
         private static readonly string _baseDirectory = Path.Combine(
-            Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.FullName ?? Path.GetTempPath(),
+            Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.Parent?.FullName ?? Path.GetTempPath(),
             "TestResults",
             _timestamp);
         #endregion
