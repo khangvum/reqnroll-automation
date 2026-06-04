@@ -45,6 +45,10 @@ namespace ReqnrollAutomation.Helpers
                 html = ReplaceWordInCard(html, "child-analysis", "steps passed", "scenarios passed");
                 html = ReplaceWordInCard(html, "child-analysis", "steps failed", "scenarios failed");
 
+                // 3. Replace the card titles from "Tests" and "Steps" to "Features" and "Scenarios" respectively for better clarity
+                html = ReplaceCardTitle(html, "Tests", "Features");
+                html = ReplaceCardTitle(html, "Steps", "Scenarios");
+
                 var (passed, failed, skipped) = ExtractCountsFromStepsCard(html);
                 Console.WriteLine($"[LOG] Extracted counts - Passed: {passed}, Failed: {failed}, Skipped: {skipped}");
 
@@ -199,10 +203,34 @@ namespace ReqnrollAutomation.Helpers
             return result;
         }
 
-        //private static string ReplaceCardTitle(string html, string oldTitle, string newTitle)
-        //{
-        //    string pattern = $@"(<h6[^>]*class=""card-title""[^>]*>){Regex.Escape(oldTitle)}(</h6>)";
-        //}
+        /// <summary>
+        /// Renames a card title in the report header.
+        /// </summary>
+        /// <remarks>
+        /// Targets this structure:
+        ///     <h6 class="card-title">Tests</h6>
+        ///     <h6 class="card-title">Steps</h6>
+        /// </remarks>
+        /// <param name="html">The HTML content of the Extent Report.</param>
+        /// <param name="oldTitle">The old title of the card.</param>
+        /// <param name="newTitle">The new title of the card.</param>
+        /// <returns>The updated HTML content.</returns>
+        private static string ReplaceCardTitle(string html, string oldTitle, string newTitle)
+        {
+            string pattern = $@"(<h6[^>]*class=""card-title""[^>]*>){Regex.Escape(oldTitle)}(</h6>)";
+            string result = Regex.Replace(
+                html,
+                pattern,
+                $"${{1}}{newTitle}${{2}}"
+            );
+
+            if (result == html)
+            {
+                Console.WriteLine($"[ERROR] ReplaceCardTitle: Card with title '{oldTitle}' not found - Check the HTML structure of the Extent Report.");
+            }
+
+            return result;
+        }
         #endregion
     }
 }
