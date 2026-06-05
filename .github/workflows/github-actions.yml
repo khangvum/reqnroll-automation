@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
 
@@ -43,8 +43,8 @@ jobs:
 
       - name: Upload Test Results
         if: always() # Ensure this step runs even if the tests fail
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ExtentReport
-          path: "TestResults/ReqnrollAutomation/*/Reports/"
+          path: '**/TestResults/ReqnrollAutomation/**/*'
           retention-days: 7
