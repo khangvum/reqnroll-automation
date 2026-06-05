@@ -11,7 +11,7 @@
 	<MSTest>
 		<Parallelize>
 			<!-- Number of scenarios that can run simultaneously -->
-			<Workers>4</Workers>
+			<Workers>2</Workers>
 			<Scope>ClassLevel</Scope>
 		</Parallelize>
 	</MSTest>
