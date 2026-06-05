@@ -32,7 +32,7 @@ jobs:
       - name: Restore
         run: dotnet restore
 
-      - name: Test
+      - name: Run Test
         run: |
           # If the user provided tags, add the filter flag; otherwise run everything
           if [ -n "${{ inputs.test_tags }}" ]; then
@@ -40,3 +40,11 @@ jobs:
           else
             dotnet test --configuration Release --no-restore --settings ./${{ inputs.run_mode }}.runsettings
           fi
+
+      - name: Upload Test Results
+        if: always() # Ensure this step runs even if the tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: ExtentReport
+          path: "TestResults/ReqnrollAutomation/*/Reports/"
+          retention-days: 7
