@@ -63,11 +63,8 @@ namespace ReqnrollAutomation.Hooks
         {
             try
             {
-                // Configure the base directory for reports, screenshots, and logs
-                PathHelper.Configure("ReqnrollAutomation");
-             
                 // Set up Extent Reports
-                ReportManager.InitializeReport();
+                ReportManager.InitializeReport("Reqnroll Automation");
                 _extentReports = ReportManager.GetExtentReports();
                 WriteMainLog("[LOG] Extent Reports initialized successfully.");
 

@@ -27,15 +27,29 @@ namespace ReqnrollAutomation.Helpers
 
         #region Public Properties
         public static string ReportPath => _reportPath;
+        public static string? ProductName { get; private set; }
         #endregion
 
         #region Public Methods
         /// <summary>
         /// Initializes the ExtentReports and configures the report settings.
         /// </summary>
-        public static void InitializeReport()
+        public static void InitializeReport(string productName)
         {
+            if (ProductName != null)
+            {
+                return; // Report is already initialized
+            }
+
+            if (string.IsNullOrEmpty(productName))
+            {
+                throw new ArgumentNullException(nameof(productName), "Product name must be provided.");
+            }
+
+            ProductName = productName;
+
             // Set up the report path
+            PathHelper.Configure(productName);
             string reportDir = PathHelper.GetReportDirectoryPath();
             _reportPath = Path.Combine(reportDir, "ExtentReport.html");
             Console.WriteLine($"Extent Report Path: {_reportPath}");
@@ -65,7 +79,7 @@ namespace ReqnrollAutomation.Helpers
         {
             if (_extentReports == null)
             {
-                InitializeReport();
+                InitializeReport("Unknown Product");
             }
             return _extentReports!;
         }
