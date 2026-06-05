@@ -1,0 +1,42 @@
+name: Automation Test Suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: "Execution Mode"
+        required: true
+        default: "parallel"
+        type: choice
+        options:
+          - parallel
+          - sequential
+      test_tags:
+        description: "Category"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Test
+        run: |
+          # If the user provided tags, add the filter flag; otherwise run everything
+          if [ -n "${{ inputs.test_tags }}" ]; then
+            dotnet test --configuration Release --no-restore --settings ./${{ inputs.run_mode }}.runsettings --filter "TestCategory=${{ inputs.test_tags }}"
+          else
+            dotnet test --configuration Release --no-restore --settings ./${{ inputs.run_mode }}.runsettings
+          fi
