@@ -41,7 +41,7 @@ namespace ReqnrollAutomation.Helpers
                 throw new ArgumentNullException(nameof(productName), "Product name must be provided.");
             }
 
-            _productName = productName;
+            _productName = productName.Replace(" ", "");
             _baseDirectory = Path.Combine(
                 Directory.GetParent(AppContext.BaseDirectory)?.Parent?.Parent?.Parent?.Parent?.FullName ?? Path.GetTempPath(),
                 "TestResults",
