@@ -36,6 +36,7 @@ namespace ReqnrollAutomation.Helpers
         /// </summary>
         public static void InitializeReport(string productName)
         {
+            // If the report is already initialized, skip re-initialization
             if (ProductName != null)
             {
                 return; // Report is already initialized
@@ -56,8 +57,8 @@ namespace ReqnrollAutomation.Helpers
 
             // Set up the ExtentSparkReporter
             _extentSparkReporter = new(_reportPath);
-            _extentSparkReporter.Config.DocumentTitle = "Reqnroll Automation Test Report";
-            _extentSparkReporter.Config.ReportName = "Reqnroll Automation Tests";
+            _extentSparkReporter.Config.DocumentTitle = $"{ProductName} Test Report";
+            _extentSparkReporter.Config.ReportName = $"{ProductName} Automation Tests";
             _extentSparkReporter.Config.Theme = Theme.Dark;
 
             // Set up the ExtentReports
