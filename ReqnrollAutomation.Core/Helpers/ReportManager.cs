@@ -10,13 +10,13 @@ using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Reporter.Config;
 
-namespace ReqnrollAutomation.Helpers
+namespace ReqnrollAutomation.Core.Helpers
 {
     /// <summary>
     /// A class that manages the creation and configuration of ExtentReports
     /// for test reporting in the Reqnroll automation framework.
     /// </summary>
-    internal static class ReportManager
+    public static class ReportManager
     {
         #region Private Attributes
         private static ExtentReports? _extentReports;
