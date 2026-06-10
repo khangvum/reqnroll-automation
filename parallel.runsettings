@@ -3,7 +3,7 @@
 	<RunConfiguration>
 		<!-- Environment variables available to tests (affect local test execution only) -->
 		<EnvironmentVariables>
-			<!-- Set to true to run browser in headless mode -->
+			<!-- Set to 1 to run browser in headless mode -->
 			<HEADLESS>1</HEADLESS>
 		</EnvironmentVariables>
 	</RunConfiguration>

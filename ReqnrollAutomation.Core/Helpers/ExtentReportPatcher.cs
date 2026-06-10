@@ -10,14 +10,14 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ReqnrollAutomation.Helpers
+namespace ReqnrollAutomation.Core.Helpers
 {
     /// <summary>
     /// A class that patches the Extent Report HTML file to correct dashboard summary card counts
     /// to reflect the scenario counts instead of feature counts, since the Extent Report calculates
     /// the dashboard counts based on the number of test nodes(features) created.
     /// </summary>
-    internal static class ExtentReportPatcher
+    public static class ExtentReportPatcher
     {
         public static void Patch(string reportPath)
         {

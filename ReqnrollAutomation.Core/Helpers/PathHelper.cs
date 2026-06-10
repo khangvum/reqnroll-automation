@@ -5,12 +5,12 @@
  * Description:     A class that includes helper methods for handling file paths and directories.
  */
 
-namespace ReqnrollAutomation.Helpers
+namespace ReqnrollAutomation.Core.Helpers
 {
     /// <summary>
     /// A class that includes helper methods for handling file paths and directories.
     /// </summary>
-    internal static class PathHelper
+    public static class PathHelper
     {
         #region Private Attributes
         private static readonly string _timestamp = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");

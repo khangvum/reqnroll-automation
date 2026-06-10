@@ -5,12 +5,12 @@
  * Description:     A class that includes helper methods for formatting HTML log messages and exceptions.
  */
 
-namespace ReqnrollAutomation.Helpers
+namespace ReqnrollAutomation.Core.Helpers
 {
     /// <summary>
     /// A class that includes helper methods for formatting HTML log messages and exceptions.
     /// </summary>
-    internal class LogMessageFormatter
+    public class LogMessageFormatter
     {
         #region Public Methods
         /// <summary>
