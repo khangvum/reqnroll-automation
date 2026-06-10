@@ -1,10 +1,13 @@
-﻿/**
+﻿
+
+using ReqnrollAutomation.Helpers;
+
+/**
  * Program:         LoginPage.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-09
  * Description:     A class that represents the login page of Swag Labs.
  */
-
 namespace ReqnrollAutomation.Pages
 {
     internal class LoginPage : BasePage
@@ -17,10 +20,10 @@ namespace ReqnrollAutomation.Pages
         #endregion
 
         #region Page Elements
-        private IWebElement UsernameField => _driver.FindElement(_usernameFieldLocator);
-        private IWebElement PasswordField => _driver.FindElement(_passwordFieldLocator);
-        private IWebElement LoginButton => _driver.FindElement(_loginButtonLocator);
-        private IWebElement ErrorMessage => _driver.FindElement(_errorMessageLocator);
+        private IWebElement UsernameField => WaitAndFindElement(_usernameFieldLocator);
+        private IWebElement PasswordField => WaitAndFindElement(_passwordFieldLocator);
+        private IWebElement LoginButton => WaitAndFindElement(_loginButtonLocator);
+        private IWebElement ErrorMessage => WaitAndFindElement(_errorMessageLocator);
         #endregion
 
         #region Constructor
@@ -32,7 +35,12 @@ namespace ReqnrollAutomation.Pages
         #region Public Methods
         public void LoginAsRole(string role)
         {
+            string username = CredentialManager.Credentials.Accounts[role];
+            string password = CredentialManager.Credentials.SharedPassword;
 
+            UsernameField.SendKeys(username);
+            PasswordField.SendKeys(password);
+            LoginButton.Click();
         }
         #endregion
     }

@@ -29,5 +29,26 @@ namespace ReqnrollAutomation.Pages
             _wait = new(_driver, TimeSpan.FromSeconds(ConfigManager.DefaultTimeout));
         }
         #endregion
+
+        #region Protected Helper Methods
+        /// <summary>
+        /// Waits for an element to be present in the DOM and visible on the page before locating it.
+        /// </summary>
+        /// <param name="locator">The locator of the element.</param>
+        /// <returns>The located element.</returns>
+        /// <exception cref="WebDriverTimeoutException">Throws if the element is not found or not visible within the timeout period.</exception>
+        protected IWebElement WaitAndFindElement(By locator)
+        {
+            return _wait.Until(driver =>
+            {
+                var elements = driver.FindElements(locator);
+                if (elements.Count > 0 && elements[0].Displayed)
+                {
+                    return elements[0];
+                }
+                return null;
+            }) ?? throw new WebDriverTimeoutException($"Element with locator {locator} was not found or not visible within the timeout period.");
+        }
+        #endregion
     }
 }
