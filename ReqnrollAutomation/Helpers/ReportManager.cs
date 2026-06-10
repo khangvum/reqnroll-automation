@@ -58,7 +58,7 @@ namespace ReqnrollAutomation.Helpers
             // Set up the ExtentSparkReporter
             _extentSparkReporter = new(_reportPath);
             _extentSparkReporter.Config.DocumentTitle = $"{ProductName} Test Report";
-            _extentSparkReporter.Config.ReportName = $"{ProductName} Automation Tests";
+            _extentSparkReporter.Config.ReportName = $"{ProductName} Tests";
             _extentSparkReporter.Config.Theme = Theme.Dark;
 
             // Set up the ExtentReports
