@@ -48,7 +48,7 @@ namespace ReqnrollAutomation.Helpers
                     .Build();
 
                 SwagLabsCredentials credentials = new();
-                configEngine.GetSection("SwagLabsAccounts").Bind(credentials);
+                configEngine.GetSection(nameof(SwagLabsCredentials)).Bind(credentials);
 
                 return credentials;
             }
