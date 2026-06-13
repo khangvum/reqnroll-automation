@@ -18,7 +18,7 @@ namespace ReqnrollAutomation.Features
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class SwagLabsLoginFeature
+    public partial class UserAuthenticationFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
@@ -26,11 +26,13 @@ namespace ReqnrollAutomation.Features
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
         private static string[] featureTags = new string[] {
-                "smoke"};
+                "smoke",
+                "regression"};
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features", "Swag Labs Login", "Test the Swag Labs login page", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features", "User Authentication", "Test the login page\'s user authentication functionality with different account ty" +
+                "pes", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-#line 1 "SwagLabsLogin.feature"
+#line 1 "UserAuthentication.feature"
 #line hidden
         
         public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
@@ -116,24 +118,34 @@ namespace ReqnrollAutomation.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
+        public virtual async global::System.Threading.Tasks.Task FeatureBackgroundAsync()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/SwagLabsLogin.feature.ndjson", 4);
+#line 6
+#line hidden
+#line 7
+ await testRunner.GivenAsync("I am on the Swag Labs login page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 6, DisplayName="Log in with valid credentials")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in with valid credentials")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Swag Labs Login")]
+        private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
+        {
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/UserAuthentication.feature.ndjson", 5);
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 9, DisplayName="Log in as a standard user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in as a standard user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
-        public async global::System.Threading.Tasks.Task LogInWithValidCredentials()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
+        public async global::System.Threading.Tasks.Task LogInAsAStandardUser()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in with valid credentials", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in as a standard user", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 9
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -143,32 +155,33 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
- await testRunner.GivenAsync("I am on the Swag Labs login page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 6
+await this.FeatureBackgroundAsync();
 #line hidden
-#line 8
- await testRunner.WhenAsync("I enter valid credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 10
+ await testRunner.WhenAsync("I enter standard user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 11
  await testRunner.ThenAsync("I should be logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 11, DisplayName="Log in with invalid credentials")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in with invalid credentials")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Swag Labs Login")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 13, DisplayName="Log in as a locked-out user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in as a locked-out user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
-        public async global::System.Threading.Tasks.Task LogInWithInvalidCredentials()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
+        public async global::System.Threading.Tasks.Task LogInAsALocked_OutUser()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in with invalid credentials", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in as a locked-out user", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 11
+#line 13
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -178,13 +191,49 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 12
- await testRunner.GivenAsync("I am on the Swag Labs login page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 13
- await testRunner.WhenAsync("I enter invalid credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 6
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 14
+ await testRunner.WhenAsync("I enter locked-out user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 15
+ await testRunner.ThenAsync("I should see a lockout message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 17, DisplayName="Log in with invalid credentials")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in with invalid credentials")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
+        public async global::System.Threading.Tasks.Task LogInWithInvalidCredentials()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in with invalid credentials", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 17
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 6
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 18
+ await testRunner.WhenAsync("I enter invalid credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 19
  await testRunner.ThenAsync("I should see an error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

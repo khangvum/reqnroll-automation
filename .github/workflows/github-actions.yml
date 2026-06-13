@@ -20,6 +20,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      HEADLESS: 1
     steps:
       - name: Checkout
         uses: actions/checkout@v6
