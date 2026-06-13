@@ -7,9 +7,9 @@
 
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
+using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
-using ReqnrollAutomation.Extensions;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text;
@@ -655,28 +655,5 @@ namespace ReqnrollAutomation.Hooks
             }
         }
         #endregion
-    }
-}
-
-namespace ReqnrollAutomation.Extensions
-{
-    public static class ScenarioContextExtensions
-    {
-        /// <summary>
-        /// Gets the WebDriver instance from the current scenario context.
-        /// </summary>
-        /// <remarks>Should be used by step defintions to retrieve the driver instance.</remarks>
-        /// <param name="scenarioContext">The scenario context.</param>
-        /// <returns>The WebDriver instance.</returns>
-        /// <exception cref="InvalidOperationException">Throws if the WebDriver instance is not found in the scenario context.</exception>
-        public static IWebDriver GetDriver(this ScenarioContext scenarioContext)
-        {
-            if (scenarioContext.TryGetValue("WebDriver", out IWebDriver driver) && driver != null)
-            {
-                return driver;
-            }
-
-            throw new InvalidOperationException("WebDriver instance not found in ScenarioContext. Ensure BeforeScenario hook has been executed.");
-        }
     }
 }
