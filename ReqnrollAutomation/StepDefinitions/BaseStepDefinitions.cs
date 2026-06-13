@@ -1,13 +1,12 @@
-﻿
-
-using ReqnrollAutomation.Core.Extensions;
-
-/**
+﻿/**
  * Program:         BaseStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-11
  * Description:     A class that defines base step definitions for the automation framework.
  */
+
+using ReqnrollAutomation.Core.Extensions;
+
 namespace ReqnrollAutomation.StepDefinitions
 {
     public class BaseStepDefinitions
