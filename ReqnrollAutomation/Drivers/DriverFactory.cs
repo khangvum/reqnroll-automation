@@ -24,7 +24,9 @@ namespace ReqnrollAutomation.Drivers
         {
             ChromeOptions options = new();
             // Allow running in headless mode by setting env var HEADLESS=1
-            bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
+            bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
+                              Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
+                              Environment.GetEnvironmentVariable("CI") == "true";
             if (isHeadless)
             {
                 options.AddArgument("--headless=new");
