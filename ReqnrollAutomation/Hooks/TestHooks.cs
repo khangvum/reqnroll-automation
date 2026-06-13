@@ -215,6 +215,16 @@ namespace ReqnrollAutomation.Hooks
                 IWebDriver driver = DriverFactory.CreateDriver();
                 _scenarioContext["WebDriver"] = driver;
 
+                // Clear cookies and cache to ensure test isolation
+                try
+                {
+                    DriverFactory.ClearCookiesAndCache(driver);
+                }
+                catch (Exception ex)
+                {
+                    WriteMainLog($"[ERROR] Failed to clear cookies and cache: {ex.Message}");
+                }
+
                 // Log to the scenario log file
                 _scenarioLogFilePath = GetLogPath();
                 WriteLog(message);
@@ -296,16 +306,6 @@ namespace ReqnrollAutomation.Hooks
                 catch (Exception ex)
                 {
                     WriteMainLog($"[ERROR] Failed to flush report: {ex.Message}");
-                }
-
-                // Clear cookies and cache to ensure test isolation
-                try
-                {
-                    DriverFactory.ClearCookiesAndCache(driver);
-                }
-                catch (Exception ex)
-                {
-                    WriteMainLog($"[ERROR] Failed to clear cookies and cache: {ex.Message}");
                 }
 
                 // Guarantee cleanup of the WebDriver instance for this scenario
