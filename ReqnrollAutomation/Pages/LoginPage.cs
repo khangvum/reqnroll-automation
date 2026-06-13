@@ -20,14 +20,14 @@ namespace ReqnrollAutomation.Pages
         private readonly By _usernameFieldLocator = By.Id("user-name");
         private readonly By _passwordFieldLocator = By.Id("password");
         private readonly By _loginButtonLocator = By.Id("login-button");
-        private readonly By _errorMessageLocator = By.CssSelector(".error-message-container.error h3[data-test='error']");
+        private readonly By _errorMessageContainerLocator = By.CssSelector(".error-message-container.error h3[data-test='error']");
         #endregion
 
         #region Page Elements
         private IWebElement UsernameField => WaitAndFindElement(_usernameFieldLocator);
         private IWebElement PasswordField => WaitAndFindElement(_passwordFieldLocator);
         private IWebElement LoginButton => WaitAndFindElement(_loginButtonLocator);
-        private IWebElement ErrorMessage => WaitAndFindElement(_errorMessageLocator);
+        private IWebElement ErrorMessageContainer => WaitAndFindElement(_errorMessageContainerLocator);
         #endregion
 
         #region Constructor
@@ -40,10 +40,7 @@ namespace ReqnrollAutomation.Pages
         /// <summary>
         /// Navigates to the login page.
         /// </summary>
-        public void Navigate()
-        {
-            _driver.Navigate().GoToUrl(PageUrl);
-        }
+        public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
 
         /// <summary>
         /// Logs in using the credentials associated with the specified role.
@@ -68,6 +65,12 @@ namespace ReqnrollAutomation.Pages
             PasswordField.SendKeys(password);
             LoginButton.Click();
         }
+
+        /// <summary>
+        /// Retrieves the error message displayed on the login page, if any.
+        /// </summary>
+        /// <returns></returns>
+        public string GetErrorMessage() => ErrorMessageContainer.Text;
         #endregion
     }
 }
