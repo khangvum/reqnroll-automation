@@ -20,6 +20,22 @@ namespace ReqnrollAutomation.StepDefinitions
         private readonly LoginPage _loginPage;
         #endregion
 
+        #region  Registry
+        private enum ValidationKey
+        {
+            SuccessfulLoginUrl,
+            LockoutMessage,
+            InvalidCredentialsMessage
+        }
+
+        private readonly Dictionary<ValidationKey, string> _registry = new()
+        {
+            { ValidationKey.SuccessfulLoginUrl, "https://www.saucedemo.com/inventory.html" },
+            { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
+            { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
+        };
+        #endregion
+
         #region Constructor
         public UserAuthenticationStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
@@ -28,12 +44,14 @@ namespace ReqnrollAutomation.StepDefinitions
         #endregion
 
         #region Step Definitions
+        // Given Steps
         [Given("I am on the Swag Labs login page")]
         public void GivenIAmOnTheSwagLabsLoginPage()
         {
             _loginPage.Navigate();
         }
 
+        // When Steps
         [When("I enter standard user credentials")]
         public void WhenIEnterValidCredentials()
         {
@@ -49,27 +67,30 @@ namespace ReqnrollAutomation.StepDefinitions
         [When("I enter invalid credentials")]
         public void WhenIEnterInvalidCredentials()
         {
-            IWebElement usernameInput = Driver.FindElement(By.Id("user-name"));
-            IWebElement passwordInput = Driver.FindElement(By.Id("password"));
-            IWebElement loginButton = Driver.FindElement(By.Id("login-button"));
-
-            usernameInput.SendKeys("locked_out_user");
-            passwordInput.SendKeys("secret_sauce");
-            loginButton.Click();
+            _loginPage.LoginWithCredentials("invalid_user", "invalid_password");
         }
 
-
-        [Then(@"I should be logged in successfully")]
+        // Then Steps
+        [Then("I should be logged in successfully")]
         public void ThenIShouldBeLoggedInSuccessfully()
         {
-            Assert.IsTrue(Driver.Url.Contains("https://www.saucedemo.com/inventory.html"), "User was not logged in successfully.");
+            Assert.Contains(_registry[ValidationKey.SuccessfulLoginUrl], Driver.Url, "User was not logged in successfully.");
+        }   
+
+        [Then("I should see a lockout message")]
+        public void ThenIShouldSeeALockoutMessage()
+        {
+            string actualErrorMessage = _loginPage.GetErrorMessage();
+            string expectedErrorMessage = _registry[ValidationKey.LockoutMessage];
+            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Lockout message was not displayed.");
         }
 
-        [Then(@"I should see an error message")]
+        [Then("I should see an error message")]
         public void ThenIShouldSeeAnErrorMessage()
         {
-            IWebElement errorMessage = Driver.FindElement(By.CssSelector(".error-message-container"));
-            Assert.IsTrue(errorMessage.Displayed, "Error message was not displayed.");
+            string actualErrorMessage = _loginPage.GetErrorMessage();
+            string expectedErrorMessage = _registry[ValidationKey.InvalidCredentialsMessage];
+            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Error message was not displayed for invalid credentials.");
         }
         #endregion
     }

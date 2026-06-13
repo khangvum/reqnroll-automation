@@ -1,13 +1,12 @@
-﻿
-
-using ReqnrollAutomation.Helpers;
-
-/**
+﻿/**
  * Program:         LoginPage.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-09
  * Description:     A class that represents the login page of Swag Labs.
  */
+
+using ReqnrollAutomation.Helpers;
+
 namespace ReqnrollAutomation.Pages
 {
     internal class LoginPage : BasePage
