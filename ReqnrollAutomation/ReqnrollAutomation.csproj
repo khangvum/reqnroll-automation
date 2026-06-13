@@ -21,12 +21,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\" />
 		<Folder Include="Hooks\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\ReqnrollAutomation.Core\ReqnrollAutomation.Core.csproj" />
+		<ProjectReference Include="..\ReqnrollAutomation.Core\ReqnrollAutomation.Core.csproj" />
 	</ItemGroup>
 
 </Project>

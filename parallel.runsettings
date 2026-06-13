@@ -4,14 +4,14 @@
 		<!-- Environment variables available to tests (affect local test execution only) -->
 		<EnvironmentVariables>
 			<!-- Set to 1 to run browser in headless mode -->
-			<HEADLESS>1</HEADLESS>
+			<HEADLESS>0</HEADLESS>
 		</EnvironmentVariables>
 	</RunConfiguration>
 
 	<MSTest>
 		<Parallelize>
 			<!-- Number of scenarios that can run simultaneously -->
-			<Workers>2</Workers>
+			<Workers>4</Workers>
 			<Scope>ClassLevel</Scope>
 		</Parallelize>
 	</MSTest>
