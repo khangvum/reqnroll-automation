@@ -9,7 +9,7 @@ using ReqnrollAutomation.Helpers;
 
 namespace ReqnrollAutomation.Pages
 {
-    internal class LoginPage : BasePage
+    public class LoginPage : BasePage
     {
         #region Private Attributes
         private const string PageUrl = "https://www.saucedemo.com/";
