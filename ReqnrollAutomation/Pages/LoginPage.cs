@@ -9,6 +9,9 @@ using ReqnrollAutomation.Helpers;
 
 namespace ReqnrollAutomation.Pages
 {
+    /// <summary>
+    /// A class that represents the login page of Swag Labs.
+    /// </summary>
     public class LoginPage : BasePage
     {
         #region Private Attributes
