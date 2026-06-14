@@ -2,7 +2,7 @@
  * Program:         UserAuthenticationStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-10
- * Description:     A class that defines the step definitions for the Swag Labs login feature.
+ * Description:     A class that defines the step definitions for the user authentication feature.
  */
 
 using AventStack.ExtentReports.Gherkin.Model;
@@ -11,15 +11,11 @@ using ReqnrollAutomation.Pages;
 namespace ReqnrollAutomation.StepDefinitions
 {
     /// <summary>
-    /// A class that defines the step definitions for the Swag Labs login feature.
+    /// A class that defines the step definitions for the user authentication feature.
     /// </summary>
     [Binding]
     public class UserAuthenticationStepDefinitions : BaseStepDefinitions
     {
-        #region Private Attributes
-        private readonly LoginPage _loginPage;
-        #endregion
-
         #region  Registry
         private enum ValidationKey
         {
@@ -39,7 +35,6 @@ namespace ReqnrollAutomation.StepDefinitions
         #region Constructor
         public UserAuthenticationStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
-            _loginPage = new(Driver);
         }
         #endregion
 
@@ -48,26 +43,26 @@ namespace ReqnrollAutomation.StepDefinitions
         [Given("I am on the Swag Labs login page")]
         public void GivenIAmOnTheSwagLabsLoginPage()
         {
-            _loginPage.Navigate();
+            LoginPage.Navigate();
         }
 
         // When Steps
         [When("I enter standard user credentials")]
         public void WhenIEnterValidCredentials()
         {
-            _loginPage.LoginAsRole("StandardUser");
+            LoginPage.LoginAsRole("StandardUser");
         }
 
         [When("I enter locked-out user credentials")]
         public void WhenIEnterLockedOutUserCredentials()
         {
-            _loginPage.LoginAsRole("LockedOutUser");
+            LoginPage.LoginAsRole("LockedOutUser");
         }
 
         [When("I enter invalid credentials")]
         public void WhenIEnterInvalidCredentials()
         {
-            _loginPage.LoginWithCredentials("invalid_user", "invalid_password");
+            LoginPage.LoginWithCredentials("invalid_user", "invalid_password");
         }
 
         // Then Steps
@@ -80,7 +75,7 @@ namespace ReqnrollAutomation.StepDefinitions
         [Then("I should see a lockout message")]
         public void ThenIShouldSeeALockoutMessage()
         {
-            string actualErrorMessage = _loginPage.GetErrorMessage();
+            string actualErrorMessage = LoginPage.GetErrorMessage();
             string expectedErrorMessage = _registry[ValidationKey.LockoutMessage];
             Assert.Contains(expectedErrorMessage, actualErrorMessage, "Lockout message was not displayed.");
         }
@@ -88,7 +83,7 @@ namespace ReqnrollAutomation.StepDefinitions
         [Then("I should see an error message")]
         public void ThenIShouldSeeAnErrorMessage()
         {
-            string actualErrorMessage = _loginPage.GetErrorMessage();
+            string actualErrorMessage = LoginPage.GetErrorMessage();
             string expectedErrorMessage = _registry[ValidationKey.InvalidCredentialsMessage];
             Assert.Contains(expectedErrorMessage, actualErrorMessage, "Error message was not displayed for invalid credentials.");
         }

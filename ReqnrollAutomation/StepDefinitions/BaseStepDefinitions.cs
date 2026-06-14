@@ -6,6 +6,7 @@
  */
 
 using ReqnrollAutomation.Core.Extensions;
+using ReqnrollAutomation.Pages;
 
 namespace ReqnrollAutomation.StepDefinitions
 {
@@ -16,16 +17,33 @@ namespace ReqnrollAutomation.StepDefinitions
         private IWebDriver? _driver;
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
+
+        // Pages
+        private LoginPage? _loginPage;
         #endregion
 
         #region Public Properties
-        // Lazy initialization of the WebDriver instance from the ScenarioContext to ensure it is only retrieved when needed
+        /// <summary>
+        /// Lazy initialization of the WebDriver instance from the ScenarioContext.
+        /// </summary>
         public IWebDriver Driver
         {
             get
             {
                 _driver ??= _scenarioContext.GetDriver();
                 return _driver;
+            }
+        }
+
+        /// <summary>
+        /// Lazy initialization of the LoginPage instance.
+        /// </summary>
+        public LoginPage LoginPage
+        {
+            get
+            {
+                _loginPage ??= new(Driver);
+                return _loginPage;
             }
         }
         #endregion
