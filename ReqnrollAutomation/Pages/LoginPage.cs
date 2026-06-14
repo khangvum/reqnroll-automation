@@ -9,7 +9,10 @@ using ReqnrollAutomation.Helpers;
 
 namespace ReqnrollAutomation.Pages
 {
-    internal class LoginPage : BasePage
+    /// <summary>
+    /// A class that represents the login page of Swag Labs.
+    /// </summary>
+    public class LoginPage : BasePage
     {
         #region Private Attributes
         private const string PageUrl = "https://www.saucedemo.com/";
