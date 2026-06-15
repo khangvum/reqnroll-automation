@@ -30,19 +30,17 @@ namespace ReqnrollAutomation.Pages
         }
         #endregion
 
-        #region Public Methods
+        #region Protected Helper Methods
         /// <summary>
         /// Scrolls the specified element into view using JavaScript, ensuring it is visible on the screen before interacting with it.
         /// </summary>
         /// <param name="element">The element to scroll into view.</param>
-        public void ScrollIntoView(IWebElement element)
+        protected void ScrollIntoView(IWebElement element)
         {
             ArgumentNullException.ThrowIfNull(element);
             ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", element);
         }
-        #endregion
 
-        #region Protected Helper Methods
         /// <summary>
         /// Waits for an element to be present in the DOM and visible on the page before locating it.
         /// </summary>
