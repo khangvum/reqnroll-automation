@@ -132,7 +132,7 @@ namespace ReqnrollAutomation.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/FooterComponentVerification.feature.ndjson", 3);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/FooterComponentVerification.feature.ndjson", 6);
         }
         
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 10, DisplayName="Verify footer copyright information")]
@@ -166,6 +166,49 @@ await this.FeatureBackgroundAsync();
 #line hidden
 #line 12
  await testRunner.AndAsync("the footer copyright text should display correctly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 14, DisplayName="Verify social media links in the footer")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Verify social media links in the footer")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Footer Component Verification")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Twitter", "https://twitter.com/saucelabs", "1", null, DisplayName="Verify social media links in the footer(Twitter,https://twitter.com/saucelabs,1)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Facebook", "https://www.facebook.com/saucelabs", "2", null, DisplayName="Verify social media links in the footer(Facebook,https://www.facebook.com/saucela" +
+            "bs,2)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("LinkedIn", "https://www.linkedin.com/company/sauce-labs/", "3", null, DisplayName="Verify social media links in the footer(LinkedIn,https://www.linkedin.com/company" +
+            "/sauce-labs/,3)")]
+        public async global::System.Threading.Tasks.Task VerifySocialMediaLinksInTheFooter(string socialMediaPlatform, string expectedURL, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("socialMediaPlatform", socialMediaPlatform);
+            argumentsOfScenario.Add("expectedURL", expectedURL);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Verify social media links in the footer", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 14
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 6
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 15
+ await testRunner.ThenAsync(string.Format("the footer should contain a link to \"{0}\"", socialMediaPlatform), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 16
+ await testRunner.AndAsync(string.Format("the \"{0}\" link should navigate to the correct URL", socialMediaPlatform), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
