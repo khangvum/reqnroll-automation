@@ -12,8 +12,8 @@ namespace ReqnrollAutomation.Pages
     /// </summary>
     public class InventoryPage : BasePage
     {
-        #region Private Attributes
-        private const string PageUrl = "https://www.saucedemo.com/inventory.html";
+        #region Public Properties
+        public const string PageUrl = "https://www.saucedemo.com/inventory.html";
         #endregion
 
         #region Page Locators
