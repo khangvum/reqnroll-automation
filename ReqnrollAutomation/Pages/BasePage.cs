@@ -15,11 +15,15 @@ namespace ReqnrollAutomation.Pages
     /// A class that represents the base page object model for the web application under test, 
     /// providing common functionality and properties for all page objects.
     /// </summary>
-    public class BasePage
+    public abstract class BasePage
     {
         #region Protected Attributes
         protected readonly IWebDriver _driver;
         protected readonly WebDriverWait _wait;
+        #endregion
+
+        #region Public Properties
+        public abstract string PageUrl { get; }
         #endregion
 
         #region Constructor
