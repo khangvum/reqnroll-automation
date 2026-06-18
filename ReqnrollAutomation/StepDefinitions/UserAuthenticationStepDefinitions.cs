@@ -26,7 +26,7 @@ namespace ReqnrollAutomation.StepDefinitions
 
         private readonly Dictionary<ValidationKey, string> _registry = new()
         {
-            { ValidationKey.SuccessfulLoginUrl, "https://www.saucedemo.com/inventory.html" },
+            { ValidationKey.SuccessfulLoginUrl, InventoryPage.PageUrl },
             { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
             { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
         };
