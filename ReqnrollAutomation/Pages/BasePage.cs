@@ -15,11 +15,15 @@ namespace ReqnrollAutomation.Pages
     /// A class that represents the base page object model for the web application under test, 
     /// providing common functionality and properties for all page objects.
     /// </summary>
-    public class BasePage
+    public abstract class BasePage
     {
         #region Protected Attributes
         protected readonly IWebDriver _driver;
         protected readonly WebDriverWait _wait;
+        #endregion
+
+        #region Public Properties
+        public abstract string PageUrl { get; }
         #endregion
 
         #region Constructor
@@ -31,6 +35,16 @@ namespace ReqnrollAutomation.Pages
         #endregion
 
         #region Protected Helper Methods
+        /// <summary>
+        /// Scrolls the specified element into view using JavaScript, ensuring it is visible on the screen before interacting with it.
+        /// </summary>
+        /// <param name="element">The element to scroll into view.</param>
+        protected void ScrollIntoView(IWebElement element)
+        {
+            ArgumentNullException.ThrowIfNull(element);
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", element);
+        }
+
         /// <summary>
         /// Waits for an element to be present in the DOM and visible on the page before locating it.
         /// </summary>
