@@ -56,6 +56,13 @@ namespace ReqnrollAutomation.Pages
         /// </summary>
         /// <returns>The text of the copyright element.</returns>
         public string GetCopyrightText() => CopyrightText.Text;
+
+        /// <summary>
+        /// Checks if the social media link for the specified platform is visible on the page.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        /// <returns>True if the link is visible, false otherwise.</returns>
+        public bool IsSocialMediaLinkVisible(string platform) => GetSocialMediaLink(platform).Displayed;
         #endregion
 
         #region Private Helper Methods
