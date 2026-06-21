@@ -63,6 +63,12 @@ namespace ReqnrollAutomation.Pages
         /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
         /// <returns>True if the link is visible, false otherwise.</returns>
         public bool IsSocialMediaLinkVisible(string platform) => GetSocialMediaLink(platform).Displayed;
+
+        /// <summary>
+        /// Clicks the social media link for the specified platform.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
         #endregion
 
         #region Private Helper Methods
