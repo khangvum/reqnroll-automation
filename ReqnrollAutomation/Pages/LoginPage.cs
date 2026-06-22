@@ -15,7 +15,7 @@ namespace ReqnrollAutomation.Pages
     public class LoginPage : BasePage
     {
         #region Public Properties
-        public const string PageUrl = "https://www.saucedemo.com/";
+        public override string PageUrl => "https://www.saucedemo.com/";
         #endregion
 
         #region Page Locators

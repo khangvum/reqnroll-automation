@@ -13,7 +13,7 @@ namespace ReqnrollAutomation.Pages
     public class InventoryPage : BasePage
     {
         #region Public Properties
-        public const string PageUrl = "https://www.saucedemo.com/inventory.html";
+        public override string PageUrl => "https://www.saucedemo.com/inventory.html";
         #endregion
 
         #region Page Locators
@@ -35,6 +35,13 @@ namespace ReqnrollAutomation.Pages
         public InventoryPage(IWebDriver driver) : base(driver)
         {
         }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Navigates to the inventory page.
+        /// </summary>
+        public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
         #endregion
     }
 }
