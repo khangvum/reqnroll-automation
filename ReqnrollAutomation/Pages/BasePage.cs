@@ -34,6 +34,17 @@ namespace ReqnrollAutomation.Pages
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Navigates to the page's URL.
+        /// </summary>
+        /// <remarks>
+        /// This method navigates to the URL specified by the <see cref="PageUrl"/> 
+        /// property, which must be overridden in derived classes.
+        /// </remarks>
+        public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
+        #endregion
+
         #region Protected Helper Methods
         /// <summary>
         /// Scrolls the specified element into view using JavaScript, ensuring it is visible on the screen before interacting with it.
