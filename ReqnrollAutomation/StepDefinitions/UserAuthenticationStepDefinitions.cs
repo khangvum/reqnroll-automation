@@ -24,17 +24,18 @@ namespace ReqnrollAutomation.StepDefinitions
             InvalidCredentialsMessage
         }
 
-        private readonly Dictionary<ValidationKey, string> _registry = new()
-        {
-            { ValidationKey.SuccessfulLoginUrl, InventoryPage.PageUrl },
-            { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
-            { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
-        };
+        private readonly Dictionary<ValidationKey, string> _registry;
         #endregion
 
         #region Constructor
         public UserAuthenticationStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
+            _registry = new()
+            {
+                { ValidationKey.SuccessfulLoginUrl, InventoryPage.PageUrl },
+                { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
+                { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
+            };
         }
         #endregion
 
