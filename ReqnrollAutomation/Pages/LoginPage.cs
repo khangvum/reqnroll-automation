@@ -40,11 +40,6 @@ namespace ReqnrollAutomation.Pages
 
         #region Public Methods
         /// <summary>
-        /// Navigates to the login page.
-        /// </summary>
-        public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
-
-        /// <summary>
         /// Logs in using the credentials associated with the specified role.
         /// </summary>
         /// <param name="role">The role for which to use credentials.</param>
