@@ -22,6 +22,7 @@ namespace ReqnrollAutomation.Pages
         private readonly By _twitterLinkLocator = By.CssSelector("ul.social li.social_twitter a");
         private readonly By _facebookLinkLocator = By.CssSelector("ul.social li.social_facebook a");
         private readonly By _linkedInLinkLocator = By.CssSelector("ul.social li.social_linkedin a");
+        private readonly By _copyrightTextLocator = By.CssSelector("footer.footer .footer_copy");
         #endregion
 
         #region Page Elements
@@ -29,6 +30,7 @@ namespace ReqnrollAutomation.Pages
         private IWebElement TwitterLink => WaitAndFindElement(_twitterLinkLocator);
         private IWebElement FacebookLink => WaitAndFindElement(_facebookLinkLocator);
         private IWebElement LinkedInLink => WaitAndFindElement(_linkedInLinkLocator);
+        private IWebElement CopyrightText => WaitAndFindElement(_copyrightTextLocator);
         #endregion
 
         #region Constructor
@@ -39,9 +41,21 @@ namespace ReqnrollAutomation.Pages
 
         #region Public Methods
         /// <summary>
-        /// Navigates to the inventory page.
+        /// Scrolls the page to the footer section.
         /// </summary>
-        public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
+        public void ScrollToFooter() => ScrollIntoView(FooterContainer);
+
+        /// <summary>
+        /// Checks if the footer copyright text is visible on the page.
+        /// </summary>
+        /// <returns>True if the copyright text is visible, false otherwise.</returns>
+        public bool IsCopyrightTextVisible() => CopyrightText.Displayed;
+
+        /// <summary>
+        /// Retrieves the text of the footer copyright element.
+        /// </summary>
+        /// <returns>The text of the copyright element.</returns>
+        public string GetCopyrightText() => CopyrightText.Text;
         #endregion
     }
 }
