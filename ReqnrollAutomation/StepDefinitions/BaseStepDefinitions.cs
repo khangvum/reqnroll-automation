@@ -20,6 +20,7 @@ namespace ReqnrollAutomation.StepDefinitions
 
         // Pages
         private LoginPage? _loginPage;
+        private InventoryPage? _inventoryPage;
         #endregion
 
         #region Public Properties
@@ -44,6 +45,18 @@ namespace ReqnrollAutomation.StepDefinitions
             {
                 _loginPage ??= new(Driver);
                 return _loginPage;
+            }
+        }
+
+        /// <summary>
+        /// Lazy initialization of the InventoryPage instance.
+        /// </summary>
+        public InventoryPage InventoryPage
+        {
+            get
+            {
+                _inventoryPage ??= new(Driver);
+                return _inventoryPage;
             }
         }
         #endregion
