@@ -56,6 +56,29 @@ namespace ReqnrollAutomation.StepDefinitions
             // Verify if the footer copyright text is displayed correctly
             Assert.Contains(expectedCopyrightText, actualCopyrightText, "The footer copyright text is not displayed correctly.");
         }
+
+        [Then("the footer should contain a link to {string}")]
+        public void ThenTheFooterShouldContainALinkTo(string platform)
+        {
+            // Scroll to the footer section to ensure it is visible on the screen
+            InventoryPage.ScrollToFooter();
+
+            // Verify if the footer contains a link to the specified social media platform
+            bool isVisible = InventoryPage.IsSocialMediaLinkVisible(platform);
+            Assert.IsTrue(isVisible, $"The footer does not contain a link to {platform}.");
+        }
+
+        [Then("the {string} link should navigate to {string}")]
+        public void ThenTheSocialMediaLinkShouldNavigateTo(string platform, string expectedUrl)
+        {
+            // Click the social media link & switch to the new tab
+            InventoryPage.ClickSocialMediaLink(platform);
+            InventoryPage.SwitchToNewTab();
+
+            // Verify if the new tab navigates to the expected URL
+            string actualUrl = Driver.Url;
+            Assert.AreEqual(expectedUrl, actualUrl, $"The {platform} link did not navigate to the expected URL.");
+        }
         #endregion
     }
 }
