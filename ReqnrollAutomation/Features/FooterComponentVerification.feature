@@ -12,11 +12,11 @@ Scenario: Verify footer copyright information
 	And the footer copyright text should display correctly
 
 Scenario Outline: Verify social media links in the footer
-	Then the footer should contain a link to "<socialMediaPlatform>"
-	And the "<socialMediaPlatform>" link should navigate to the correct URL
+	Then the footer should contain a link to "<platform>"
+	And the "<platform>" link should navigate to "<expectedURL>"
 
-	Examples:
-	| socialMediaPlatform | expectedURL									 |
-	| Twitter             | https://twitter.com/saucelabs				 |
-	| Facebook            | https://www.facebook.com/saucelabs			 |
-	| LinkedIn            | https://www.linkedin.com/company/sauce-labs/ |
+Examples:
+	| platform | expectedURL                                  |
+	| Twitter  | https://x.com/saucelabs                      |
+	| Facebook | https://www.facebook.com/saucelabs           |
+	| LinkedIn | https://www.linkedin.com/company/sauce-labs/ |
