@@ -17,6 +17,10 @@ namespace ReqnrollAutomation.Pages
     /// </summary>
     public abstract class BasePage
     {
+        #region Private Attributes
+        private string? _originalWindowHandle;
+        #endregion
+
         #region Protected Attributes
         protected readonly IWebDriver _driver;
         protected readonly WebDriverWait _wait;
@@ -43,6 +47,22 @@ namespace ReqnrollAutomation.Pages
         /// property, which must be overridden in derived classes.
         /// </remarks>
         public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
+
+        /// <summary>
+        /// Switches to the newly opened tab in the browser, storing the original window handle for later use.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Throws if the new window handle is not found.</exception>
+        public void SwitchToNewTab()
+        {
+            _originalWindowHandle = _driver.CurrentWindowHandle;
+
+            // Wait for the new tab to open
+            _wait.Until(driver => driver.WindowHandles.Count > 1);
+
+            // Switch to the new tab
+            string? newWindowHandle = _driver.WindowHandles.FirstOrDefault(handle => handle != _originalWindowHandle);
+            _driver.SwitchTo().Window(newWindowHandle ?? throw new InvalidOperationException("New window handle not found."));
+        }
         #endregion
 
         #region Protected Helper Methods
