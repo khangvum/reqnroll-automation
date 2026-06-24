@@ -56,6 +56,38 @@ namespace ReqnrollAutomation.Pages
         /// </summary>
         /// <returns>The text of the copyright element.</returns>
         public string GetCopyrightText() => CopyrightText.Text;
+
+        /// <summary>
+        /// Checks if the social media link for the specified platform is visible on the page.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        /// <returns>True if the link is visible, false otherwise.</returns>
+        public bool IsSocialMediaLinkVisible(string platform) => GetSocialMediaLink(platform).Displayed;
+
+        /// <summary>
+        /// Clicks the social media link for the specified platform.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
+        #endregion
+
+        #region Private Helper Methods
+        /// <summary>
+        /// Gets the social media link element based on the specified platform.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        /// <returns>The social media link element.</returns>
+        /// <exception cref="ArgumentException">Throws if the platform is not supported.</exception>
+        private IWebElement GetSocialMediaLink(string platform)
+        {
+            return platform.ToLower() switch
+            {
+                "twitter" => TwitterLink,
+                "facebook" => FacebookLink,
+                "linkedin" => LinkedInLink,
+                _ => throw new ArgumentException($"Unsupported social media platform: {platform}")
+            };
+        }
         #endregion
     }
 }
