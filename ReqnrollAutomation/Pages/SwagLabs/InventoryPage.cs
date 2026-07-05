@@ -4,8 +4,7 @@
  * Date:            2026-06-14
  * Description:     A class that represents the inventory page of Swag Labs.
  */
-
-namespace ReqnrollAutomation.Pages
+namespace ReqnrollAutomation.Pages.SwagLabs
 {
     /// <summary>
     /// A class that represents the inventory page of Swag Labs.

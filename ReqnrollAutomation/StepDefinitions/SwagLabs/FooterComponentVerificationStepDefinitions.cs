@@ -4,8 +4,7 @@
  * Date:            2026-06-14
  * Description:     A class that defines the step definitions for the footer component verification feature.
  */
-
-namespace ReqnrollAutomation.StepDefinitions
+namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     /// <summary>
     /// A class that defines the step definitions for the footer component verification feature.

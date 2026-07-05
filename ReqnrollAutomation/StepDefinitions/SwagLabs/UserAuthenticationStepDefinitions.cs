@@ -8,7 +8,7 @@
 using AventStack.ExtentReports.Gherkin.Model;
 using ReqnrollAutomation.Pages;
 
-namespace ReqnrollAutomation.StepDefinitions
+namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     /// <summary>
     /// A class that defines the step definitions for the user authentication feature.
