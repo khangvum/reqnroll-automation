@@ -11,14 +11,14 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace ReqnrollAutomation.Features
+namespace ReqnrollAutomation.Features.SwagLabs
 {
     
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class UserAuthenticationFeature
+    public partial class FooterComponentVerificationFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
@@ -29,10 +29,10 @@ namespace ReqnrollAutomation.Features
                 "smoke",
                 "regression"};
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features", "User Authentication", "Test the login page\'s user authentication functionality with different account ty" +
-                "pes", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/SwagLabs", "Footer Component Verification", "Test the presence and functionality of the footer component on the inventory page" +
+                "", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-#line 1 "UserAuthentication.feature"
+#line 1 "FooterComponentVerification.feature"
 #line hidden
         
         public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
@@ -125,27 +125,30 @@ namespace ReqnrollAutomation.Features
 #line 7
  await testRunner.GivenAsync("I am on the Swag Labs login page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
+#line 8
+ await testRunner.WhenAsync("I enter standard user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
         }
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/UserAuthentication.feature.ndjson", 5);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/SwagLabs/FooterComponentVerification.feature.ndjson", 6);
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 9, DisplayName="Log in as a standard user")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in as a standard user")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 10, DisplayName="Verify footer copyright information")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Verify footer copyright information")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Footer Component Verification")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
-        public async global::System.Threading.Tasks.Task LogInAsAStandardUser()
+        public async global::System.Threading.Tasks.Task VerifyFooterCopyrightInformation()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in as a standard user", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Verify footer copyright information", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 9
+#line 10
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -157,31 +160,38 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                 await this.ScenarioStartAsync();
 #line 6
 await this.FeatureBackgroundAsync();
-#line hidden
-#line 10
- await testRunner.WhenAsync("I enter standard user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 11
- await testRunner.ThenAsync("I should be logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the footer copyright text should be visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 12
+ await testRunner.AndAsync("the footer copyright text should display correctly", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 13, DisplayName="Log in as a locked-out user")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in as a locked-out user")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 14, DisplayName="Verify social media links in the footer")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Verify social media links in the footer")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Footer Component Verification")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
-        public async global::System.Threading.Tasks.Task LogInAsALocked_OutUser()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Twitter", "https://x.com/saucelabs", "1", null, DisplayName="Verify social media links in the footer(Twitter,https://x.com/saucelabs,1)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Facebook", "https://www.facebook.com/saucelabs", "2", null, DisplayName="Verify social media links in the footer(Facebook,https://www.facebook.com/saucela" +
+            "bs,2)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("LinkedIn", "https://www.linkedin.com/company/sauce-labs/", "3", null, DisplayName="Verify social media links in the footer(LinkedIn,https://www.linkedin.com/company" +
+            "/sauce-labs/,3)")]
+        public async global::System.Threading.Tasks.Task VerifySocialMediaLinksInTheFooter(string platform, string expectedURL, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in as a locked-out user", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("platform", platform);
+            argumentsOfScenario.Add("expectedURL", expectedURL);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Verify social media links in the footer", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 13
+#line 14
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -193,48 +203,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                 await this.ScenarioStartAsync();
 #line 6
 await this.FeatureBackgroundAsync();
-#line hidden
-#line 14
- await testRunner.WhenAsync("I enter locked-out user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 15
- await testRunner.ThenAsync("I should see a lockout message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync(string.Format("the footer should contain a link to \"{0}\"", platform), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 17, DisplayName="Log in with invalid credentials")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in with invalid credentials")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
-        public async global::System.Threading.Tasks.Task LogInWithInvalidCredentials()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Log in with invalid credentials", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 17
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 6
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 18
- await testRunner.WhenAsync("I enter invalid credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 19
- await testRunner.ThenAsync("I should see an error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 16
+ await testRunner.AndAsync(string.Format("the \"{0}\" link should navigate to \"{1}\"", platform, expectedURL), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
