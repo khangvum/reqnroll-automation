@@ -6,56 +6,27 @@
  */
 
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Chromium;
-using OpenQA.Selenium.Edge;
 using System.Diagnostics;
 
 namespace ReqnrollAutomation.Drivers
 {
-    /// <summary>
-    /// Specifies the type of browser to be used for testing.
-    /// </summary>
-    public enum BrowserType
-    {
-        Chrome,
-        Edge
-    }
-
     /// <summary>
     /// A class that provides a factory for creating and managing WebDriver instances for the test 
     /// automation framework, streamlining parallel test execution and ensuring proper resource management.
     /// </summary>
     internal class DriverFactory
     {
-        #region Public Methods
         /// <summary>
         /// Creates a new instance of the Selenium WebDriver.
         /// </summary>
-        /// <param name="browserType">The type of browser to create the driver for.</param>
         /// <returns>The IWebDriver instance.</returns>
-        public static IWebDriver CreateDriver(BrowserType browserType = BrowserType.Chrome)
+        public static IWebDriver CreateDriver()
         {
-            // Create the appropriate options based on the specified browser type
-            ChromiumOptions options = browserType switch
-            {
-                BrowserType.Chrome => new ChromeOptions(),
-                BrowserType.Edge => new EdgeOptions(),
-                _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
-            };
-
-            //// Create the appropriate service based on the specified browser type
-            //ChromiumDriverService service = browserType switch
-            //{
-            //    BrowserType.Chrome => ChromeDriverService.CreateDefaultService(),
-            //    BrowserType.Edge => EdgeDriverService.CreateDefaultService(),
-            //    _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
-            //};
-
-            //// Force dynamic port allocation
-            //service.Port = 0;
-
+            ChromeOptions options = new();
             // Allow running in headless mode by setting env var HEADLESS=1
-            bool isHeadless = IsHeadless();
+            bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
+                              Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
+                              Environment.GetEnvironmentVariable("CI") == "true";
             if (isHeadless)
             {
                 options.AddArgument("--headless=new");
@@ -65,15 +36,7 @@ namespace ReqnrollAutomation.Drivers
             options.AddArgument("--disable-gpu");
             options.AddArgument("--disable-dev-shm-usage");
 
-            // Disable extensions and automation banners for cleaner test runs
-            DisableExtensionsAndBanners(options);
-
-            IWebDriver driver = browserType switch
-            {
-                BrowserType.Chrome => new ChromeDriver((ChromeOptions)options),
-                BrowserType.Edge => new EdgeDriver((EdgeOptions)options),
-                _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
-            };
+            IWebDriver driver = new ChromeDriver(options);
 
             try
             {
@@ -92,7 +55,6 @@ namespace ReqnrollAutomation.Drivers
         /// <summary>
         /// Clears all cookies and cache from the current WebDriver instance to ensure a clean state for testing.
         /// </summary>
-        /// <param name="driver">The WebDriver instance.</param>
         public static void ClearCookiesAndCache(IWebDriver? driver)
         {
             if (driver != null)
@@ -124,14 +86,7 @@ namespace ReqnrollAutomation.Drivers
                 // Final fallback: Kill any orphan chromedriver processes to avoid zombie browsers
                 try
                 {
-                    string processName = driver switch
-                    {
-                        ChromeDriver => "chromedriver",
-                        EdgeDriver => "msedgedriver",
-                        _ => ""
-                    };
-
-                    Process[] processes = Process.GetProcessesByName(processName);
+                    Process[] processes = Process.GetProcessesByName("chromedriver");
                     foreach (Process p in processes)
                     {
                         try { p.Kill(); } catch { }
@@ -140,42 +95,5 @@ namespace ReqnrollAutomation.Drivers
                 catch { }
             }
         }
-        #endregion
-
-        #region Private Helper Methods
-        /// <summary>
-        /// Checks if the current environment is running in headless mode based on environment variables.
-        /// </summary>
-        /// <returns>True if running in headless mode, false otherwise.</returns>
-        private static bool IsHeadless()
-        {
-            return Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
-                   Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
-                   Environment.GetEnvironmentVariable("CI") == "true";
-        }
-
-        /// <summary>
-        /// Disables browser extensions, popups, infobars, and password management features in Chrome to ensure a clean testing environment.
-        /// </summary>
-        /// <param name="options">The Chromium options instance.</param>
-        private static void DisableExtensionsAndBanners(ChromiumOptions options)
-        {
-            // - Disable the Password Generation and Manager UI
-            options.AddUserProfilePreference("credentials_enable_service", false);
-            options.AddUserProfilePreference("profile.password_manager_enabled", false);
-
-            // - Add the explicit key to turn off Data Breach scanning
-            options.AddUserProfilePreference("profile.password_manager_leak_detection", false);
-
-            // - Disable Safe Browsing password protection/leak detection features
-            options.AddUserProfilePreference("safebrowsing.password_protection_warning_trigger", 0);
-            options.AddArgument("--disable-features=PasswordLeakDetection");
-            options.AddArgument("--disable-features=SafeBrowsingPasswordProtection");
-
-            // - Disable popups and infobars
-            options.AddArgument("--disable-popup-blocking");
-            options.AddArgument("--disable-infobars");
-        }
-        #endregion
     }
 }

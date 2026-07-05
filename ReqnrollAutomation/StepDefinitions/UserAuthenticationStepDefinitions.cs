@@ -70,7 +70,7 @@ namespace ReqnrollAutomation.StepDefinitions
         [Then("I should be logged in successfully")]
         public void ThenIShouldBeLoggedInSuccessfully()
         {
-            Assert.That(Driver.Url, Does.Contain(_registry[ValidationKey.SuccessfulLoginUrl]), "User was not logged in successfully.");
+            Assert.Contains(_registry[ValidationKey.SuccessfulLoginUrl], Driver.Url, "User was not logged in successfully.");
         }   
 
         [Then("I should see a lockout message")]
@@ -78,7 +78,7 @@ namespace ReqnrollAutomation.StepDefinitions
         {
             string actualErrorMessage = LoginPage.GetErrorMessage();
             string expectedErrorMessage = _registry[ValidationKey.LockoutMessage];
-            Assert.That(actualErrorMessage, Does.Contain(expectedErrorMessage), "Lockout message was not displayed.");
+            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Lockout message was not displayed.");
         }
 
         [Then("I should see an error message")]
@@ -86,7 +86,7 @@ namespace ReqnrollAutomation.StepDefinitions
         {
             string actualErrorMessage = LoginPage.GetErrorMessage();
             string expectedErrorMessage = _registry[ValidationKey.InvalidCredentialsMessage];
-            Assert.That(actualErrorMessage, Does.Contain(expectedErrorMessage), "Error message was not displayed for invalid credentials.");
+            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Error message was not displayed for invalid credentials.");
         }
         #endregion
     }
