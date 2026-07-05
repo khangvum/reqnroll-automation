@@ -17,15 +17,13 @@ namespace ReqnrollAutomation.Features
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::NUnit.Framework.TestFixtureAttribute()]
-    [global::NUnit.Framework.DescriptionAttribute("User Authentication")]
-    [global::NUnit.Framework.FixtureLifeCycleAttribute(global::NUnit.Framework.LifeCycle.InstancePerTestCase)]
-    [global::NUnit.Framework.CategoryAttribute("smoke")]
-    [global::NUnit.Framework.CategoryAttribute("regression")]
+    [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class UserAuthenticationFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
         private static string[] featureTags = new string[] {
                 "smoke",
@@ -37,18 +35,30 @@ namespace ReqnrollAutomation.Features
 #line 1 "UserAuthentication.feature"
 #line hidden
         
-        [global::NUnit.Framework.OneTimeSetUpAttribute()]
-        public static async global::System.Threading.Tasks.Task FeatureSetupAsync()
+        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
+        {
+            get
+            {
+                return this._testContext;
+            }
+            set
+            {
+                this._testContext = value;
+            }
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
+        public static async global::System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
         }
         
-        [global::NUnit.Framework.OneTimeTearDownAttribute()]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static async global::System.Threading.Tasks.Task FeatureTearDownAsync()
         {
             await global::Reqnroll.TestRunnerManager.ReleaseFeatureAsync(featureInfo);
         }
         
-        [global::NUnit.Framework.SetUpAttribute()]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public async global::System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
@@ -74,7 +84,7 @@ namespace ReqnrollAutomation.Features
             }
         }
         
-        [global::NUnit.Framework.TearDownAttribute()]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public async global::System.Threading.Tasks.Task TestTearDownAsync()
         {
             if ((testRunner == null))
@@ -95,7 +105,7 @@ namespace ReqnrollAutomation.Features
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::NUnit.Framework.TestContext>(global::NUnit.Framework.TestContext.CurrentContext);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -122,8 +132,11 @@ namespace ReqnrollAutomation.Features
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/UserAuthentication.feature.ndjson", 5);
         }
         
-        [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("Log in as a standard user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 9, DisplayName="Log in as a standard user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in as a standard user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
         public async global::System.Threading.Tasks.Task LogInAsAStandardUser()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -155,8 +168,11 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("Log in as a locked-out user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 13, DisplayName="Log in as a locked-out user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in as a locked-out user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
         public async global::System.Threading.Tasks.Task LogInAsALocked_OutUser()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -188,8 +204,11 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [global::NUnit.Framework.TestAttribute()]
-        [global::NUnit.Framework.DescriptionAttribute("Log in with invalid credentials")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 17, DisplayName="Log in with invalid credentials")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Log in with invalid credentials")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User Authentication")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
         public async global::System.Threading.Tasks.Task LogInWithInvalidCredentials()
         {
             string[] tagsOfScenario = ((string[])(null));

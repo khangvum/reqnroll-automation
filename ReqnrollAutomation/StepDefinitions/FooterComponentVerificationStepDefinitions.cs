@@ -54,7 +54,7 @@ namespace ReqnrollAutomation.StepDefinitions
             string expectedCopyrightText = _registry[ValidationKey.CopyrightText];
 
             // Verify if the footer copyright text is displayed correctly
-            Assert.That(actualCopyrightText, Does.Contain(expectedCopyrightText), "The footer copyright text is not displayed correctly.");
+            Assert.Contains(expectedCopyrightText, actualCopyrightText, "The footer copyright text is not displayed correctly.");
         }
 
         [Then("the footer should contain a link to {string}")]
