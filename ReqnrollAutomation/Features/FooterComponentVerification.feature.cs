@@ -17,13 +17,15 @@ namespace ReqnrollAutomation.Features
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [global::NUnit.Framework.TestFixtureAttribute()]
+    [global::NUnit.Framework.DescriptionAttribute("Footer Component Verification")]
+    [global::NUnit.Framework.FixtureLifeCycleAttribute(global::NUnit.Framework.LifeCycle.InstancePerTestCase)]
+    [global::NUnit.Framework.CategoryAttribute("smoke")]
+    [global::NUnit.Framework.CategoryAttribute("regression")]
     public partial class FooterComponentVerificationFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
-        
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
         private static string[] featureTags = new string[] {
                 "smoke",
@@ -35,30 +37,18 @@ namespace ReqnrollAutomation.Features
 #line 1 "FooterComponentVerification.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
-        {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static async global::System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        [global::NUnit.Framework.OneTimeSetUpAttribute()]
+        public static async global::System.Threading.Tasks.Task FeatureSetupAsync()
         {
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
+        [global::NUnit.Framework.OneTimeTearDownAttribute()]
         public static async global::System.Threading.Tasks.Task FeatureTearDownAsync()
         {
             await global::Reqnroll.TestRunnerManager.ReleaseFeatureAsync(featureInfo);
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
+        [global::NUnit.Framework.SetUpAttribute()]
         public async global::System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
@@ -84,7 +74,7 @@ namespace ReqnrollAutomation.Features
             }
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
+        [global::NUnit.Framework.TearDownAttribute()]
         public async global::System.Threading.Tasks.Task TestTearDownAsync()
         {
             if ((testRunner == null))
@@ -105,7 +95,7 @@ namespace ReqnrollAutomation.Features
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::NUnit.Framework.TestContext>(global::NUnit.Framework.TestContext.CurrentContext);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -135,11 +125,8 @@ namespace ReqnrollAutomation.Features
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/FooterComponentVerification.feature.ndjson", 6);
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 10, DisplayName="Verify footer copyright information")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Verify footer copyright information")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Footer Component Verification")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("Verify footer copyright information")]
         public async global::System.Threading.Tasks.Task VerifyFooterCopyrightInformation()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -171,16 +158,11 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 14, DisplayName="Verify social media links in the footer")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Verify social media links in the footer")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Footer Component Verification")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("regression")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Twitter", "https://x.com/saucelabs", "1", null, DisplayName="Verify social media links in the footer(Twitter,https://x.com/saucelabs,1)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Facebook", "https://www.facebook.com/saucelabs", "2", null, DisplayName="Verify social media links in the footer(Facebook,https://www.facebook.com/saucela" +
-            "bs,2)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("LinkedIn", "https://www.linkedin.com/company/sauce-labs/", "3", null, DisplayName="Verify social media links in the footer(LinkedIn,https://www.linkedin.com/company" +
-            "/sauce-labs/,3)")]
+        [global::NUnit.Framework.TestAttribute()]
+        [global::NUnit.Framework.DescriptionAttribute("Verify social media links in the footer")]
+        [global::NUnit.Framework.TestCaseAttribute("Twitter", "https://x.com/saucelabs", "1", null)]
+        [global::NUnit.Framework.TestCaseAttribute("Facebook", "https://www.facebook.com/saucelabs", "2", null)]
+        [global::NUnit.Framework.TestCaseAttribute("LinkedIn", "https://www.linkedin.com/company/sauce-labs/", "3", null)]
         public async global::System.Threading.Tasks.Task VerifySocialMediaLinksInTheFooter(string platform, string expectedURL, string @__pickleIndex, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
