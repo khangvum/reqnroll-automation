@@ -7,7 +7,7 @@
 
 using ReqnrollAutomation.Helpers;
 
-namespace ReqnrollAutomation.Pages
+namespace ReqnrollAutomation.Pages.SwagLabs
 {
     /// <summary>
     /// A class that represents the login page of Swag Labs.

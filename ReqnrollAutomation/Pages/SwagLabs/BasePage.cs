@@ -9,7 +9,7 @@
 using OpenQA.Selenium.Support.UI;
 using ReqnrollAutomation.Helpers;
 
-namespace ReqnrollAutomation.Pages
+namespace ReqnrollAutomation.Pages.SwagLabs
 {
     /// <summary>
     /// A class that represents the base page object model for the web application under test, 

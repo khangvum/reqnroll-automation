@@ -6,9 +6,9 @@
  */
 
 using ReqnrollAutomation.Core.Extensions;
-using ReqnrollAutomation.Pages;
+using ReqnrollAutomation.Pages.SwagLabs;
 
-namespace ReqnrollAutomation.StepDefinitions
+namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     public class BaseStepDefinitions
     {
