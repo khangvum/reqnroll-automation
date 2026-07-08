@@ -42,17 +42,6 @@ namespace ReqnrollAutomation.Drivers
                 _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
             };
 
-            //// Create the appropriate service based on the specified browser type
-            //ChromiumDriverService service = browserType switch
-            //{
-            //    BrowserType.Chrome => ChromeDriverService.CreateDefaultService(),
-            //    BrowserType.Edge => EdgeDriverService.CreateDefaultService(),
-            //    _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
-            //};
-
-            //// Force dynamic port allocation
-            //service.Port = 0;
-
             // Allow running in headless mode by setting env var HEADLESS=1
             bool isHeadless = IsHeadless();
             if (isHeadless)

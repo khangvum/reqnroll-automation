@@ -31,7 +31,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         }
         #endregion
 
-        #region Step Definitions
+        #region Then Steps
         // Then Steps
         [Then("the footer copyright text should be visible")]
         public void ThenTheFooterCopyrightTextShouldBeVisible()

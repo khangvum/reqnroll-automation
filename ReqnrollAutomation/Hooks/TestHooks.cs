@@ -12,7 +12,6 @@ using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Text;
 
 namespace ReqnrollAutomation.Hooks
 {
@@ -27,17 +26,10 @@ namespace ReqnrollAutomation.Hooks
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
 
-        // Logging & Reports
-        private readonly string _timestamp;
-        private string? _scenarioLogFilePath;
-        private static string? _testRunDirectoryPath;
-        private static string? _mainLogFilePath;
-        private static readonly object _fileLock = new();
-
         // Extent Reports (thread-safe with ConcurrentDictionary)
         private static ExtentReports? _extentReports;
         private static readonly ConcurrentDictionary<string, ExtentTest> _featureNodes = new();
-        private static readonly object _reportLock = new();
+        private static readonly Lock _reportLock = new();
 
         // Per-scenario test node (stored in ScenarioContext for thread safety)
         private ExtentTest? _scenarioNode;
@@ -48,8 +40,6 @@ namespace ReqnrollAutomation.Hooks
         {
             _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-
-            _timestamp = DateTime.Now.ToString("HHmmss");
         }
         #endregion
 
@@ -66,23 +56,21 @@ namespace ReqnrollAutomation.Hooks
                 // Set up Extent Reports
                 ReportManager.InitializeReport("Reqnroll Automation");
                 _extentReports = ReportManager.GetExtentReports();
-                WriteMainLog("[LOG] Extent Reports initialized successfully.");
+                Console.WriteLine("[LOG] Extent Reports initialized successfully.");
 
                 // Set up the directories for reports, screenshots, and logs
                 Directory.CreateDirectory(PathHelper.GetScreenshotsDirectoryPath());
                 Directory.CreateDirectory(PathHelper.GetLogDirectoryPath());
-                _testRunDirectoryPath = PathHelper.BaseDirectory;
-                _mainLogFilePath = Path.Combine(PathHelper.GetLogDirectoryPath(), $"TestRun_{DateTime.Now:yyyyMMdd_HHmmss}.log");
 
                 // Clean up old report directories
                 CleanupOldReports();
 
                 // Log the start of the test run
-                WriteMainLog("[LOG] Test run started");
+                Console.WriteLine("[LOG] Test run started");
             }
             catch (Exception ex)
             {
-                WriteMainLog($"[ERROR] BeforeTestRun Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] BeforeTestRun Error: {ex.Message}");
             }
         }
 
@@ -96,7 +84,7 @@ namespace ReqnrollAutomation.Hooks
             try
             {
                 // Log the end of the test run
-                WriteMainLog("[LOG] Test run completed");
+                Console.WriteLine("[LOG] Test run completed");
 
                 // Flush the Extent Report
                 ReportManager.FlushReport();
@@ -109,7 +97,7 @@ namespace ReqnrollAutomation.Hooks
                 bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
                 if (!isHeadless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
                 {
-                    WriteMainLog($"[LOG] Opening report: {reportPath}");
+                    Console.WriteLine($"[LOG] Opening report: {reportPath}");
                     Process.Start(new ProcessStartInfo
                     {
                         FileName = reportPath,
@@ -120,7 +108,7 @@ namespace ReqnrollAutomation.Hooks
             }
             catch (Exception ex)
             {
-                WriteMainLog($"[ERROR] AfterTestRun Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] AfterTestRun Error: {ex.Message}");
             }
         }
         #endregion
@@ -147,11 +135,11 @@ namespace ReqnrollAutomation.Hooks
                     _featureNodes.GetOrAdd(featureTitle, key => _extentReports!.CreateTest(key));
                 }
 
-                WriteMainLog($"[LOG] Feature started: {featureContext.FeatureInfo.Title}");
+                Console.WriteLine($"[LOG] Feature started: {featureContext.FeatureInfo.Title}");
             }
             catch (Exception ex)
             {
-                WriteMainLog($"[ERROR] BeforeFeature Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] BeforeFeature Error: {ex.Message}");
             }
         }
 
@@ -166,12 +154,12 @@ namespace ReqnrollAutomation.Hooks
             // Try-catch block is unnecessary here at the moment, but can be future-proofed
             try
             {
-                WriteMainLog($"[LOG] Feature completed:  {featureContext.FeatureInfo.Title}");
-                WriteMainLog(new string('=', 100));
+                Console.WriteLine($"[LOG] Feature completed:  {featureContext.FeatureInfo.Title}");
+                Console.WriteLine(new string('=', 100));
             }
             catch (Exception ex)
             {
-                WriteMainLog($"[ERROR] AfterFeature Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] AfterFeature Error: {ex.Message}");
             }
         }
         #endregion
@@ -209,7 +197,7 @@ namespace ReqnrollAutomation.Hooks
                     _scenarioNode.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));
                 }
 
-                WriteMainLog(message);  // Log to main log
+                Console.WriteLine(message);  // Log to main log
 
                 // Create a new WebDriver instance for this scenario (not shared between scenarios)
                 IWebDriver driver = DriverFactory.CreateDriver();
@@ -222,18 +210,17 @@ namespace ReqnrollAutomation.Hooks
                 }
                 catch (Exception ex)
                 {
-                    WriteMainLog($"[ERROR] Failed to clear cookies and cache: {ex.Message}");
+                    Console.WriteLine($"[ERROR] Failed to clear cookies and cache: {ex.Message}");
                 }
 
                 // Log to the scenario log file
-                _scenarioLogFilePath = GetLogPath();
-                WriteLog(message);
-                WriteLog($"[LOG] Feature: {_featureContext.FeatureInfo.Title}");
-                WriteLog($"[LOG] Browser: {(driver as IHasCapabilities)?.Capabilities.GetCapability("browserName")}");
-                WriteLog($"[LOG] Time: {DateTime.Now:HH:mm:ss.fff}");
+                Console.WriteLine(message);
+                Console.WriteLine($"[LOG] Feature: {_featureContext.FeatureInfo.Title}");
+                Console.WriteLine($"[LOG] Browser: {(driver as IHasCapabilities)?.Capabilities.GetCapability("browserName")}");
+                Console.WriteLine($"[LOG] Time: {DateTime.Now:HH:mm:ss.fff}");
             }
             catch (Exception ex) {
-                WriteMainLog($"[ERROR] BeforeScenario Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] BeforeScenario Error: {ex.Message}");
             }
         }
 
@@ -283,15 +270,15 @@ namespace ReqnrollAutomation.Hooks
                 }
 
                 // Log to main log
-                WriteMainLog(message);
-                WriteMainLog(new string('-', 100));
+                Console.WriteLine(message);
+                Console.WriteLine(new string('-', 100));
 
                 // Log to the scenario log file
-                WriteLog(message);
+                Console.WriteLine(message);
             }
             catch (Exception ex)
             {
-                WriteMainLog($"[ERROR] AfterScenario Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] AfterScenario Error: {ex.Message}");
             }
             finally
             {
@@ -305,7 +292,7 @@ namespace ReqnrollAutomation.Hooks
                 }
                 catch (Exception ex)
                 {
-                    WriteMainLog($"[ERROR] Failed to flush report: {ex.Message}");
+                    Console.WriteLine($"[ERROR] Failed to flush report: {ex.Message}");
                 }
 
                 // Guarantee cleanup of the WebDriver instance for this scenario
@@ -315,7 +302,7 @@ namespace ReqnrollAutomation.Hooks
                 }
                 catch (Exception ex)
                 {
-                    WriteMainLog($"[ERROR] Failed to quit driver: {ex.Message}");
+                    Console.WriteLine($"[ERROR] Failed to quit driver: {ex.Message}");
                 }
             }
         }
@@ -340,11 +327,11 @@ namespace ReqnrollAutomation.Hooks
                     _scenarioNode?.Log(Status.Info, LogMessageFormatter.FormatLogMessage(message));   // Log to Extent Report
                 }
                 
-                WriteLog(message); // Log to scenario log file
+                Console.WriteLine(message); // Log to scenario log file
             }
             catch (Exception ex)
             {
-                WriteLog($"[ERROR] BeforeStep Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] BeforeStep Error: {ex.Message}");
             }
         }
 
@@ -393,15 +380,15 @@ namespace ReqnrollAutomation.Hooks
                 }
 
                 // Log to main log
-                WriteMainLog(message);
+                Console.WriteLine(message);
 
                 // Log to the scenario log file
-                WriteLog(message);
-                WriteLog(new string('-', 75));
+                Console.WriteLine(message);
+                Console.WriteLine(new string('-', 75));
             }
             catch (Exception ex)
             {
-                WriteLog($"[ERROR] AfterStep Error: {ex.Message}");
+                Console.WriteLine($"[ERROR] AfterStep Error: {ex.Message}");
             }
             finally
             {
@@ -415,7 +402,7 @@ namespace ReqnrollAutomation.Hooks
                 }
                 catch (Exception ex)
                 {
-                    WriteMainLog($"[ERROR] Failed to flush report: {ex.Message}");
+                    Console.WriteLine($"[ERROR] Failed to flush report: {ex.Message}");
                 }
             }
         }
@@ -439,12 +426,12 @@ namespace ReqnrollAutomation.Hooks
                 // Take the screenshot and save it to the specified file path
                 Screenshot? screenshot = (driver as ITakesScreenshot)?.GetScreenshot();
                 screenshot?.SaveAsFile(filePath);
-                WriteLog($"[LOG] Screenshot captured: {filePath}");
+                Console.WriteLine($"[LOG] Screenshot captured: {filePath}");
                 return filePath;
             }
             catch (Exception ex)
             {
-                WriteLog($"[ERROR] Failed to capture screenshot: {ex.Message}");
+                Console.WriteLine($"[ERROR] Failed to capture screenshot: {ex.Message}");
             }
                 
             return "";
@@ -469,103 +456,10 @@ namespace ReqnrollAutomation.Hooks
             }
             catch (Exception ex)
             {
-                WriteLog($"[ERROR] Failed to convert screenshot to Base64: {ex.Message}");
+                Console.WriteLine($"[ERROR] Failed to convert screenshot to Base64: {ex.Message}");
             }
                 
             return "";
-        }
-        #endregion
-
-        #region Private Logging Methods
-        /// <summary>
-        /// Gets the log file path for the current scenario based on the scenario and feature titles.
-        /// </summary>
-        /// <returns>The log file path for the current scenario.</returns>
-        private string GetLogPath()
-        {
-            // Initialize the log file path based on the scenario and feature titles
-            string scenarioTitle = NormalizeFileName(_scenarioContext.ScenarioInfo.Title);
-            string featureTitle = NormalizeFileName(_featureContext.FeatureInfo.Title);
-
-            if (string.IsNullOrEmpty(scenarioTitle))
-                scenarioTitle = "UnknownScenario";
-
-            if (string.IsNullOrEmpty(featureTitle))
-                featureTitle = "UnknownFeature";
-
-            string fileName = $"{scenarioTitle}_{_timestamp}.log";
-            string logDirectory = PathHelper.GetLogDirectoryPath();
-            string featureLogDirectory = Path.Combine(logDirectory, featureTitle);
-            return Path.Combine(featureLogDirectory, fileName);
-        }
-
-        /// <summary>
-        /// Logs the specified message to the scenario log file with a timestamp.
-        /// </summary>
-        /// <param name="message">The message to log.</param>
-        private void WriteLog(string message)
-        {
-            if (string.IsNullOrEmpty(_scenarioLogFilePath))
-                return;
-
-            lock (_fileLock)
-            {
-                try
-                {
-                    // Ensure the directory exists before writing to the log file
-                    string? directory = Path.GetDirectoryName(_scenarioLogFilePath);
-                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
-
-                    // Log the message with a timestamp
-                    string timestamp = $"[{DateTime.Now:HH:mm:ss.fff}] ";
-                    string logMessage = timestamp + message;
-                    File.AppendAllText(_scenarioLogFilePath, logMessage + Environment.NewLine, Encoding.UTF8);
-                    Console.WriteLine(logMessage); // Also write to console for real-time visibility
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[ERROR] Failed to write to log file: {ex.Message}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Logs the specified message to the main log file with a timestamp.
-        /// </summary>
-        /// <remarks> This is used for logging messages that are relevant to the entire test run, such as 
-        /// setup and teardown messages, or any critical errors that occur outside of individual scenarios.</remarks>
-        /// <param name="message">The message to log.</param>
-        private static void WriteMainLog(string message)
-        {
-            // Ensure the main log file path exists
-            if (string.IsNullOrEmpty(_mainLogFilePath))
-            {
-                string fallbackLogPath = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "Logs");
-                Directory.CreateDirectory(fallbackLogPath);
-                _mainLogFilePath = Path.Combine(fallbackLogPath, $"TestRun_{DateTime.Now:yyyyMMdd_HHmmss}.log");
-            }
-
-            lock (_fileLock)
-            {
-                try
-                {
-                    // Ensure the directory exists before writing to the main log file
-                    string? directory = Path.GetDirectoryName(_mainLogFilePath);
-                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
-
-                    // Log the message with a timestamp
-                    string timestamp = $"[{DateTime.Now:HH:mm:ss.fff}] ";
-                    string logMessage = timestamp + message;
-                    File.AppendAllText(_mainLogFilePath, logMessage + Environment.NewLine, Encoding.UTF8);
-                    Console.WriteLine(logMessage); // Also write to console for real-time visibility
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[ERROR] Failed to write to main log file: {ex.Message}");
-                }
-            }
         }
         #endregion
 
@@ -597,14 +491,14 @@ namespace ReqnrollAutomation.Hooks
         }
 
         /// <summary>
-        /// Cleans up old report directories, keeping only the 10 most recent ones.
+        /// Cleans up old report directories, keeping only the 15 most recent ones.
         /// </summary>
         private static void CleanupOldReports()
         {
             try
             {
-                // Keep the 10 most recent reports
-                const int numberOfReportsToKeep = 10;
+                // Keep the 15 most recent reports
+                const int numberOfReportsToKeep = 15;
                 string baseDirectory = PathHelper.BaseDirectory!;
                 // If the base directory doesn't exist, there's nothing to clean up
                 if (!Directory.Exists(baseDirectory))
@@ -621,11 +515,11 @@ namespace ReqnrollAutomation.Hooks
                     {
                         string deploymentName = deploymentDirectory.Name;
                         deploymentDirectory.Delete(true);
-                        WriteMainLog($"[LOG] Deleted old deployment directory: {deploymentName}");
+                        Console.WriteLine($"[LOG] Deleted old deployment directory: {deploymentName}");
                     }
                     catch (Exception ex)
                     {
-                        WriteMainLog($"[ERROR] Failed to delete old deployment directory: {ex.Message}");
+                        Console.WriteLine($"[ERROR] Failed to delete old deployment directory: {ex.Message}");
                     }
                 }
 
@@ -641,17 +535,17 @@ namespace ReqnrollAutomation.Hooks
                     {
                         string reportName = dir.Name;
                         dir.Delete(true);
-                        WriteMainLog($"[LOG] Deleted old report directory: {reportName}");
+                        Console.WriteLine($"[LOG] Deleted old report directory: {reportName}");
                     }
                     catch (Exception ex)
                     {
-                        WriteMainLog($"[ERROR] Failed to delete old report directory: {ex.Message}");
+                        Console.WriteLine($"[ERROR] Failed to delete old report directory: {ex.Message}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                WriteMainLog($"[ERROR] Failed to clean up old reports: {ex.Message}");
+                Console.WriteLine($"[ERROR] Failed to clean up old reports: {ex.Message}");
             }
         }
         #endregion
