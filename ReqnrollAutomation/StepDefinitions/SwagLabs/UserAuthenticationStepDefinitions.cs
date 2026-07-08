@@ -39,15 +39,15 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         }
         #endregion
 
-        #region Step Definitions
-        // Given Steps
+        #region Given Steps
         [Given("I am on the Swag Labs login page")]
         public void GivenIAmOnTheSwagLabsLoginPage()
         {
             LoginPage.Navigate();
         }
+        #endregion
 
-        // When Steps
+        #region When Steps
         [When("I enter standard user credentials")]
         public void WhenIEnterValidCredentials()
         {
@@ -65,8 +65,9 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         {
             LoginPage.LoginWithCredentials("invalid_user", "invalid_password");
         }
+        #endregion
 
-        // Then Steps
+        #region Then Steps
         [Then("I should be logged in successfully")]
         public void ThenIShouldBeLoggedInSuccessfully()
         {
