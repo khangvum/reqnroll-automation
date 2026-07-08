@@ -19,6 +19,12 @@ namespace ReqnrollAutomation.Core.Helpers
     /// </summary>
     public static class ExtentReportPatcher
     {
+        /// <summary>
+        /// Patches the Extent Report HTML file at the specified path to correctly reflect the scenario counts in the dashboard summary cards.
+        /// </summary>
+        /// <param name="reportPath">The path to the Extent Report HTML file.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the report path is null or empty.</exception>
+        /// <exception cref="FileNotFoundException">Thrown if the Extent Report file is not found.</exception>
         public static void Patch(string reportPath)
         {
             try
