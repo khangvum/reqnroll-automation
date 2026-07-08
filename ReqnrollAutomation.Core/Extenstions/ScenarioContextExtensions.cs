@@ -31,5 +31,16 @@ namespace ReqnrollAutomation.Core.Extensions
 
             throw new InvalidOperationException("WebDriver instance not found in ScenarioContext. Ensure BeforeScenario hook has been executed.");
         }
+
+        /// <summary>
+        /// Sets the WebDriver instance in the current scenario context.
+        /// </summary>
+        /// <param name="scenarioContext">The scenario context.</param>
+        /// <param name="driver">The WebDriver instance.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the WebDriver instance is null.</exception>
+        public static void SetDriver(this ScenarioContext scenarioContext, IWebDriver driver)
+        {
+            scenarioContext["WebDriver"] = driver ?? throw new ArgumentNullException(nameof(driver), "WebDriver instance cannot be null.");
+        }
     }
 }
