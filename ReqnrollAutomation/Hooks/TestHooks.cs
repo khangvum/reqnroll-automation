@@ -201,7 +201,7 @@ namespace ReqnrollAutomation.Hooks
 
                 // Create a new WebDriver instance for this scenario (not shared between scenarios)
                 IWebDriver driver = DriverFactory.CreateDriver();
-                _scenarioContext["WebDriver"] = driver;
+                _scenarioContext.SetDriver(driver);
 
                 // Clear cookies and cache to ensure test isolation
                 try
