@@ -597,14 +597,14 @@ namespace ReqnrollAutomation.Hooks
         }
 
         /// <summary>
-        /// Cleans up old report directories, keeping only the 10 most recent ones.
+        /// Cleans up old report directories, keeping only the 15 most recent ones.
         /// </summary>
         private static void CleanupOldReports()
         {
             try
             {
-                // Keep the 10 most recent reports
-                const int numberOfReportsToKeep = 10;
+                // Keep the 15 most recent reports
+                const int numberOfReportsToKeep = 15;
                 string baseDirectory = PathHelper.BaseDirectory!;
                 // If the base directory doesn't exist, there's nothing to clean up
                 if (!Directory.Exists(baseDirectory))
