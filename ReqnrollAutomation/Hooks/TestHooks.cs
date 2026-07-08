@@ -12,7 +12,6 @@ using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Text;
 
 namespace ReqnrollAutomation.Hooks
 {
@@ -30,7 +29,7 @@ namespace ReqnrollAutomation.Hooks
         // Extent Reports (thread-safe with ConcurrentDictionary)
         private static ExtentReports? _extentReports;
         private static readonly ConcurrentDictionary<string, ExtentTest> _featureNodes = new();
-        private static readonly object _reportLock = new();
+        private static readonly Lock _reportLock = new();
 
         // Per-scenario test node (stored in ScenarioContext for thread safety)
         private ExtentTest? _scenarioNode;
