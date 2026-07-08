@@ -22,7 +22,7 @@ namespace ReqnrollAutomation.Core.Helpers
         private static ExtentReports? _extentReports;
         private static ExtentSparkReporter? _extentSparkReporter;
         private static string _reportPath = "";
-        private static readonly object _flushLock = new();
+        private static readonly Lock _flushLock = new();
         #endregion
 
         #region Public Properties
