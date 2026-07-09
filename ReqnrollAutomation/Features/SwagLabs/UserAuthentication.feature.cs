@@ -159,7 +159,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 10
- await testRunner.WhenAsync("I enter standard user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I enter \"standard\" user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 11
  await testRunner.ThenAsync("I should be logged in successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -195,7 +195,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 14
- await testRunner.WhenAsync("I enter locked-out user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I enter \"locked-out\" user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 15
  await testRunner.ThenAsync("I should see a lockout message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -231,7 +231,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 18
- await testRunner.WhenAsync("I enter invalid credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I enter \"invalid\" user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 19
  await testRunner.ThenAsync("I should see an error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
