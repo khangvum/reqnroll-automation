@@ -126,7 +126,7 @@ namespace ReqnrollAutomation.Features.SwagLabs
  await testRunner.GivenAsync("I am on the Swag Labs login page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 8
- await testRunner.WhenAsync("I enter standard user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("I enter \"standard\" user credentials", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
         }
         
