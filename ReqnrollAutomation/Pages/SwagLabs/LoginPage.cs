@@ -45,8 +45,8 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// <param name="role">The role for which to use credentials.</param>
         public void LoginAsRole(string role)
         {
-            string username = CredentialManager.Credentials.Accounts[role];
-            string password = CredentialManager.Credentials.SharedPassword;
+            string username = CredentialManager.GetUsername(role);
+            string password = CredentialManager.GetSharedPassword();
 
             LoginWithCredentials(username, password);
         }
