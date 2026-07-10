@@ -5,7 +5,7 @@ Test the presence and functionality of the footer component on the inventory pag
 
 Background:
 	Given I am on the Swag Labs login page
-	When I enter standard user credentials
+	When I enter "standard" user credentials
 
 Scenario: Verify footer copyright information
 	Then the footer copyright text should be visible
