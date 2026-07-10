@@ -7,6 +7,7 @@
 
 using Microsoft.Extensions.Configuration;
 using ReqnrollAutomation.Models;
+using System.Text;
 
 namespace ReqnrollAutomation.Helpers
 {
@@ -19,12 +20,49 @@ namespace ReqnrollAutomation.Helpers
         private static readonly Lazy<SwagLabsCredentials> _credentials;
 
         // Public properties
-        public static SwagLabsCredentials Credentials => _credentials.Value;
+        private static SwagLabsCredentials Credentials => _credentials.Value;
 
         // Constructor
         static CredentialManager()
         {
             _credentials = new(LoadCredentials);
+        }
+
+        // Public methods
+        /// <summary>
+        /// Retrieves the username associated with the specified account type from the credentials.
+        /// </summary>
+        /// <param name="accountKey">The account type for which to retrieve the username.</param>
+        /// <returns>The username associated with the specified account type.</returns>
+        /// <exception cref="KeyNotFoundException">Throws when the specified account type is not found in the credentials.</exception>
+        public static string GetUsername(string accountKey) =>
+            Credentials.Accounts.TryGetValue(accountKey, out string? username) && !string.IsNullOrEmpty(username)
+                ? username
+                : throw new KeyNotFoundException($"[ERROR] Account type '{accountKey}' not found in credentials.");
+
+        /// <summary>
+        /// Retrieves the shared password from the credentials.
+        /// </summary>
+        /// <returns>The shared password.</returns>
+        public static string GetSharedPassword() => Credentials.SharedPassword;
+
+        /// <summary>
+        /// Normalizes the account type string to a standard key format (e.g., "standard user" becomes "StandardUser").
+        /// </summary>
+        /// <param name="accountType">The account type string to normalize.</param>
+        /// <returns>The normalized account type string.</returns>
+        public static string NormalizeAccountType(string accountType)
+        {
+            string[] words = accountType.Split([' ', '-'], StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder result = new();
+
+            foreach (var word in words)
+            {
+                result.Append(char.ToUpperInvariant(word[0]));
+                result.Append(word[1..].ToLower());
+            }
+
+            return result.Append("User").ToString();
         }
 
         // Private helper methods

@@ -108,24 +108,6 @@ namespace ReqnrollAutomation.Drivers
                     try { driver.Dispose(); } catch { }
                 }
                 catch { }
-
-                // Final fallback: Kill any orphan chromedriver processes to avoid zombie browsers
-                //try
-                //{
-                //    string processName = driver switch
-                //    {
-                //        ChromeDriver => "chromedriver",
-                //        EdgeDriver => "msedgedriver",
-                //        _ => ""
-                //    };
-
-                //    Process[] processes = Process.GetProcessesByName(processName);
-                //    foreach (Process p in processes)
-                //    {
-                //        try { p.Kill(); } catch { }
-                //    }
-                //}
-                //catch { }
             }
         }
         #endregion

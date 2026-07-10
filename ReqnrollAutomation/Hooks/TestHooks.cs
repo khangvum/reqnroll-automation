@@ -12,6 +12,7 @@ using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Hooks
 {
@@ -58,9 +59,8 @@ namespace ReqnrollAutomation.Hooks
                 _extentReports = ReportManager.GetExtentReports();
                 Console.WriteLine("[LOG] Extent Reports initialized successfully.");
 
-                // Set up the directories for reports, screenshots, and logs
+                // Set up the directories for reports & screenshots
                 Directory.CreateDirectory(PathHelper.GetScreenshotsDirectoryPath());
-                Directory.CreateDirectory(PathHelper.GetLogDirectoryPath());
 
                 // Clean up old report directories
                 CleanupOldReports();
@@ -475,17 +475,14 @@ namespace ReqnrollAutomation.Hooks
             if (string.IsNullOrEmpty(fileName))
                 return "Unknown";
 
+            // Replace spaces anmd special characters
+            fileName = Regex.Replace(fileName, @"[ :()_""-]", "_");
+
             // Replace invalid characters with underscores
             char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
             foreach (char invalidChar in invalidFileNameChars)
                 fileName = fileName.Replace(invalidChar, '_');
 
-            // Replace spaces anmd special characters
-            fileName = fileName.Replace(" ", "_")
-                               .Replace(":", "")
-                               .Replace("-", "_")
-                               .Replace("(", "")
-                               .Replace(")", "");
 
             return fileName.Length > 50 ? fileName.Substring(0, 50) : fileName;
         }

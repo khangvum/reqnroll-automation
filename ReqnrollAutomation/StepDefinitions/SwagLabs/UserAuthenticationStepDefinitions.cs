@@ -6,7 +6,7 @@
  */
 
 using AventStack.ExtentReports.Gherkin.Model;
-using ReqnrollAutomation.Pages;
+using ReqnrollAutomation.Helpers;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
@@ -16,7 +16,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
     [Binding]
     public class UserAuthenticationStepDefinitions : BaseStepDefinitions
     {
-        #region  Registry
+        #region Registry
         private enum ValidationKey
         {
             SuccessfulLoginUrl,
@@ -48,22 +48,11 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region When Steps
-        [When("I enter standard user credentials")]
-        public void WhenIEnterValidCredentials()
+        [When("I enter {string} user credentials")]
+        public void WhenIEnterUserCredentials(string accountType)
         {
-            LoginPage.LoginAsRole("StandardUser");
-        }
-
-        [When("I enter locked-out user credentials")]
-        public void WhenIEnterLockedOutUserCredentials()
-        {
-            LoginPage.LoginAsRole("LockedOutUser");
-        }
-
-        [When("I enter invalid credentials")]
-        public void WhenIEnterInvalidCredentials()
-        {
-            LoginPage.LoginWithCredentials("invalid_user", "invalid_password");
+            string accountKey = CredentialManager.NormalizeAccountType(accountType);
+            LoginPage.LoginAsRole(accountKey);
         }
         #endregion
 
