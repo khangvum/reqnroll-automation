@@ -47,6 +47,6 @@ jobs:
         if: always() # Ensure this step runs even if the tests fail
         uses: actions/upload-artifact@v7
         with:
-          name: ExtentReport
+          name: TestReport
           path: '**/TestResults/ReqnrollAutomation/**/*'
           retention-days: 7
