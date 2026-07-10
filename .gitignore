@@ -6,6 +6,9 @@ x86/
 bin/
 obj/
 
+# Reqnroll auto-generated files
+*.feature.cs
+
 # Visual Studio files
 [Dd]ebug/
 [Rr]elease/
