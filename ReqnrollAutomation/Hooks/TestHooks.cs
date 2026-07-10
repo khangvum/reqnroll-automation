@@ -58,9 +58,8 @@ namespace ReqnrollAutomation.Hooks
                 _extentReports = ReportManager.GetExtentReports();
                 Console.WriteLine("[LOG] Extent Reports initialized successfully.");
 
-                // Set up the directories for reports, screenshots, and logs
+                // Set up the directories for reports & screenshots
                 Directory.CreateDirectory(PathHelper.GetScreenshotsDirectoryPath());
-                Directory.CreateDirectory(PathHelper.GetLogDirectoryPath());
 
                 // Clean up old report directories
                 CleanupOldReports();
