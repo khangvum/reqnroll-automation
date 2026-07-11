@@ -7,6 +7,8 @@
 
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
+using ReqnrollAutomation.Config;
+using ReqnrollAutomation.Core.Config;
 using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
@@ -54,6 +56,9 @@ namespace ReqnrollAutomation.Hooks
         {
             try
             {
+                // Initialize the configuration provider
+                ConfigProvider.Initialize(new ConfigAdapter());
+
                 // Set up Extent Reports
                 ReportManager.InitializeReport("Reqnroll Automation");
                 _extentReports = ReportManager.GetExtentReports();
