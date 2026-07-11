@@ -66,7 +66,7 @@ namespace ReqnrollAutomation.Core.Helpers
             _extentReports = new();
             _extentReports.AttachReporter(_extentSparkReporter);
 
-            _extentReports.AddSystemInfo("Environment", ConfigProvider.Environment);
+            _extentReports.AddSystemInfo("Environment", ConfigProvider.TestEnvironment);
             _extentReports.AddSystemInfo("Tester", Environment.UserName);
             _extentReports.AddSystemInfo("Browser", ConfigProvider.Browser.ToString());
             _extentReports.AddSystemInfo("OS", Environment.OSVersion.ToString());

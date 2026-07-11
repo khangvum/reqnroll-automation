@@ -23,7 +23,7 @@ namespace ReqnrollAutomation.Config
         /// <summary>
         /// Gets the configured environment, defaulting to "QA" if not specified.
         /// </summary>
-        public static string Environment => GetValue(nameof(Environment), "QA");
+        public static string TestEnvironment => GetValue(nameof(TestEnvironment), "QA");
 
         /// <summary>
         /// Gets the default timeout value in seconds, defaulting to 30 if not specified.
@@ -88,6 +88,17 @@ namespace ReqnrollAutomation.Config
             {
                 return defaultValue;
             }
+        }
+
+        /// <summary>
+        /// Checks if the current environment is running in headless mode based on environment variables.
+        /// </summary>
+        /// <returns>True if running in headless mode, false otherwise.</returns>
+        public static bool IsHeadless()
+        {
+            return Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
+                   Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
+                   Environment.GetEnvironmentVariable("CI") == "true";
         }
     }
 }

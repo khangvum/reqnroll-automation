@@ -28,9 +28,9 @@ namespace ReqnrollAutomation.Core.Config
 
         #region Public Properties
         /// <summary>
-        /// Gets the configured environment.
+        /// Gets the configured test environment.
         /// </summary>
-        public static string Environment
+        public static string TestEnvironment
         {
             get
             {
@@ -38,7 +38,7 @@ namespace ReqnrollAutomation.Core.Config
                 {
                     throw new InvalidOperationException("ConfigProvider is not initialized. Call Initialize() with a valid IConfigAdapter.");
                 }
-                return configAdapter.Environment;
+                return configAdapter.TestEnvironment;
             }
         }
 
