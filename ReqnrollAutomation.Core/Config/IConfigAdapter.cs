@@ -15,9 +15,9 @@ namespace ReqnrollAutomation.Core.Config
     public interface IConfigAdapter
     {
         /// <summary>
-        /// Gets the configured environment.
+        /// Gets the configured test environment.
         /// </summary>
-        string Environment { get; }
+        string TestEnvironment { get; }
 
         /// <summary>
         /// Gets the configured browser type.

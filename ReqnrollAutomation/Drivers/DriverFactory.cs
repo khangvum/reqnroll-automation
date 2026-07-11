@@ -110,17 +110,6 @@ namespace ReqnrollAutomation.Drivers
 
         #region Private Helper Methods
         /// <summary>
-        /// Checks if the current environment is running in headless mode based on environment variables.
-        /// </summary>
-        /// <returns>True if running in headless mode, false otherwise.</returns>
-        private static bool IsHeadless()
-        {
-            return Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
-                   Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
-                   Environment.GetEnvironmentVariable("CI") == "true";
-        }
-
-        /// <summary>
         /// Disables browser extensions, popups, infobars, and password management features in Chrome to ensure a clean testing environment.
         /// </summary>
         /// <param name="options">The Chromium options instance.</param>

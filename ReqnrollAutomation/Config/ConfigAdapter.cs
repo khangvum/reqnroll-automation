@@ -17,7 +17,7 @@ namespace ReqnrollAutomation.Config
     internal class ConfigAdapter : IConfigAdapter
     {
         /// <inheritdoc/>
-        public string Environment => ConfigManager.Environment;
+        public string TestEnvironment => ConfigManager.TestEnvironment;
 
         /// <inheritdoc/>
         public BrowserType Browser => ConfigManager.Browser;
