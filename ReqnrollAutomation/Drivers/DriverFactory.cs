@@ -9,18 +9,10 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
 using ReqnrollAutomation.Config;
+using ReqnrollAutomation.Core.Config;
 
 namespace ReqnrollAutomation.Drivers
 {
-    /// <summary>
-    /// Specifies the type of browser to be used for testing.
-    /// </summary>
-    public enum BrowserType
-    {
-        Chrome,
-        Edge
-    }
-
     /// <summary>
     /// A class that provides a factory for creating and managing WebDriver instances for the test 
     /// automation framework, streamlining parallel test execution and ensuring proper resource management.
