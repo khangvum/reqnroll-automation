@@ -53,6 +53,7 @@ namespace ReqnrollAutomation.Config
             get
             {
                 return GetValue(nameof(Headless), true) ||
+                       Environment.GetEnvironmentVariable("HEADLESS") == "true" ||
                        Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
                        Environment.GetEnvironmentVariable("CI") == "true";
             }
@@ -76,6 +77,7 @@ namespace ReqnrollAutomation.Config
             _configEngine = new ConfigurationBuilder()
                 .SetBasePath(configDirectory)
                 .AddJsonFile(ConfigFileName, optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
                 .Build();
         }
 
