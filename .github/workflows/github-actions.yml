@@ -1,4 +1,4 @@
-name: Automation Test Suite
+name: Reqnroll Automation
 
 on:
   workflow_dispatch:
