@@ -99,7 +99,7 @@ namespace ReqnrollAutomation.Hooks
                 ExtentReportPatcher.Patch(reportPath);
 
                 // Automatically open the Extent Report in the browser if in headfull mode
-                bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
+                bool isHeadless = ConfigManager.IsHeadless();
                 if (!isHeadless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
                 {
                     Console.WriteLine($"[LOG] Opening report: {reportPath}");

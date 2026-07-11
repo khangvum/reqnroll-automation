@@ -1,5 +1,5 @@
 ﻿{
   "TestEnvironment": "QA",
-  "Browser": "Edge",
+  "Browser": "Chrome",
   "DefaultTimeout": 30
 }

@@ -39,7 +39,7 @@ namespace ReqnrollAutomation.Drivers
             };
 
             // Allow running in headless mode by setting env var HEADLESS=1
-            bool isHeadless = IsHeadless();
+            bool isHeadless = ConfigManager.IsHeadless();
             if (isHeadless)
             {
                 options.AddArgument("--headless=new");
