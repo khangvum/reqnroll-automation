@@ -30,6 +30,9 @@ namespace ReqnrollAutomation.Config
         /// </summary>
         public static int DefaultTimeout => GetValue(nameof(DefaultTimeout), 30);
 
+        /// <summary>
+        /// Gets the configured browser type, defaulting to Chrome if not specified.
+        /// </summary>
         public static BrowserType Browser
         {
             get
@@ -39,6 +42,19 @@ namespace ReqnrollAutomation.Config
                 return Enum.TryParse(browserString, true, out BrowserType browserType) 
                     ? browserType 
                     : BrowserType.Chrome;
+            }
+        }
+
+        /// <summary>
+        /// Gets the configured headless mode setting, defaulting to true if not specified or if running in a CI environment.
+        /// </summary>
+        public static bool Headless
+        {
+            get
+            {
+                return GetValue(nameof(Headless), true) ||
+                       Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
+                       Environment.GetEnvironmentVariable("CI") == "true";
             }
         }
         #endregion
@@ -88,17 +104,6 @@ namespace ReqnrollAutomation.Config
             {
                 return defaultValue;
             }
-        }
-
-        /// <summary>
-        /// Checks if the current environment is running in headless mode based on environment variables.
-        /// </summary>
-        /// <returns>True if running in headless mode, false otherwise.</returns>
-        public static bool IsHeadless()
-        {
-            return Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
-                   Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
-                   Environment.GetEnvironmentVariable("CI") == "true";
         }
     }
 }

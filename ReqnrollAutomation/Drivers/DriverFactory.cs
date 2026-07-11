@@ -38,9 +38,8 @@ namespace ReqnrollAutomation.Drivers
                 _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
             };
 
-            // Allow running in headless mode by setting env var HEADLESS=1
-            bool isHeadless = ConfigManager.IsHeadless();
-            if (isHeadless)
+            // Configure the options for headless mode and other settings
+            if (ConfigManager.Headless)
             {
                 options.AddArgument("--headless=new");
                 options.AddArgument("--window-size=1920,1080");
@@ -62,7 +61,7 @@ namespace ReqnrollAutomation.Drivers
             try
             {
                 // Only attempt to maximize if not running headless
-                if (!isHeadless)
+                if (!ConfigManager.Headless)
                 {
                     driver.Manage().Window.Maximize();
                 }
