@@ -8,6 +8,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
+using ReqnrollAutomation.Config;
 
 namespace ReqnrollAutomation.Drivers
 {
@@ -32,8 +33,11 @@ namespace ReqnrollAutomation.Drivers
         /// </summary>
         /// <param name="browserType">The type of browser to create the driver for.</param>
         /// <returns>The IWebDriver instance.</returns>
-        public static IWebDriver CreateDriver(BrowserType browserType = BrowserType.Chrome)
+        public static IWebDriver CreateDriver()
         {
+            // Get the browser type from the configuration file
+            BrowserType browserType = ConfigManager.Browser;
+
             // Create the appropriate options based on the specified browser type
             ChromiumOptions options = browserType switch
             {

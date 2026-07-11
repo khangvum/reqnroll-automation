@@ -1,4 +1,5 @@
 ﻿{
   "Environment": "QA",
+  "Browser": "Edge",
   "DefaultTimeout":  30
 }
