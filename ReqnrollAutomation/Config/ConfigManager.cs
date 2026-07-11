@@ -6,6 +6,7 @@
  */
 
 using Microsoft.Extensions.Configuration;
+using ReqnrollAutomation.Core.Config;
 
 namespace ReqnrollAutomation.Config
 {
@@ -28,6 +29,18 @@ namespace ReqnrollAutomation.Config
         /// Gets the default timeout value in seconds, defaulting to 30 if not specified.
         /// </summary>
         public static int DefaultTimeout => GetValue(nameof(DefaultTimeout), 30);
+
+        public static BrowserType Browser
+        {
+            get
+            {
+                string browserString = GetValue("Browser", "Chrome");
+
+                return Enum.TryParse(browserString, true, out BrowserType browserType) 
+                    ? browserType 
+                    : BrowserType.Chrome;
+            }
+        }
         #endregion
 
         // Constructor

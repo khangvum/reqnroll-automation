@@ -9,6 +9,7 @@
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Reporter.Config;
+using ReqnrollAutomation.Core.Config;
 
 namespace ReqnrollAutomation.Core.Helpers
 {
@@ -65,8 +66,9 @@ namespace ReqnrollAutomation.Core.Helpers
             _extentReports = new();
             _extentReports.AttachReporter(_extentSparkReporter);
 
-            _extentReports.AddSystemInfo("Environment", "QA");
+            _extentReports.AddSystemInfo("Environment", ConfigProvider.Environment);
             _extentReports.AddSystemInfo("Tester", Environment.UserName);
+            _extentReports.AddSystemInfo("Browser", ConfigProvider.Browser.ToString());
             _extentReports.AddSystemInfo("OS", Environment.OSVersion.ToString());
 
             Console.WriteLine("[LOG] Report initialized successfully.");
