@@ -7,7 +7,7 @@
  */
 
 using OpenQA.Selenium.Support.UI;
-using ReqnrollAutomation.Helpers;
+using ReqnrollAutomation.Config;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
 {

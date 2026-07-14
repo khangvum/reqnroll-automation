@@ -7,6 +7,8 @@
 
 using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
+using ReqnrollAutomation.Config;
+using ReqnrollAutomation.Core.Config;
 using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
@@ -54,6 +56,9 @@ namespace ReqnrollAutomation.Hooks
         {
             try
             {
+                // Initialize the configuration provider
+                ConfigProvider.Initialize(new ConfigAdapter());
+
                 // Set up Extent Reports
                 ReportManager.InitializeReport("Reqnroll Automation");
                 _extentReports = ReportManager.GetExtentReports();
@@ -94,8 +99,7 @@ namespace ReqnrollAutomation.Hooks
                 ExtentReportPatcher.Patch(reportPath);
 
                 // Automatically open the Extent Report in the browser if in headfull mode
-                bool isHeadless = Environment.GetEnvironmentVariable("HEADLESS") == "1";
-                if (!isHeadless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
+                if (!ConfigManager.Headless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
                 {
                     Console.WriteLine($"[LOG] Opening report: {reportPath}");
                     Process.Start(new ProcessStartInfo

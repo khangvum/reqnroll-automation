@@ -18,6 +18,7 @@ namespace ReqnrollAutomation.Helpers
     {
         // Private attributes
         private static readonly Lazy<SwagLabsCredentials> _credentials;
+        private const string CredentialsFileName = "credentials.json";
 
         // Public properties
         private static SwagLabsCredentials Credentials => _credentials.Value;
@@ -72,17 +73,17 @@ namespace ReqnrollAutomation.Helpers
             {
                 // Determine the path to the credentials.json file on the project root directory
                 string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
-                string jsonPath = Path.Combine(projectRoot, "credentials.json");
+                string jsonPath = Path.Combine(projectRoot, CredentialsFileName);
 
                 if (!File.Exists(jsonPath))
                 {
-                    throw new FileNotFoundException($"[ERROR] Could not find credentials.json at project root: {jsonPath}");
+                    throw new FileNotFoundException($"[ERROR] Could not find {CredentialsFileName} at: {jsonPath}");
                 }
 
                 // Build the configuration from the credentials.json file
                 IConfigurationRoot configEngine = new ConfigurationBuilder()
                     .SetBasePath(projectRoot)
-                    .AddJsonFile("credentials.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile(CredentialsFileName, optional: false, reloadOnChange: true)
                     .Build();
 
                 SwagLabsCredentials credentials = new();

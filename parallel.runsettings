@@ -1,13 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <RunSettings>
-	<RunConfiguration>
-		<!-- Environment variables available to tests (affect local test execution only) -->
-		<EnvironmentVariables>
-			<!-- Set to 1 to run browser in headless mode -->
-			<HEADLESS>0</HEADLESS>
-		</EnvironmentVariables>
-	</RunConfiguration>
-
 	<MSTest>
 		<Parallelize>
 			<!-- Number of scenarios that can run simultaneously -->
