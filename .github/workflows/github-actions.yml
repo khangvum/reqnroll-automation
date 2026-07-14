@@ -1,9 +1,9 @@
-name: Automation Test Suite
+name: Reqnroll Automation
 
 on:
   workflow_dispatch:
     inputs:
-      run_mode:
+      execution_mode:
         description: "Execution Mode"
         required: true
         default: "parallel"
@@ -11,17 +11,27 @@ on:
         options:
           - parallel
           - sequential
-      test_tags:
+      category:
         description: "Category"
         required: false
         default: ""
         type: string
+      test_environment:
+        description: "Test Environment"
+        required: true
+        default: "QA"
+        type: choice
+        options:
+          - QA
+          - Dev
+          - Prod
 
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      HEADLESS: 1
+      Headless: true
+      TestEnvironment: ${{ inputs.test_environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -37,10 +47,10 @@ jobs:
       - name: Run Test
         run: |
           # If the user provided tags, add the filter flag; otherwise run everything
-          if [ -n "${{ inputs.test_tags }}" ]; then
-            dotnet test --configuration Release --no-restore --settings ./${{ inputs.run_mode }}.runsettings --filter "TestCategory=${{ inputs.test_tags }}"
+          if [ -n "${{ inputs.category }}" ]; then
+            dotnet test --configuration Release --no-restore --settings ./${{ inputs.execution_mode }}.runsettings --filter "TestCategory=${{ inputs.category }}"
           else
-            dotnet test --configuration Release --no-restore --settings ./${{ inputs.run_mode }}.runsettings
+            dotnet test --configuration Release --no-restore --settings ./${{ inputs.execution_mode }}.runsettings
           fi
 
       - name: Upload Test Results

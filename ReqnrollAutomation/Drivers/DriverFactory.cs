@@ -8,18 +8,11 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
+using ReqnrollAutomation.Config;
+using ReqnrollAutomation.Core.Config;
 
 namespace ReqnrollAutomation.Drivers
 {
-    /// <summary>
-    /// Specifies the type of browser to be used for testing.
-    /// </summary>
-    public enum BrowserType
-    {
-        Chrome,
-        Edge
-    }
-
     /// <summary>
     /// A class that provides a factory for creating and managing WebDriver instances for the test 
     /// automation framework, streamlining parallel test execution and ensuring proper resource management.
@@ -32,8 +25,11 @@ namespace ReqnrollAutomation.Drivers
         /// </summary>
         /// <param name="browserType">The type of browser to create the driver for.</param>
         /// <returns>The IWebDriver instance.</returns>
-        public static IWebDriver CreateDriver(BrowserType browserType = BrowserType.Chrome)
+        public static IWebDriver CreateDriver()
         {
+            // Get the browser type from the configuration file
+            BrowserType browserType = ConfigManager.Browser;
+
             // Create the appropriate options based on the specified browser type
             ChromiumOptions options = browserType switch
             {
@@ -42,9 +38,8 @@ namespace ReqnrollAutomation.Drivers
                 _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
             };
 
-            // Allow running in headless mode by setting env var HEADLESS=1
-            bool isHeadless = IsHeadless();
-            if (isHeadless)
+            // Configure the options for headless mode and other settings
+            if (ConfigManager.Headless)
             {
                 options.AddArgument("--headless=new");
                 options.AddArgument("--window-size=1920,1080");
@@ -66,7 +61,7 @@ namespace ReqnrollAutomation.Drivers
             try
             {
                 // Only attempt to maximize if not running headless
-                if (!isHeadless)
+                if (!ConfigManager.Headless)
                 {
                     driver.Manage().Window.Maximize();
                 }
@@ -113,17 +108,6 @@ namespace ReqnrollAutomation.Drivers
         #endregion
 
         #region Private Helper Methods
-        /// <summary>
-        /// Checks if the current environment is running in headless mode based on environment variables.
-        /// </summary>
-        /// <returns>True if running in headless mode, false otherwise.</returns>
-        private static bool IsHeadless()
-        {
-            return Environment.GetEnvironmentVariable("HEADLESS") == "1" ||
-                   Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true" ||
-                   Environment.GetEnvironmentVariable("CI") == "true";
-        }
-
         /// <summary>
         /// Disables browser extensions, popups, infobars, and password management features in Chrome to ensure a clean testing environment.
         /// </summary>
