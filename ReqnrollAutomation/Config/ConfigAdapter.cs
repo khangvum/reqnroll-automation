@@ -21,5 +21,8 @@ namespace ReqnrollAutomation.Config
 
         /// <inheritdoc/>
         public BrowserType Browser => ConfigManager.Browser;
+
+        /// <inheritdoc/>
+        public int DefaultTimeout => ConfigManager.DefaultTimeout;
     }
 }

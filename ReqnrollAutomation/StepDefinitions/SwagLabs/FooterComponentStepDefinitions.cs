@@ -13,7 +13,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
     /// A class that defines the step definitions for the footer component verification feature.
     /// </summary>
     [Binding]
-    public class FooterComponentVerificationStepDefinitions : BaseStepDefinitions
+    public class FooterComponentStepDefinitions : BaseStepDefinitions
     {
         #region Registry
         private enum ValidationKey
@@ -25,7 +25,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region Constructor
-        public FooterComponentVerificationStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
+        public FooterComponentStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
             _registry = new()
             {

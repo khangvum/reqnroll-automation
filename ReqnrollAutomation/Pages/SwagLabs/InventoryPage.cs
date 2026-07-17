@@ -4,6 +4,9 @@
  * Date:            2026-06-14
  * Description:     A class that represents the inventory page of Swag Labs.
  */
+
+using ReqnrollAutomation.Core.Extenstions;
+
 namespace ReqnrollAutomation.Pages.SwagLabs
 {
     /// <summary>
@@ -25,11 +28,11 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #endregion
 
         #region Page Elements
-        private IWebElement FooterContainer => WaitAndFindElement(_footerContainerLocator);
-        private IWebElement TwitterLink => WaitAndFindElement(_twitterLinkLocator);
-        private IWebElement FacebookLink => WaitAndFindElement(_facebookLinkLocator);
-        private IWebElement LinkedInLink => WaitAndFindElement(_linkedInLinkLocator);
-        private IWebElement CopyrightText => WaitAndFindElement(_copyrightTextLocator);
+        private IWebElement FooterContainer => _driver.WaitAndFindElement(_footerContainerLocator);
+        private IWebElement TwitterLink => _driver.WaitAndFindElement(_twitterLinkLocator);
+        private IWebElement FacebookLink => _driver.WaitAndFindElement(_facebookLinkLocator);
+        private IWebElement LinkedInLink => _driver.WaitAndFindElement(_linkedInLinkLocator);
+        private IWebElement CopyrightText => _driver.WaitAndFindElement(_copyrightTextLocator);
         #endregion
 
         #region Constructor

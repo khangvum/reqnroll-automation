@@ -56,6 +56,21 @@ namespace ReqnrollAutomation.Core.Config
                 return configAdapter.Browser;
             }
         }
+
+        /// <summary>
+        /// Gets the configured default timeout in seconds for waiting operations.
+        /// </summary>
+        public static int DefaultTimeout
+        {
+            get
+            {
+                if (configAdapter == null)
+                {
+                    throw new InvalidOperationException("ConfigProvider is not initialized. Call Initialize() with a valid IConfigAdapter.");
+                }
+                return configAdapter.DefaultTimeout;
+            }
+        }
         #endregion
 
         // Public methods
