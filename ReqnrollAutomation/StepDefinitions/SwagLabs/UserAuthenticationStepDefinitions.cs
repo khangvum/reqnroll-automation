@@ -48,8 +48,8 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region When Steps
-        [When("I enter {string} user credentials")]
-        public void WhenIEnterUserCredentials(string accountType)
+        [When("I log in as {string} user")]
+        public void WhenILogInAsUser(string accountType)
         {
             string accountKey = CredentialManager.NormalizeAccountType(accountType);
             LoginPage.LoginAsRole(accountKey);
