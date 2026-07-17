@@ -15,6 +15,12 @@ namespace ReqnrollAutomation.Core.Extensions
     /// </summary>
     public static class ScenarioContextExtensions
     {
+        #region Pivate Attributes
+        // Scenario Context Keys
+        private const string WebDriverKey = "WebDriver";
+        #endregion
+
+        #region Public Methods
         /// <summary>
         /// Gets the WebDriver instance from the current scenario context.
         /// </summary>
@@ -24,7 +30,7 @@ namespace ReqnrollAutomation.Core.Extensions
         /// <exception cref="InvalidOperationException">Throws if the WebDriver instance is not found in the scenario context.</exception>
         public static IWebDriver GetDriver(this ScenarioContext scenarioContext)
         {
-            if (scenarioContext.TryGetValue("WebDriver", out IWebDriver driver) && driver != null)
+            if (scenarioContext.TryGetValue(WebDriverKey, out IWebDriver driver) && driver != null)
             {
                 return driver;
             }
@@ -40,7 +46,8 @@ namespace ReqnrollAutomation.Core.Extensions
         /// <exception cref="ArgumentNullException">Thrown if the WebDriver instance is null.</exception>
         public static void SetDriver(this ScenarioContext scenarioContext, IWebDriver driver)
         {
-            scenarioContext["WebDriver"] = driver ?? throw new ArgumentNullException(nameof(driver), "WebDriver instance cannot be null.");
+            scenarioContext[WebDriverKey] = driver ?? throw new ArgumentNullException(nameof(driver), "WebDriver instance cannot be null.");
         }
+        #endregion
     }
 }
