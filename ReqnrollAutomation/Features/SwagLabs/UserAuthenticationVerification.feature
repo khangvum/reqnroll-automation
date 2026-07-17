@@ -9,7 +9,7 @@ Background:
 	Given I am on the Swag Labs login page
 
 Scenario Outline: Log in with different account types
-	When I log in as "<account_type>" user
+	When I log in as <account_type> user
 	Then <expected_outcome>
 
 Examples:

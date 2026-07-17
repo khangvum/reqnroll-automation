@@ -48,7 +48,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region When Steps
-        [When("I log in as {string} user")]
+        [When("I log in as {} user")]
         public void WhenILogInAsUser(string accountType)
         {
             string accountKey = CredentialManager.NormalizeAccountType(accountType);
