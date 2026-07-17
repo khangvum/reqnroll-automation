@@ -5,6 +5,7 @@
  * Description:     A class that represents the login page of Swag Labs.
  */
 
+using ReqnrollAutomation.Core.Extenstions;
 using ReqnrollAutomation.Helpers;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
@@ -24,12 +25,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private readonly By _loginButtonLocator = By.Id("login-button");
         private readonly By _errorMessageContainerLocator = By.CssSelector(".error-message-container.error h3[data-test='error']");
         #endregion
-
+        
         #region Page Elements
-        private IWebElement UsernameField => WaitAndFindElement(_usernameFieldLocator);
-        private IWebElement PasswordField => WaitAndFindElement(_passwordFieldLocator);
-        private IWebElement LoginButton => WaitAndFindElement(_loginButtonLocator);
-        private IWebElement ErrorMessageContainer => WaitAndFindElement(_errorMessageContainerLocator);
+        private IWebElement UsernameField => _driver.WaitAndFindElement(_usernameFieldLocator);
+        private IWebElement PasswordField => _driver.WaitAndFindElement(_passwordFieldLocator);
+        private IWebElement LoginButton => _driver.WaitAndFindElement(_loginButtonLocator);
+        private IWebElement ErrorMessageContainer => _driver.WaitAndFindElement(_errorMessageContainerLocator);
         #endregion
 
         #region Constructor

@@ -23,5 +23,10 @@ namespace ReqnrollAutomation.Core.Config
         /// Gets the configured browser type.
         /// </summary>
         BrowserType Browser { get; }
+
+        /// <summary>
+        /// Gets the configured default timeout in seconds for waiting operations.
+        /// </summary>
+        int DefaultTimeout { get; }
     }
 }

@@ -40,7 +40,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region Given Steps
-        [Given("I am on the Swag Labs login page")]
+        [Given(@"I am on the Swag Labs login page")]
         public void GivenIAmOnTheSwagLabsLoginPage()
         {
             LoginPage.Navigate();
@@ -48,8 +48,8 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region When Steps
-        [When("I enter {string} user credentials")]
-        public void WhenIEnterUserCredentials(string accountType)
+        [When(@"I log in as {} user")]
+        public void WhenILogInAsUser(string accountType)
         {
             string accountKey = CredentialManager.NormalizeAccountType(accountType);
             LoginPage.LoginAsRole(accountKey);
@@ -57,26 +57,27 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region Then Steps
-        [Then("I should be logged in successfully")]
+        [Then(@"I should be logged in successfully")]
         public void ThenIShouldBeLoggedInSuccessfully()
         {
             Assert.Contains(_registry[ValidationKey.SuccessfulLoginUrl], Driver.Url, "User was not logged in successfully.");
         }   
 
-        [Then("I should see a lockout message")]
-        public void ThenIShouldSeeALockoutMessage()
+        [Then(@"I should see a\(n\) {} message")]
+        public void ThenIShouldSeeAMessage(string errorType)
         {
-            string actualErrorMessage = LoginPage.GetErrorMessage();
-            string expectedErrorMessage = _registry[ValidationKey.LockoutMessage];
-            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Lockout message was not displayed.");
-        }
+            // Remove spaces and append "message", for example "invalid credentials" > "invalidcredentialsmessage"
+            string lookupKey = $"{errorType.Replace(" ", "")}message";
 
-        [Then("I should see an error message")]
-        public void ThenIShouldSeeAnErrorMessage()
-        {
+            // Try to parse the lookup key to the ValidationKey enum
+            if (!Enum.TryParse(lookupKey, true, out ValidationKey registryKey))
+            {
+                throw new ArgumentException($"Could not map '{errorType}' to an existing registry key.");
+            }
+
             string actualErrorMessage = LoginPage.GetErrorMessage();
-            string expectedErrorMessage = _registry[ValidationKey.InvalidCredentialsMessage];
-            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Error message was not displayed for invalid credentials.");
+            string expectedErrorMessage = _registry[registryKey];
+            Assert.Contains(expectedErrorMessage, actualErrorMessage, "Lockout message was not displayed.");
         }
         #endregion
     }
