@@ -9,11 +9,11 @@ Background:
 	Given I am on the Swag Labs login page
 	When I log in as "standard" user
 
-Scenario: Verify footer copyright information
+Scenario: Footer copyright information is displayed correctly
 	Then the footer copyright text should be visible
 	And the footer copyright text should display correctly
 
-Scenario Outline: Verify social media links in the footer
+Scenario Outline: Social media links in the footer are functional and navigate to the correct URLs
 	Then the footer should contain a link to "<platform>"
 	And the "<platform>" link should navigate to "<expectedURL>"
 
