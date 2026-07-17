@@ -22,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Features\CarfaxCanada\" />
 		<Folder Include="Hooks\" />
 	</ItemGroup>
 
