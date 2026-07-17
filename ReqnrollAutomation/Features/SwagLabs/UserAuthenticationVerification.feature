@@ -1,7 +1,9 @@
 ﻿@smoke @regression
-Feature: User Authentication
+Feature: User Authentication Verification
 
-Test the login page's user authentication functionality with different account types
+As a QA engineer
+I want to test the login page's user authentication functionality with different account types
+So that I can confirm that user authentication functionality works as expected for various scenarios
 
 Background:
 	Given I am on the Swag Labs login page
