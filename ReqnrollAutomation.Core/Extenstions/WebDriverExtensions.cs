@@ -1,0 +1,49 @@
+﻿/**
+ * Program:         WebDriverExtensions.cs
+ * Author:          Manh Khang Vu
+ * Date:            2026-07-17
+ * Description:     A class that contains extension methods for the IWebDriver interface.
+ */
+
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using ReqnrollAutomation.Core.Config;
+using System.Collections.ObjectModel;
+
+namespace ReqnrollAutomation.Core.Extenstions
+{
+    public static class WebDriverExtensions
+    {
+        /// <summary>
+        /// Waits for an element to be present in the DOM and visible on the page before locating it.
+        /// </summary>
+        /// <param name="driver">The IWebDriver instance.</param>
+        /// <param name="locator">The locator of the element.</param>
+        /// <returns>The located element.</returns>
+        /// <exception cref="WebDriverTimeoutException">Throws if the element is not found or not visible within the timeout period.</exception>
+        public static IWebElement WaitAndFindElement(this IWebDriver driver, By locator)
+        {
+            WebDriverWait wait = new(driver, TimeSpan.FromSeconds(ConfigProvider.DefaultTimeout));
+            // Ignore common transient exceptions that may occur while waiting for the element to be present and visible.
+            wait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
+
+            try
+            {
+                return wait.Until(driver =>
+                {
+                    ReadOnlyCollection<IWebElement> elements = driver.FindElements(locator);
+                    if (elements.Count > 0 && elements[0].Displayed)
+                    {
+                        return elements[0];
+                    }
+                    return null;
+                }) ?? throw new WebDriverTimeoutException($"Element with locator {locator} was not found or not visible within the timeout period.");
+            }
+            catch (WebDriverTimeoutException ex)
+            {
+                // Re-throw with a more descriptive message for ExtentReports
+                throw new WebDriverTimeoutException($"Timed out after {ConfigProvider.DefaultTimeout} seconds waiting for element with locator {locator}.", ex);
+            }
+        }
+    }
+}
