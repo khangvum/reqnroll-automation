@@ -14,7 +14,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
     /// A class that defines the step definitions for the user authentication feature.
     /// </summary>
     [Binding]
-    public class UserAuthenticationStepDefinitions : BaseStepDefinitions
+    public class UserAuthenticationStepDefinitions : SwagLabsBaseStepDefinitions
     {
         #region Registry
         private enum ValidationKey
