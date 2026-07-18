@@ -2,7 +2,7 @@
  * Program:         FooterComponentVerificationStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-14
- * Description:     A class that defines the step definitions for the footer component verification feature.
+ * Description:     A class that defines the step definitions for the footer component verification feature on Swag Labs website.
  */
 
 using System.Text.RegularExpressions;
@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     /// <summary>
-    /// A class that defines the step definitions for the footer component verification feature.
+    /// A class that defines the step definitions for the footer component verification feature on Swag Labs website.
     /// </summary>
     [Binding]
     public class FooterComponentStepDefinitions : SwagLabsBaseStepDefinitions

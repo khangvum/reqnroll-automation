@@ -2,7 +2,7 @@
  * Program:         UserAuthenticationStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-10
- * Description:     A class that defines the step definitions for the user authentication feature.
+ * Description:     A class that defines the step definitions for the user authentication feature on Swag Labs website.
  */
 
 using AventStack.ExtentReports.Gherkin.Model;
@@ -11,7 +11,7 @@ using ReqnrollAutomation.Helpers;
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     /// <summary>
-    /// A class that defines the step definitions for the user authentication feature.
+    /// A class that defines the step definitions for the user authentication feature on Swag Labs website.
     /// </summary>
     [Binding]
     public class UserAuthenticationStepDefinitions : SwagLabsBaseStepDefinitions
