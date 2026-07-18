@@ -1,4 +1,6 @@
-﻿using ReqnrollAutomation.Core.Extenstions;
+﻿using AventStack.ExtentReports.Model;
+using ReqnrollAutomation.Core.Extenstions;
+using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanada
 {
@@ -9,11 +11,19 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         #endregion
 
         #region Page Locators
+        // Accessbility locators
         private readonly By _languageToggleLocator = By.CssSelector("a.cfc-header_lang");
+
+        // Main body locators
+        private readonly By _mainHeadingLocator = By.CssSelector("h1.cfc-heading-text-type-");
         #endregion
 
         #region Page Elements
+        // Accessbility elements
         private IWebElement LanguageToggle => _driver.WaitAndFindElement(_languageToggleLocator);
+
+        // Main body elements
+        private IWebElement MainHeading => _driver.WaitAndFindElement(_mainHeadingLocator);
         #endregion
 
         #region Constructor
@@ -43,15 +53,15 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         }
 
         /// <summary>
+        /// Gets the text of the main heading on the home page, normalizing whitespace and trimming leading/trailing spaces.
+        /// </summary>
+        /// <returns>The text of the main heading.</returns>
+        public string GetMainHeadingText() => Regex.Replace(MainHeading.Text, @"\s+", " ").Trim();
+
+        /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.
         /// </summary>
         public void ToggleLanguage() => LanguageToggle.Click();
-
-        ///// <summary>
-        ///// Gets the text of the language toggle element, which indicates the current language of the website.
-        ///// </summary>
-        ///// <returns></returns>
-        //public string GetLanguageToggleText() => LanguageToggle.Text;
         #endregion
     }
 }

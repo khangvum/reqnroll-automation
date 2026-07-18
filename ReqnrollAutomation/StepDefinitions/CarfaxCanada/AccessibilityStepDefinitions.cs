@@ -49,7 +49,6 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
         #endregion
 
         #region Then Steps
-        // Then the home page should switch to <resulting_language>
         [Then(@"the home page should switch to {}")]
         public void ThenTheHomePageShouldSwitchTo(string resultingLanguage)
         {
@@ -58,6 +57,13 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
 
             // Check if the current language matches the expected resulting language
             Assert.AreEqual(resultingLanguageAbbr, currentLanguageAbbr, $"Expected the home page to switch to {resultingLanguage}, but the 'lang' attribute is currently set to {currentLanguageAbbr}.");
+        }
+
+        [Then(@"the main heading should be {string}")]
+        public void ThenTheMainHeadingShouldBe(string mainHeading)
+        {
+            string currentMainHeading = HomePage.GetMainHeadingText();
+            Assert.AreEqual(mainHeading, currentMainHeading, $"Expected the main heading to be '{mainHeading}', but the current main heading is '{currentMainHeading}'.");
         }
         #endregion
     }
