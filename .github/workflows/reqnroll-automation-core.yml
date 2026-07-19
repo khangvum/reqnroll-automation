@@ -9,6 +9,10 @@ on:
     paths:
       - 'ReqnrollAutomation.Core/**'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   pack-nuget:
     runs-on: ubuntu-latest
