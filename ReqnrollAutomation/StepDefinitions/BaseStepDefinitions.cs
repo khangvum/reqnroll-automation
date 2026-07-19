@@ -6,21 +6,16 @@
  */
 
 using ReqnrollAutomation.Core.Extensions;
-using ReqnrollAutomation.Pages.SwagLabs;
 
-namespace ReqnrollAutomation.StepDefinitions.SwagLabs
+namespace ReqnrollAutomation.StepDefinitions
 {
     public class BaseStepDefinitions
     {
-        #region Private Attributes
+        #region Private & Protected Attributes
         // Driver & Contexts
         private IWebDriver? _driver;
-        private readonly ScenarioContext _scenarioContext;
-        private readonly FeatureContext _featureContext;
-
-        // Pages
-        private LoginPage? _loginPage;
-        private InventoryPage? _inventoryPage;
+        protected readonly ScenarioContext _scenarioContext;
+        protected readonly FeatureContext _featureContext;
         #endregion
 
         #region Public Properties
@@ -33,30 +28,6 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             {
                 _driver ??= _scenarioContext.GetDriver();
                 return _driver;
-            }
-        }
-
-        /// <summary>
-        /// Lazy initialization of the LoginPage instance.
-        /// </summary>
-        public LoginPage LoginPage
-        {
-            get
-            {
-                _loginPage ??= new(Driver);
-                return _loginPage;
-            }
-        }
-
-        /// <summary>
-        /// Lazy initialization of the InventoryPage instance.
-        /// </summary>
-        public InventoryPage InventoryPage
-        {
-            get
-            {
-                _inventoryPage ??= new(Driver);
-                return _inventoryPage;
             }
         }
         #endregion
