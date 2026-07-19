@@ -1,5 +1,4 @@
-﻿using AventStack.ExtentReports.Model;
-using ReqnrollAutomation.Core.Extenstions;
+﻿using ReqnrollAutomation.Core.Extenstions;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanada
@@ -13,6 +12,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         #region Page Locators
         // Accessbility locators
         private readonly By _languageToggleLocator = By.CssSelector("a.cfc-header_lang");
+        private readonly By _accessibilityToggleLocator = By.Id("cfc-theme-toggle");
 
         // Main body locators
         private readonly By _mainHeadingLocator = By.CssSelector("h1.cfc-heading-text-type-");
@@ -21,6 +21,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         #region Page Elements
         // Accessbility elements
         private IWebElement LanguageToggle => _driver.WaitAndFindElement(_languageToggleLocator);
+        private IWebElement AccessibilityToggle => _driver.WaitAndFindElement(_accessibilityToggleLocator);
 
         // Main body elements
         private IWebElement MainHeading => _driver.WaitAndFindElement(_mainHeadingLocator);
@@ -40,7 +41,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         /// <exception cref="InvalidOperationException">Throws an exception if the 'lang' attribute is not found on the <html> element.</exception>
         public string GetCurrentLanguageCode()
         {
-            // Wait for the lang attribute to be set (up to 10 seconds)
+            // Wait for the lang attribute to be set
             IWebElement htmlElement = _wait.Until(driver =>
             {
                 IWebElement html = driver.WaitAndFindElement(By.TagName("html"));
@@ -53,15 +54,45 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         }
 
         /// <summary>
+        /// Gets the current theme of the website by retrieving the 'data-bs-theme' attribute from the <html> element.
+        /// </summary>
+        /// <returns>The current theme.</returns>
+        /// <exception cref="InvalidOperationException">Throws an exception if the 'data-bs-theme' attribute is not found on the <html> element.</exception>
+        public string GetCurrentTheme()
+        {
+            // Wait for the data-bs-theme attribute to be set
+            IWebElement htmlElement = _wait.Until(driver =>
+            {
+                IWebElement html = driver.WaitAndFindElement(By.TagName("html"));
+                var theme = html.GetAttribute("data-bs-theme");
+                return !string.IsNullOrEmpty(theme) ? html : null;
+            });
+
+            string themeAttribute = htmlElement.GetAttribute("data-bs-theme") ?? throw new InvalidOperationException("The 'data-bs-theme' attribute is not found on the <html> element.");
+            return themeAttribute;
+        }
+
+        /// <summary>
         /// Gets the text of the main heading on the home page, normalizing whitespace and trimming leading/trailing spaces.
         /// </summary>
         /// <returns>The text of the main heading.</returns>
         public string GetMainHeadingText() => Regex.Replace(MainHeading.Text, @"\s+", " ").Trim();
 
         /// <summary>
+        /// Gets the color of the main heading on the home page by retrieving the CSS 'color' property.
+        /// </summary>
+        /// <returns>The color of the main heading.</returns>
+        public string GetMainHeadingColor() => MainHeading.GetCssValue("color");
+
+        /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.
         /// </summary>
         public void ToggleLanguage() => LanguageToggle.Click();
+
+        /// <summary>
+        /// Toggles the accessibility mode of the website by clicking on the accessibility toggle element.
+        /// </summary>
+        public void ToggleAccessibility() => AccessibilityToggle.Click();
         #endregion
     }
 }
