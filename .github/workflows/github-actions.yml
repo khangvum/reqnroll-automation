@@ -3,6 +3,14 @@ name: Reqnroll Automation
 on:
   workflow_dispatch:
     inputs:
+      target_project:
+        description: "Target Project"
+        required: true
+        default: "CarfaxCanada"
+        type: choice
+        options:
+          - CarfaxCanada
+          - SwagLabs
       execution_mode:
         description: "Execution Mode"
         required: true
@@ -46,12 +54,20 @@ jobs:
 
       - name: Run Test
         run: |
-          # If the user provided tags, add the filter flag; otherwise run everything
+          # Filter tests based on the selected target project
+          FILTER_ARG="--filter FullyQualifiedName~${{ inputs.target_project }}"
+
+          # Append the category tag condition if provided
           if [ -n "${{ inputs.category }}" ]; then
-            dotnet test --configuration Release --no-restore --settings ./${{ inputs.execution_mode }}.runsettings --filter "TestCategory=${{ inputs.category }}"
-          else
-            dotnet test --configuration Release --no-restore --settings ./${{ inputs.execution_mode }}.runsettings
+            FILTER_ARG="$FILTER_ARG&TestCategory=${{ inputs.category }}"
           fi
+
+          # Execute the target suite
+          dotnet test \
+            --configuration Release \
+            --no-restore \
+            --settings ./${{ inputs.execution_mode }}.runsettings \
+            $FILTER_ARG
 
       - name: Upload Test Results
         if: always() # Ensure this step runs even if the tests fail
