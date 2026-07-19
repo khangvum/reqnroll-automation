@@ -37,6 +37,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'ReqnrollAutomation/**'
 
 jobs:
   test:

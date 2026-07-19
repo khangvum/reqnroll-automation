@@ -1,0 +1,40 @@
+name: Reqnroll Automation Core
+
+on:
+  workflow_dispatch:
+  # Automatically trigger the workflow on push to the master branch
+  push:
+    branches:
+      - master
+    paths:
+      - 'ReqnrollAutomation.Core/**'
+
+jobs:
+  pack-nuget:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore ReqnrollAutomation.Core/ReqnrollAutomation.Core.csproj
+
+      - name: Pack NuGet Package
+        run: |
+          dotnet pack ReqnrollAutomation.Core/ReqnrollAutomation.Core.csproj \
+            --configuration Release \
+            --no-restore \
+            --output ./nupkg \
+            -p:PackageVersion=1.0.${{ github.run_number }}
+
+      - name: Publish NuGet Package to GitHub Packages
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            --skip-duplicate
