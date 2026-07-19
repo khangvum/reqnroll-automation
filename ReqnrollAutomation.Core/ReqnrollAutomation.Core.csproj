@@ -4,6 +4,10 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<Authors>Manh Khang Vu</Authors>
+		<Company>Khangvum</Company>
+		<Description>Core infrastructure and utility extensions for Reqnroll Automation frameworks.</Description>
+		<RepositoryUrl>https://github.com/khangvum/reqnroll-automation</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
