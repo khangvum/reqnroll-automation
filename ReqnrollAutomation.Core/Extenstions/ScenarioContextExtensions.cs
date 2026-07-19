@@ -15,7 +15,7 @@ namespace ReqnrollAutomation.Core.Extensions
     /// </summary>
     public static class ScenarioContextExtensions
     {
-        #region Pivate Attributes
+        #region Private Attributes
         // Scenario Context Keys
         private const string WebDriverKey = "WebDriver";
         #endregion

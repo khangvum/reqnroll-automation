@@ -7,7 +7,7 @@ So that I can access the relevant information and navigate to the company's soci
 
 Background:
 	Given I am on the Swag Labs login page
-	When I log in as "standard" user
+	When I log in as standard user
 
 Scenario: Footer copyright information is displayed correctly
 	Then the footer copyright text should be visible
