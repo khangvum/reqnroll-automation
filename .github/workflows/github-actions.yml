@@ -58,19 +58,34 @@ jobs:
 
       - name: Run Test
         run: |
-          # Filter tests based on the selected target project
-          FILTER_ARG="--filter FullyQualifiedName~${{ inputs.target_project }}"
+          # Fallback to parallel execution if the input mode is blank
+          EXECUTION_MODE="${{ inputs.execution_mode }}"
+          EXECUTION_MODE="${EXECUTION_MODE:-parallel}"
+
+          # Filter tests based on the selected target project if provided
+          if [ -n "${{ inputs.target_project }}" ]; then
+            FILTER_ARG="FullyQualifiedName~${{ inputs.target_project }}"
+          fi
 
           # Append the category tag condition if provided
           if [ -n "${{ inputs.category }}" ]; then
-            FILTER_ARG="$FILTER_ARG&TestCategory=${{ inputs.category }}"
+            if [ -n "$FILTER_ARG" ]; then
+              FILTER_ARG="${FILTER_ARG}&TestCategory=${{ inputs.category }}"
+            else
+              FILTER_ARG="TestCategory=${{ inputs.category }}"
+            fi
+          fi
+
+          # Prepend the --filter flag prefix only if a filter string is constructed
+          if [ -n "$FILTER_ARG" ]; then
+            FILTER_ARG="--filter $FILTER_ARG"
           fi
 
           # Execute the target suite
           dotnet test \
             --configuration Release \
             --no-restore \
-            --settings ./${{ inputs.execution_mode }}.runsettings \
+            --settings ./${EXECUTION_MODE}.runsettings \
             $FILTER_ARG
 
       - name: Upload Test Results
