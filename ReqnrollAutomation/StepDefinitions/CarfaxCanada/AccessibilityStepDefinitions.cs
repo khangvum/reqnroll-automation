@@ -13,9 +13,26 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
     [Binding]
     public class AccessibilityStepDefinitions : CarfaxCanadaBaseStepDefinitions
     {
+        #region Registry
+        // Registry
+        private enum ValidationKey
+        {
+            AccessibilityTheme
+        }
+
+        private readonly Dictionary<ValidationKey, string> _registry;
+
+        // Scenario Context Keys
+        private const string InitialColorKey = "InitialMainHeadingColor";
+        #endregion
+
         #region Constructor
         public AccessibilityStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
+            _registry = new()
+            {
+                { ValidationKey.AccessibilityTheme, "high-contrast" }
+            };
         }
         #endregion
 
@@ -41,10 +58,17 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
         #endregion
 
         #region When Steps
-        [When(@"I click on the language toggle")]
+        [When(@"I click the language toggle")]
         public void WhenIClickOnTheLanguageToggle()
         {
             HomePage.ToggleLanguage();
+        }
+
+        [When(@"I click the accessibility toggle")]
+        public void WhenIClickOnTheAccessibilityToggle()
+        {
+            _scenarioContext[InitialColorKey] = HomePage.GetMainHeadingColor();
+            HomePage.ToggleAccessibility();
         }
         #endregion
 
@@ -64,6 +88,23 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
         {
             string currentMainHeading = HomePage.GetMainHeadingText();
             Assert.AreEqual(mainHeading, currentMainHeading, $"Expected the main heading to be '{mainHeading}', but the current main heading is '{currentMainHeading}'.");
+        }
+
+        [Then(@"the theme should be set to high contrast")]
+        public void ThenTheThemeShouldBeSetToHighContrast()
+        {
+            string currentTheme = HomePage.GetCurrentTheme();
+            Assert.AreEqual(_registry[ValidationKey.AccessibilityTheme], currentTheme, $"Expected the theme to be set to 'high-contrast', but the current theme is '{currentTheme}'.");
+        }
+
+        [Then(@"the main heading color should change")]
+        public void ThenTheMainHeadingColorShouldChange()
+        {
+            string initialColor = _scenarioContext[InitialColorKey] as string ?? throw new InvalidOperationException("Initial main heading color is not stored in the scenario context.");
+            string currentColor = HomePage.GetMainHeadingColor();
+
+            // Check if the main heading color has changed
+            Assert.AreNotEqual(initialColor, currentColor, $"Expected the main heading color to change from '{initialColor}', but it is still '{currentColor}'.");
         }
         #endregion
     }

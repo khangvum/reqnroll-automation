@@ -11,7 +11,7 @@ Background:
 @smoke
 Scenario Outline: Language toggle switches between English and French
 	Given the home page is displayed in <initial_language>
-	When I click on the language toggle
+	When I click the language toggle
 	Then the home page should switch to <resulting_language>
 	And the main heading should be "<main_heading>"
 
@@ -20,3 +20,7 @@ Examples:
 	| English          | French             | Le rapport d’historique de véhicule le plus complet au Canada. |
 	| French           | English            | Canada’s most comprehensive vehicle history report.            |
 
+Scenario: Accessibility toggle enables theme contrast
+	When I click the accessibility toggle
+	Then the theme should be set to high contrast
+	And the main heading color should change

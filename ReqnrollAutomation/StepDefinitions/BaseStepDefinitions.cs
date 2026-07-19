@@ -11,11 +11,11 @@ namespace ReqnrollAutomation.StepDefinitions
 {
     public class BaseStepDefinitions
     {
-        #region Private Attributes
+        #region Private & Protected Attributes
         // Driver & Contexts
         private IWebDriver? _driver;
-        private readonly ScenarioContext _scenarioContext;
-        private readonly FeatureContext _featureContext;
+        protected readonly ScenarioContext _scenarioContext;
+        protected readonly FeatureContext _featureContext;
         #endregion
 
         #region Public Properties
