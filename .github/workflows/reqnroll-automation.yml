@@ -55,6 +55,14 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
+      # Dynamically logs into personal NuGet feed using the stored secret
+      - name: Authenticate NuGet Feed
+        run: |
+          dotnet nuget update source "khangvum-nuget" \
+            --username "khangvum" \
+            --password "${{ secrets.PAT_PACKAGE_READ_TOKEN }}" \
+            --store-password-in-clear-text
+
       - name: Restore
         run: dotnet restore
 
@@ -97,3 +105,4 @@ jobs:
           name: TestReport
           path: '**/TestResults/ReqnrollAutomation/**/*'
           retention-days: 7
+ 
