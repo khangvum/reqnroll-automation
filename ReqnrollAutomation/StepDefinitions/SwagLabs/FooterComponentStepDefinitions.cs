@@ -59,7 +59,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             Assert.IsTrue(Regex.IsMatch(actualCopyrightText, copyrightPattern), "The footer copyright text is not displayed correctly.");
         }
 
-        [Then("the footer should contain a link to {string}")]
+        [Then("the footer should contain a link to {}")]
         public void ThenTheFooterShouldContainALinkTo(string platform)
         {
             // Scroll to the footer section to ensure it is visible on the screen
@@ -70,7 +70,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             Assert.IsTrue(isVisible, $"The footer does not contain a link to {platform}.");
         }
 
-        [Then("the {string} link should navigate to {string}")]
+        [Then("the {} link should navigate to {string}")]
         public void ThenTheSocialMediaLinkShouldNavigateTo(string platform, string expectedUrl)
         {
             // Click the social media link & switch to the new tab
