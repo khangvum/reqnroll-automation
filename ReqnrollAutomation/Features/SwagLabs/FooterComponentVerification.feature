@@ -14,8 +14,8 @@ Scenario: Footer copyright information is displayed correctly
 	And the footer copyright text should display correctly
 
 Scenario Outline: Social media links in the footer are functional and navigate to the correct URLs
-	Then the footer should contain a link to "<platform>"
-	And the "<platform>" link should navigate to "<expectedURL>"
+	Then the footer should contain a link to <platform>
+	And the <platform> link should navigate to "<expectedURL>"
 
 Examples:
 	| platform | expectedURL                                  |
