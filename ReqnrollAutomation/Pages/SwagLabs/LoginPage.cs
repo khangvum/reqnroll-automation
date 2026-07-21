@@ -5,7 +5,7 @@
  * Description:     A class that represents the login page of Swag Labs.
  */
 
-using ReqnrollAutomation.Core.Extenstions;
+using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Helpers;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
