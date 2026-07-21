@@ -12,6 +12,9 @@ using System.Collections.ObjectModel;
 
 namespace ReqnrollAutomation.Core.Extenstions
 {
+    /// <summary>
+    /// A class that contains extension methods for the IWebDriver interface.
+    /// </summary>
     public static class WebDriverExtensions
     {
         /// <summary>
