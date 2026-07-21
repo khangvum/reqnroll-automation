@@ -5,7 +5,7 @@
  * Description:     A class that represents the inventory page of Swag Labs.
  */
 
-using ReqnrollAutomation.Core.Extenstions;
+using ReqnrollAutomation.Core.Extensions;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
 {
