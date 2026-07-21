@@ -16,10 +16,10 @@ Scenario: Footer copyright information is displayed correctly
 Scenario Outline: Social media links in the footer are functional and navigate to the correct URLs
 	Given the footer contains a link to <platform> social media page
 	When I click on the <platform> social media link
-	Then the <platform> link should navigate to "<expectedURL>"
+	Then the <platform> link should navigate to "<expected_URL>"
 
 Examples:
-	| platform | expectedURL                                  |
+	| platform | expected_URL                                  |
 	| Twitter  | https://x.com/saucelabs                      |
 	| Facebook | https://www.facebook.com/saucelabs           |
 	| LinkedIn | https://www.linkedin.com/company/sauce-labs/ |
