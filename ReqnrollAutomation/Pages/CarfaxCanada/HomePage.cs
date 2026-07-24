@@ -1,4 +1,4 @@
-﻿using ReqnrollAutomation.Core.Extenstions;
+﻿using ReqnrollAutomation.Core.Extensions;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanada
@@ -13,6 +13,10 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         // Accessbility locators
         private readonly By _languageToggleLocator = By.CssSelector("a.cfc-header_lang");
         private readonly By _accessibilityToggleLocator = By.Id("cfc-theme-toggle");
+
+        // Header locators
+        private static By GetHeaderSectionLocator(string sectionName) => By.XPath($"//button[contains(@class,'cfc-header-title') and normalize-space(text())='{sectionName}']");
+        private static By GetHeaderSubsectionLocator(string subSectionName) => By.XPath($"//a[contains(@class,'cfc-header-link') and normalize-space(text())='{subSectionName}']");
 
         // Main body locators
         private readonly By _mainHeadingLocator = By.CssSelector("h1.cfc-heading-text-type-");
@@ -34,6 +38,26 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Clicks on a section in the header based on the provided section name.
+        /// </summary>
+        /// <param name="sectionName">The name of the section to click.</param>
+        public void HoverHeaderSection(string sectionName)
+        {
+            IWebElement sectionElement = _driver.WaitAndFindElement(GetHeaderSectionLocator(sectionName));
+            sectionElement.Hover();
+        }
+
+        /// <summary>
+        /// Clicks on a subsection in the header based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection to click.</param>
+        public void ClickHeaderSubsection(string subSectionName)
+        {
+            IWebElement subSectionElement = _driver.WaitAndFindElement(GetHeaderSubsectionLocator(subSectionName));
+            subSectionElement.Click();
+        }
+
         /// <summary>
         /// Gets the current language code of the website by retrieving the 'lang' attribute from the <html> element.
         /// </summary>
@@ -83,6 +107,18 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         /// </summary>
         /// <returns>The color of the main heading.</returns>
         public string GetMainHeadingColor() => MainHeading.GetCssValue("color");
+
+        /// <summary>
+        /// Gets the 'target' attribute of a subsection link in the header based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection.</param>
+        /// <returns>The 'target' attribute of the subsection link.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the 'target' attribute is not found on the subsection link.</exception>
+        public string GetHeaderSubsectionLinkTarget(string subSectionName)
+        {
+            IWebElement subSectionElement = _driver.WaitAndFindElement(GetHeaderSubsectionLocator(subSectionName));
+            return subSectionElement.GetAttribute("target") ?? throw new InvalidOperationException($"The 'target' attribute is not found on the subsection '{subSectionName}'.");
+        }
 
         /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.

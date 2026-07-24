@@ -48,6 +48,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region When Steps
+        [Given(@"I am logged in as {} user")]
         [When(@"I log in as {} user")]
         public void WhenILogInAsUser(string accountType)
         {

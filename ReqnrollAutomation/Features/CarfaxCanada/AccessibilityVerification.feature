@@ -1,4 +1,4 @@
-﻿@regression
+﻿@regression @carfaxcanada @accessibility
 Feature: Accessibility Verification
 
 As a user
