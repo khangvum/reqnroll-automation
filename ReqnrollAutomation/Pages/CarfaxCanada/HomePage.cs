@@ -15,6 +15,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         private readonly By _accessibilityToggleLocator = By.Id("cfc-theme-toggle");
 
         // Header locators
+        private readonly By _headerLogoLocator = By.CssSelector("a.navbar-brand.cfc-logo");
         private static By GetHeaderSectionLocator(string sectionName) => By.XPath($"//button[contains(@class,'cfc-header-title') and normalize-space(text())='{sectionName}']");
         private static By GetHeaderSubsectionLocator(string subSectionName) => By.XPath($"//a[contains(@class,'cfc-header-link') and normalize-space(text())='{subSectionName}']");
 
@@ -26,6 +27,9 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         // Accessbility elements
         private IWebElement LanguageToggle => _driver.WaitAndFindElement(_languageToggleLocator);
         private IWebElement AccessibilityToggle => _driver.WaitAndFindElement(_accessibilityToggleLocator);
+
+        // Header elements
+        private IWebElement HeaderLogo => _driver.WaitAndFindElement(_headerLogoLocator);
 
         // Main body elements
         private IWebElement MainHeading => _driver.WaitAndFindElement(_mainHeadingLocator);
@@ -46,6 +50,14 @@ namespace ReqnrollAutomation.Pages.CarfaxCanada
         {
             IWebElement sectionElement = _driver.WaitAndFindElement(GetHeaderSectionLocator(sectionName));
             sectionElement.Hover();
+        }
+        
+        /// <summary>
+        /// Clicks on the header logo.
+        /// </summary>
+        public void ClickHeaderLogo()
+        {
+            HeaderLogo.Click();
         }
 
         /// <summary>

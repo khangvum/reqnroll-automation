@@ -49,6 +49,12 @@ namespace ReqnrollAutomation.Pages
         public void Navigate() => _driver.Navigate().GoToUrl(PageUrl);
 
         /// <summary>
+        /// Navigates to the specified URL.
+        /// </summary>
+        /// <param name="url">The URL to navigate to.</param>
+        public void Navigate(string url) => _driver.Navigate().GoToUrl(url);
+
+        /// <summary>
         /// Switches to the newly opened tab in the browser, storing the original window handle for later use.
         /// </summary>
         /// <exception cref="InvalidOperationException">Throws if the new window handle is not found.</exception>
@@ -62,6 +68,57 @@ namespace ReqnrollAutomation.Pages
             // Switch to the new tab
             string? newWindowHandle = _driver.WindowHandles.FirstOrDefault(handle => handle != _originalWindowHandle);
             _driver.SwitchTo().Window(newWindowHandle ?? throw new InvalidOperationException("New window handle not found."));
+        }
+
+        /// <summary>
+        /// Switches back to the original tab in the browser, using the stored original window handle.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Throws if no original window handle is stored.</exception>
+        public void SwitchToOriginalTab()
+        {
+            if (_originalWindowHandle == null)
+            {
+                throw new InvalidOperationException("No original window handle stored. Cannot switch back to the original tab.");
+            }
+
+            _driver.SwitchTo().Window(_originalWindowHandle);
+            _originalWindowHandle = null;
+        }
+
+        /// <summary>
+        /// Closes the current tab and switches back to the original tab in the browser.
+        /// </summary>
+        public void CloseCurrentTabAndSwitchBackToOriginalTab()
+        {
+            _driver.Close();
+            SwitchToOriginalTab();
+        }
+
+        /// <summary>
+        /// Waits for the current URL to stabilize, meaning it remains the same for a short duration, indicating that the page has finished loading, navigating, or redirecting.
+        /// </summary>
+        /// <returns>The stabilized URL.</returns>
+        public string WaitForUrlToStabilize()
+        {
+            string previousUrl = "";
+            return _wait.Until(driver =>
+            {
+                string currentUrl = driver.Url;
+                // If the current URL is the same as the previous URL, it means the page has stabilized, hence return the current URL
+                // Otherwise, update the previous URL and continue waiting
+                if (!string.IsNullOrEmpty(currentUrl) && currentUrl.Equals(previousUrl, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Sleep for a short duration to ensure the page has fully stabilized
+                    Thread.Sleep(500);
+                    if (currentUrl == previousUrl)
+                    {
+                        return currentUrl;
+                    }
+                }
+
+                previousUrl = currentUrl;
+                return null;
+            });
         }
         #endregion
 
