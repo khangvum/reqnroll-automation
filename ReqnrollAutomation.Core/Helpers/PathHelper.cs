@@ -71,18 +71,6 @@ namespace ReqnrollAutomation.Core.Helpers
             Directory.CreateDirectory(screenshotsDir);
             return screenshotsDir;
         }
-
-        /// <summary>
-        /// Gets the full path to the directory used for storing logs, creating the directory if it does not already
-        /// exist.
-        /// </summary>
-        /// <returns>The full path to the logs directory.</returns>
-        public static string GetLogDirectoryPath()
-        {
-            string logsDir = Path.Combine(_baseDirectory!, _timestamp, "Logs");
-            Directory.CreateDirectory(logsDir);
-            return logsDir;
-        }
         #endregion
     }
 }
