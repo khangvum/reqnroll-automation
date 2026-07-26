@@ -5,6 +5,7 @@
  * Description:     A class that defines the step definitions for the footer component verification feature on Swag Labs website.
  */
 
+using ReqnrollAutomation.Pages.SwagLabs;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
@@ -15,22 +16,9 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
     [Binding]
     public class FooterComponentStepDefinitions : SwagLabsBaseStepDefinitions
     {
-        #region Registry
-        private enum ValidationKey
-        {
-            CopyrightPattern
-        }
-
-        private readonly Dictionary<ValidationKey, string> _registry;
-        #endregion
-
         #region Constructor
         public FooterComponentStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
-            _registry = new()
-            {
-                { ValidationKey.CopyrightPattern, @"© \d{4} Sauce Labs\. All Rights Reserved\." }
-            };
         }
         #endregion
 
@@ -79,7 +67,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             string actualCopyrightText = InventoryPage.GetCopyrightText();
 
             // Define a regex pattern that matches any 4-digit year
-            string copyrightPattern = _registry[ValidationKey.CopyrightPattern];
+            string copyrightPattern = InventoryPage.Registry[InventoryPage.ValidationKey.CopyrightPattern];
 
             // Verify if the footer copyright text is displayed correctly
             Assert.IsTrue(Regex.IsMatch(actualCopyrightText, copyrightPattern), "The footer copyright text is not displayed correctly.");

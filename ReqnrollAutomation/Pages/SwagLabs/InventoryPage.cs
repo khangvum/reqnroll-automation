@@ -5,6 +5,7 @@
  * Description:     A class that represents the inventory page of Swag Labs.
  */
 
+using Microsoft.Win32;
 using ReqnrollAutomation.Core.Extensions;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
@@ -15,7 +16,16 @@ namespace ReqnrollAutomation.Pages.SwagLabs
     public class InventoryPage : BasePage
     {
         #region Public Properties
+        // URL
         public override string PageUrl => "https://www.saucedemo.com/inventory.html";
+
+        // Registry
+        public enum ValidationKey
+        {
+            CopyrightPattern
+        }
+
+        public readonly Dictionary<ValidationKey, string> Registry;
         #endregion
 
         #region Page Locators
@@ -38,6 +48,10 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #region Constructor
         public InventoryPage(IWebDriver driver) : base(driver)
         {
+            Registry = new()
+            {
+                { ValidationKey.CopyrightPattern, @"© \d{4} Sauce Labs\. All Rights Reserved\." }
+            };
         }
         #endregion
 
