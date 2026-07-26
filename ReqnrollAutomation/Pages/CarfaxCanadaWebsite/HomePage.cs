@@ -15,10 +15,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
             AccessibilityTheme
         }
 
-        public readonly Dictionary<ValidationKey, string> Registry = new()
-        {
-            { ValidationKey.AccessibilityTheme, "high-contrast" }
-        };
+        public readonly Dictionary<ValidationKey, string> Registry;
 
         // Constants
         // - Header links
@@ -92,6 +89,10 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         #region Constructor
         public HomePage(IWebDriver driver) : base(driver)
         {
+            Registry = new()
+            {
+                { ValidationKey.AccessibilityTheme, "high-contrast" }
+            };
         }
         #endregion
 

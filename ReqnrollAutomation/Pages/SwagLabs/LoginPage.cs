@@ -16,7 +16,18 @@ namespace ReqnrollAutomation.Pages.SwagLabs
     public class LoginPage : BasePage
     {
         #region Public Properties
+        // URL
         public override string PageUrl => "https://www.saucedemo.com/";
+
+        // Registry
+        public enum ValidationKey
+        {
+            SuccessfulLoginUrl,
+            LockoutMessage,
+            InvalidCredentialsMessage
+        }
+
+        public readonly Dictionary<ValidationKey, string> Registry;
         #endregion
 
         #region Page Locators
@@ -36,6 +47,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #region Constructor
         public LoginPage(IWebDriver driver) : base(driver)
         {
+            Registry = new()
+            {
+                { ValidationKey.SuccessfulLoginUrl, (new InventoryPage(driver)).PageUrl },
+                { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
+                { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
+            };
         }
         #endregion
 

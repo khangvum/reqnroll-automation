@@ -7,6 +7,7 @@
 
 using AventStack.ExtentReports.Gherkin.Model;
 using ReqnrollAutomation.Helpers;
+using ReqnrollAutomation.Pages.SwagLabs;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
@@ -16,26 +17,9 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
     [Binding]
     public class UserAuthenticationStepDefinitions : SwagLabsBaseStepDefinitions
     {
-        #region Registry
-        private enum ValidationKey
-        {
-            SuccessfulLoginUrl,
-            LockoutMessage,
-            InvalidCredentialsMessage
-        }
-
-        private readonly Dictionary<ValidationKey, string> _registry;
-        #endregion
-
         #region Constructor
         public UserAuthenticationStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
-            _registry = new()
-            {
-                { ValidationKey.SuccessfulLoginUrl, InventoryPage.PageUrl },
-                { ValidationKey.LockoutMessage, "Sorry, this user has been locked out" },
-                { ValidationKey.InvalidCredentialsMessage, "Username and password do not match any user in this service" }
-            };
         }
         #endregion
 
@@ -61,7 +45,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         [Then(@"I should be logged in successfully")]
         public void ThenIShouldBeLoggedInSuccessfully()
         {
-            Assert.Contains(_registry[ValidationKey.SuccessfulLoginUrl], Driver.Url, "User was not logged in successfully.");
+            Assert.Contains(LoginPage.Registry[LoginPage.ValidationKey.SuccessfulLoginUrl], Driver.Url, "User was not logged in successfully.");
         }   
 
         [Then(@"I should see a\(n\) {} message")]
@@ -71,13 +55,13 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             string lookupKey = $"{errorType.Replace(" ", "")}message";
 
             // Try to parse the lookup key to the ValidationKey enum
-            if (!Enum.TryParse(lookupKey, true, out ValidationKey registryKey))
+            if (!Enum.TryParse(lookupKey, true, out LoginPage.ValidationKey registryKey))
             {
                 throw new ArgumentException($"Could not map '{errorType}' to an existing registry key.");
             }
 
             string actualErrorMessage = LoginPage.GetErrorMessage();
-            string expectedErrorMessage = _registry[registryKey];
+            string expectedErrorMessage = LoginPage.Registry[registryKey];
             Assert.Contains(expectedErrorMessage, actualErrorMessage, "Lockout message was not displayed.");
         }
         #endregion
