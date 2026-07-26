@@ -1,4 +1,4 @@
-﻿@regression @userauthentication
+﻿@regression @swaglabs @userauthentication
 Feature: User Authentication Verification
 
 As a QA engineer

@@ -1,4 +1,4 @@
-﻿@smoke @regression @footer
+﻿@regression @swaglabs @footer
 Feature: Footer Component Verification
 
 As a user
@@ -9,6 +9,7 @@ Background:
 	Given I am on the Swag Labs login page
 	And I am logged in as standard user
 
+@smoke
 Scenario: Swag Labs footer copyright information is displayed correctly
 	Then the Swag Labs footer copyright text should be visible
 	And the Swag Labs footer copyright text should display correctly
