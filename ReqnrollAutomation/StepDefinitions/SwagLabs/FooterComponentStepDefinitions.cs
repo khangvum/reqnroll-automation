@@ -51,7 +51,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region When Steps
-        [When(@"I click on the {} social media link")]
+        [When(@"I click on the Swag Labs {} social media link")]
         public void WhenIClickOnTheSocialMediaLink(string platform)
         {
             // Click the social media link & switch to the new tab
