@@ -1,7 +1,7 @@
 ﻿using ReqnrollAutomation.Core.Extensions;
 using System.Text.RegularExpressions;
 
-namespace ReqnrollAutomation.Pages.CarfaxCanada
+namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
 {
     public class HomePage : BasePage
     {

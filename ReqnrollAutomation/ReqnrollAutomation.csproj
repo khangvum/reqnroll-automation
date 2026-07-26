@@ -22,11 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\CarfaxCanada\" />
-		<Folder Include="Hooks\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\ReqnrollAutomation.Core\ReqnrollAutomation.Core.csproj" />
 	</ItemGroup>
 
