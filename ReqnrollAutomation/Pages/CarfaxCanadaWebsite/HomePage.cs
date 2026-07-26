@@ -21,6 +21,10 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
 
         // Main body locators
         private readonly By _mainHeadingLocator = By.CssSelector("h1.cfc-heading-text-type-");
+
+        // Footer locators
+        private readonly By _footerContainerLocator = By.CssSelector("div.cfc-footer");
+        private readonly By _footerDisclaimerTextLocator = By.CssSelector("p.cfc-footer__copy");
         #endregion
 
         #region Page Elements
@@ -33,6 +37,10 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
 
         // Main body elements
         private IWebElement MainHeading => _driver.WaitAndFindElement(_mainHeadingLocator);
+
+        // Footer elements
+        private IWebElement FooterContainer => _driver.WaitAndFindElement(_footerContainerLocator);
+        private IWebElement FooterDisclaimerText => _driver.WaitAndFindElement(_footerDisclaimerTextLocator);
         #endregion
 
         #region Constructor
@@ -133,6 +141,18 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         }
 
         /// <summary>
+        /// Retrieves the text of the footer disclaimer element.
+        /// </summary>
+        /// <returns>The text of the footer disclaimer.</returns>
+        public string GetDisclaimerText() => FooterDisclaimerText.Text;
+
+        /// <summary>
+        /// Checks if the footer disclaimer text is visible on the page.
+        /// </summary>
+        /// <returns>True if the disclaimer text is visible, otherwise false.</returns>
+        public bool IsDisclaimerTextVisible() => FooterDisclaimerText.Displayed;
+
+        /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.
         /// </summary>
         public void ToggleLanguage() => LanguageToggle.Click();
@@ -141,6 +161,11 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// Toggles the accessibility mode of the website by clicking on the accessibility toggle element.
         /// </summary>
         public void ToggleAccessibility() => AccessibilityToggle.Click();
+
+        /// <summary>
+        /// Scrolls the page to the footer section.
+        /// </summary>
+        public void ScrollToFooter() => ScrollIntoView(FooterContainer);
         #endregion
     }
 }
