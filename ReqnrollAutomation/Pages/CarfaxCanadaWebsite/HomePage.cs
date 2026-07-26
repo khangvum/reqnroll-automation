@@ -9,6 +9,17 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // URL
         public override string PageUrl => "https://www.carfax.ca/";
 
+        // Registry
+        public enum ValidationKey
+        {
+            AccessibilityTheme
+        }
+
+        public readonly Dictionary<ValidationKey, string> Registry = new()
+        {
+            { ValidationKey.AccessibilityTheme, "high-contrast" }
+        };
+
         // Constants
         // - Header links
         /// <summary>

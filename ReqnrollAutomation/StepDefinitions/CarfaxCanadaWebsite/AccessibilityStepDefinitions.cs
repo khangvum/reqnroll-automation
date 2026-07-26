@@ -1,10 +1,13 @@
-﻿/**
+﻿
+
+using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
+
+/**
  * Program:         AccessibilityStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-07-18
  * Description:     A class that defines the step definitions for the accessibility feature on CARFAX Canada website.
  */
-
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     /// <summary>
@@ -13,26 +16,12 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
     [Binding]
     public class AccessibilityStepDefinitions : CarfaxCanadaBaseStepDefinitions
     {
-        #region Registry
-        // Registry
-        private enum ValidationKey
-        {
-            AccessibilityTheme
-        }
-
-        private readonly Dictionary<ValidationKey, string> _registry;
-
         // Scenario Context Keys
         private const string InitialColorKey = "InitialMainHeadingColor";
-        #endregion
 
         #region Constructor
         public AccessibilityStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
-            _registry = new()
-            {
-                { ValidationKey.AccessibilityTheme, "high-contrast" }
-            };
         }
         #endregion
 
@@ -94,7 +83,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         public void ThenTheThemeShouldBeSetToHighContrast()
         {
             string currentTheme = HomePage.GetCurrentTheme();
-            Assert.AreEqual(_registry[ValidationKey.AccessibilityTheme], currentTheme, $"Expected the theme to be set to 'high-contrast', but the current theme is '{currentTheme}'.");
+            Assert.AreEqual(HomePage.Registry[HomePage.ValidationKey.AccessibilityTheme], currentTheme, $"Expected the theme to be set to 'high-contrast', but the current theme is '{currentTheme}'.");
         }
 
         [Then(@"the main heading color should change")]
