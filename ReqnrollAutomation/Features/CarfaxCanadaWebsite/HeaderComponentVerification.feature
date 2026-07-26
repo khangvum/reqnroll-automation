@@ -1,5 +1,5 @@
 ﻿@regression @carfaxcanadawebsite @header
-Feature: Header Verification
+Feature: Header Component Verification
 
 As a user
 I want to ensure the header links are functioning properly
