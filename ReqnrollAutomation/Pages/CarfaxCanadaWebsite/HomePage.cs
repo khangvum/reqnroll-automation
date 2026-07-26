@@ -6,7 +6,39 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
     public class HomePage : BasePage
     {
         #region Public Properties
+        // URL
         public override string PageUrl => "https://www.carfax.ca/";
+
+        // Constants
+        // - Header links
+        /// <summary>
+        /// A read-only list of tuples representing the header links on the CARFAX Canada website.
+        /// </summary>
+        public readonly IReadOnlyList<(string Section, string SubSection, string ExpectedUrl)> HeaderLinks =
+        [
+            ("Vehicle History", "Vehicle History Reports", "https://www.carfax.ca/vehicle-history/vehicle-history-report"),
+            ("Vehicle History", "View a Sample Report", "https://www.carfax.ca/vehicle-history/sample-report"),
+            ("Vehicle Fraud", "What is VIN Fraud?", "https://www.carfax.ca/what-is-vin-fraud"),
+            ("Vehicle Fraud", "VIN Fraud Check", "https://www.carfax.ca/vin-fraud-check"),
+            ("Vehicle Fraud", "Vehicle Monitoring Subscription", "https://www.carfax.ca/vehicle-monitoring-subscription"),
+            ("What’s My Car Worth", "Car Value", "https://www.carfax.ca/whats-my-car-worth/car-value/ymm"),
+            ("What’s My Car Worth", "History Based Value", "https://www.carfax.ca/whats-my-car-worth/history-based-value"),
+            ("Tools", "VIN Decoder", "https://www.carfax.ca/tools/vin-decode"),
+            ("Tools", "Recall Check", "https://www.carfax.ca/tools/recall-check"),
+            ("Tools", "Car Care", "https://www.carfax.ca/Service"),
+            ("Resources", "Learn", "https://www.carfax.ca/learn"),
+            ("Resources", "Support", "https://support.carfax.ca/en/support/home")
+        ];
+
+        /// <summary>
+        /// Gets a list of expected URLs for internal subpages of the CARFAX Canada website, excluding "Support" and "Car Care" links.
+        /// </summary>
+        public List<string> InternalSubpageLinks => HeaderLinks
+            .Where(link => link.SubSection != "Support" && link.SubSection != "Car Care")
+            .Select(link => link.ExpectedUrl)
+            .ToList();
+
+        // - Footer links
         #endregion
 
         #region Page Locators
@@ -25,6 +57,9 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // Footer locators
         private readonly By _footerContainerLocator = By.CssSelector("div.cfc-footer");
         private readonly By _footerDisclaimerTextLocator = By.CssSelector("p.cfc-footer__copy");
+        private static By GetFooterSectionLocator(string sectionName) => By.XPath($"//li[contains(@class,'cfc-footer__link-item') and .//*[normalize-space(text())='{sectionName}']]");
+        private static By GetFooterSubsectionLocator(string subSectionName) =>
+            By.XPath($"//a[contains(@class,'cfc-footer-section__item') and normalize-space(text())='{subSectionName}']");
         #endregion
 
         #region Page Elements
