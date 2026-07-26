@@ -35,7 +35,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region Given Steps
-        [Given(@"the footer contains a link to {} social media page")]
+        [Given(@"the Swag Labs footer contains a link to {} social media page")]
         public void GivenTheFooterShouldContainALinkToSocialMediaPage(string platform)
         {
             // Scroll to the footer section to ensure it is visible on the screen
@@ -62,7 +62,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 
         #region Then Steps
         // Then Steps
-        [Then(@"the footer copyright text should be visible")]
+        [Then(@"the Swag Labs footer copyright text should be visible")]
         public void ThenTheFooterCopyrightTextShouldBeVisible()
         {
             // Scroll to the footer section to ensure it is visible on the screen
@@ -72,7 +72,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             Assert.IsTrue(InventoryPage.IsCopyrightTextVisible(), "The footer copyright text is not visible.");
         }
 
-        [Then(@"the footer copyright text should display correctly")]
+        [Then(@"the Swag Labs footer copyright text should display correctly")]
         public void ThenTheFooterCopyrightTextShouldDisplayCorrectly()
         {
             // Get the actual copyright text from the page
@@ -85,12 +85,12 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             Assert.IsTrue(Regex.IsMatch(actualCopyrightText, copyrightPattern), "The footer copyright text is not displayed correctly.");
         }
 
-        [Then(@"the {} link should navigate to {string}")]
+        [Then(@"the Swag Labs {} link should navigate to {string}")]
         public void ThenTheSocialMediaLinkShouldNavigateTo(string platform, string expectedUrl)
         {
             // Verify if the new tab navigates to the expected URL
             string actualUrl = Driver.Url;
-            Assert.AreEqual(expectedUrl, actualUrl, $"The {platform} link did not navigate to the expected URL.");
+            Assert.AreEqual(expectedUrl, actualUrl, $"The Swag Labs {platform} link did not navigate to the expected URL.");
         }
         #endregion
     }
