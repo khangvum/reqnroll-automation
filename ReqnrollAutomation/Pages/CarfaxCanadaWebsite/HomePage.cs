@@ -56,8 +56,20 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
 
         // Header locators
         private readonly By _headerLogoLocator = By.CssSelector("a.navbar-brand.cfc-logo");
-        private static By GetHeaderSectionLocator(string sectionName) => By.XPath($"//button[contains(@class,'cfc-header-title') and normalize-space(text())='{sectionName}']");
-        private static By GetHeaderSubsectionLocator(string subSectionName) => By.XPath($"//a[contains(@class,'cfc-header-link') and normalize-space(text())='{subSectionName}']");
+
+        /// <summary>
+        /// Gets the locator for a header section based on the provided section name.
+        /// </summary>
+        /// <param name="sectionName">The name of the section (e.g., "Vehicle History", "Vehicle Fraud", "What's My Car Worth", "Tools", "Resources").</param>
+        /// <returns>The locator for the header section.</returns>
+        private By GetHeaderSectionLocator(string sectionName) => By.XPath($"//button[contains(@class,'cfc-header-title') and normalize-space(text())='{sectionName}']");
+
+        /// <summary>
+        /// Gets the locator for a header subsection based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection.</param>
+        /// <returns>The locator for the header subsection.</returns>
+        private By GetHeaderSubsectionLocator(string subSectionName) => By.XPath($"//a[contains(@class,'cfc-header-link') and normalize-space(text())='{subSectionName}']");
 
         // Main body locators
         private readonly By _mainHeadingLocator = By.CssSelector("h1.cfc-heading-text-type-");
@@ -65,8 +77,8 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // Footer locators
         private readonly By _footerContainerLocator = By.CssSelector("div.cfc-footer");
         private readonly By _footerDisclaimerTextLocator = By.CssSelector("p.cfc-footer__copy");
-        private static By GetFooterSectionLocator(string sectionName) => By.XPath($"//li[contains(@class,'cfc-footer__link-item') and .//*[normalize-space(text())='{sectionName}']]");
-        private static By GetFooterSubsectionLocator(string subSectionName) =>
+        private By GetFooterSectionLocator(string sectionName) => By.XPath($"//li[contains(@class,'cfc-footer__link-item') and .//*[normalize-space(text())='{sectionName}']]");
+        private By GetFooterSubsectionLocator(string subSectionName) =>
             By.XPath($"//a[contains(@class,'cfc-footer-section__item') and normalize-space(text())='{subSectionName}']");
         #endregion
 
