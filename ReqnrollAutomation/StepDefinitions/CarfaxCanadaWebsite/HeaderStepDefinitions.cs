@@ -5,7 +5,7 @@
  * Description:     A class that defines the step definitions for the header component verification feature on CARFAX Canada website.
  */
 
-namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
+namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     /// <summary>
     /// A class that defines the step definitions for the header component verification feature on CARFAX Canada website.
