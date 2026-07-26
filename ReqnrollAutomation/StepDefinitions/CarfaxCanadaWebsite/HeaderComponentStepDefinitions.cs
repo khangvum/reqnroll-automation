@@ -11,7 +11,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
     /// A class that defines the step definitions for the header component verification feature on CARFAX Canada website.
     /// </summary>
     [Binding]
-    public class HeaderStepDefinitions : CarfaxCanadaBaseStepDefinitions
+    public class HeaderComponentStepDefinitions : CarfaxCanadaBaseStepDefinitions
     {
         public static readonly List<(string Section, string SubSection, string ExpectedUrl)> HeaderLinks =
         [
@@ -30,7 +30,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         ];
 
         #region Constructor
-        public HeaderStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
+        public HeaderComponentStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
         }
         #endregion
