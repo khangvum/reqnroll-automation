@@ -50,6 +50,9 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
             .ToList();
 
         // - Footer links
+        /// <summary>
+        /// A read-only list of tuples representing the footer links on the CARFAX Canada website, including section, subsection, and expected URL.
+        /// </summary>
         public readonly IReadOnlyList<(string Section, string SubSection, string ExpectedUrl)> FooterLinks =
             [
             ("Products", "CARFAX Canada Vehicle History Reports", "https://www.carfax.ca/vehicle-history/vehicle-history-report"),
@@ -75,14 +78,28 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
             ("Business Solutions", "Automotive Remarketing and OEM", "https://go.carfax.ca/aro")
         ];
 
-        // Constants
         // - Footer social media links
+        /// <summary>
+        /// A read-only list of tuples representing the social media links in the footer of the CARFAX Canada website, including platform name and expected URL.
+        /// </summary>
         public readonly IReadOnlyList<(string Platform, string ExpectedUrl)> SocialMediaLinks =
         [
             ("Facebook", "https://www.facebook.com/CARFAXCanada/"),
             ("Instagram", "https://www.instagram.com/carfaxca/?hl=en"),
             ("LinkedIn", "https://www.linkedin.com/company/carfax-canada/"),
             ("YouTube", "https://www.youtube.com/user/CarProof")
+        ];
+
+        // - Footer utility links
+        /// <summary>
+        /// A read-only list of tuples representing the utility links in the footer of the CARFAX Canada website, including utility item name and expected URL.
+        /// </summary>
+        public readonly IReadOnlyList<(string UtilityItem, string ExpectedUrl)> UtilityLinks =
+        [
+            ("Privacy/Legal", "https://www.carfax.ca/privacy-legal"),
+            ("Accessibility", "https://www.carfax.ca/accessibility"),
+            ("Conditions Of Use", "https://www.carfax.ca/privacy-legal/conditions-of-use"),
+            ("© 2026 CARFAX Canada ULC. All Rights Reserved.", "#")
         ];
         #endregion
 
@@ -114,6 +131,8 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // Footer locators
         private readonly By _footerContainerLocator = By.CssSelector("div.cfc-footer");
         private readonly By _footerDisclaimerTextLocator = By.CssSelector("p.cfc-footer__copy");
+        private readonly By _socialMediaSectionLocator = By.CssSelector("ul.cfc-footer__logos");
+        private readonly By _footerUtilitySectionLocator = By.CssSelector("ul.cfc-footer__utilities");
 
         /// <summary>
         /// Gets the locator for a footer subsection based on the provided subsection name.
@@ -123,14 +142,19 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         private By GetFooterSubsectionLocator(string subSectionName) =>
             By.XPath($"//a[contains(@class,'cfc-footer-section__item') and normalize-space(text())='{subSectionName}']");
 
-        private readonly By _socialMediaSectionLocator = By.CssSelector("ul.cfc-footer__logos");
-
         /// <summary>
         /// Gets the locator for a social media link based on the provided platform name.
         /// </summary>
         /// <param name="platform">The social media platform (e.g., "Facebook", "Instagram", "LinkedIn", "YouTube").</param>
         /// <returns>The locator for the social media link.</returns>
         private By GetSocialMediaLinkLocator(string platform) => By.XPath($"//ul[contains(@class,'cfc-footer__logos')]//img[contains(@alt,'{platform}')]/ancestor::a");
+
+        /// <summary>
+        /// Gets the locator for a footer utility link based on the provided utility name.
+        /// </summary>
+        /// <param name="utilityName">The name of the utility (e.g., "Privacy/Legal", "Accessibility", "Conditions Of Use").</param>
+        /// <returns>The locator for the footer utility link.</returns>
+        private By GetFooterUtilityLinkLocator(string utilityName) => By.XPath($"//ul[contains(@class,'cfc-footer__utilities')]//a[normalize-space(text())='{utilityName}' or @aria-label='{utilityName}']");
 
         // Cookie banner locators
         private readonly By _cookieBannerContainerLocator = By.CssSelector("div.cookie-banner");
@@ -152,6 +176,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         private IWebElement FooterContainer => _driver.WaitAndFindElement(_footerContainerLocator);
         private IWebElement FooterDisclaimerText => _driver.WaitAndFindElement(_footerDisclaimerTextLocator);
         private IWebElement SocialMediaSection => _driver.WaitAndFindElement(_socialMediaSectionLocator);
+        private IWebElement FooterUtilitySection => _driver.WaitAndFindElement(_footerUtilitySectionLocator);
 
         /// <summary>
         /// Gets the social media link element for the specified platform.
@@ -159,6 +184,13 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// <param name="platform">The social media platform (e.g., "Facebook", "Instagram", "LinkedIn", "YouTube").</param>
         /// <returns>The social media link element.</returns>
         private IWebElement GetSocialMediaLink(string platform) => _driver.WaitAndFindElement(GetSocialMediaLinkLocator(platform));
+
+        /// <summary>
+        /// Gets the footer utility link element for the specified utility name.
+        /// </summary>
+        /// <param name="utilityName">The name of the utility (e.g., "Privacy/Legal", "Accessibility", "Conditions Of Use").</param>
+        /// <returns>The footer utility link element.</returns>
+        private IWebElement GetFooterUtilityLink(string utilityName) => _driver.WaitAndFindElement(GetFooterUtilityLinkLocator(utilityName));
 
         // Cookie banner elements
         private IWebElement CookieBannerContainer => _driver.WaitAndFindElement(_cookieBannerContainerLocator);
@@ -245,6 +277,12 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// </summary>
         /// <param name="platform">The social media platform (e.g., "Facebook", "Instagram", "LinkedIn", "YouTube").</param>
         public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
+
+        /// <summary>
+        /// Clicks on a utility link in the footer based on the provided utility name.
+        /// </summary>
+        /// <param name="utilityName">The name of the utility (e.g., "Privacy/Legal", "Accessibility", "Conditions Of Use").</param>
+        public void ClickFooterUtilityLink(string utilityName) => GetFooterUtilityLink(utilityName).Click();
 
         /// <summary>
         /// Gets the current language code of the website by retrieving the 'lang' attribute from the <html> element.
@@ -337,6 +375,12 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// </summary>
         /// <returns>True if the social media section is visible, otherwise false.</returns>
         public bool IsSocialMediaSectionVisible() => SocialMediaSection.Displayed;
+
+        /// <summary>
+        /// Checks if the utility links section in the footer is visible on the page.
+        /// </summary>
+        /// <returns>True if the utility links section is visible, otherwise false.</returns>
+        public bool IsUtilityLinksSectionVisible() => FooterUtilitySection.Displayed;
 
         /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.

@@ -36,6 +36,20 @@
                 throw new InvalidOperationException("Pre-condition Failed: The footer does not contain a social media section.");
             }
         }
+
+        [Given(@"the CARFAX Canada website footer contains utility links")]
+        public void GivenTheCarfaxCanadaWebsiteFooterContainsUtilityLinks()
+        {
+            // Scroll to the footer section to ensure it is visible on the screen
+            HomePage.ScrollToFooter();
+
+            // Verify if the footer contains the utility links section
+            bool isVisible = HomePage.IsUtilityLinksSectionVisible();
+            if (!isVisible)
+            {
+                throw new InvalidOperationException("Pre-condition Failed: The footer does not contain a utility links section.");
+            }
+        }
         #endregion
 
         #region Then Steps
@@ -105,6 +119,30 @@
 
                 // Close the new tab and switch back to the original tab
                 HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
+            }
+        }
+
+        [Then(@"all CARFAX Canada website footer utility links should navigate to their expected destinations")]
+        public void ThenAllCarfaxCanadaWebsiteFooterUtilityLinksShouldNavigateToTheirExpectedDestinations()
+        {
+            foreach ((string utilityItem, string expectedUrl) in HomePage.UtilityLinks)
+            {
+                // Scroll to the footer section to ensure it is visible on the screen
+                HomePage.ScrollToFooter();
+
+                // Click the utility link
+                HomePage.ClickFooterUtilityLink(utilityItem);
+
+                // Verify if the it navigates to the expected URL
+                string actualUrl = HomePage.WaitForUrlToStabilize();
+                if (expectedUrl.EndsWith("#"))
+                {
+                    Assert.EndsWith("#", actualUrl, $"The {utilityItem} utility link did not navigate to the expected URL.");
+                }
+                else
+                {
+                    Assert.Contains(expectedUrl, actualUrl, $"The {utilityItem} utility link did not navigate to the expected URL.");
+                }
             }
         }
         #endregion
