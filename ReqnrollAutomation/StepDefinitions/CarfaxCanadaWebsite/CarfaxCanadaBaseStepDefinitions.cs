@@ -5,9 +5,9 @@
  * Description:     A class that defines base step definitions for the automation framework for CARFAX Canada.
  */
 
-using ReqnrollAutomation.Pages.CarfaxCanada;
+using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
 
-namespace ReqnrollAutomation.StepDefinitions.CarfaxCanada
+namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     public class CarfaxCanadaBaseStepDefinitions : BaseStepDefinitions
     {

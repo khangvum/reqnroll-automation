@@ -130,7 +130,7 @@ namespace ReqnrollAutomation.Pages
         protected void ScrollIntoView(IWebElement element)
         {
             ArgumentNullException.ThrowIfNull(element);
-            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", element);
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView({ behavior: 'instant', block: 'center' });", element);
         }
         #endregion
     }
