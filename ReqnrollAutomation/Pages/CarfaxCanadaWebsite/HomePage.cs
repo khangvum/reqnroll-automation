@@ -123,7 +123,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         private By GetFooterSubsectionLocator(string subSectionName) =>
             By.XPath($"//a[contains(@class,'cfc-footer-section__item') and normalize-space(text())='{subSectionName}']");
 
-        private readonly By _socialMediaSectionLocator = By.CssSelector("cfc-footer__logos");
+        private readonly By _socialMediaSectionLocator = By.CssSelector("ul.cfc-footer__logos");
 
         /// <summary>
         /// Gets the locator for a social media link based on the provided platform name.

@@ -15,3 +15,7 @@ Scenario: CARFAX Canada website disclaimer information is displayed correctly
 
 Scenario: Footer navigation links redirect to their correct pages
 	Then all footer links should navigate to their expected destinations
+
+Scenario: Social media links in the CARFAX Canada website footer are functional and navigate to the correct URLs
+	Given the CARFAX Canada website footer contains links to social media pages
+	Then all CARFAX Canada website social media links should navigate to their expected destinations

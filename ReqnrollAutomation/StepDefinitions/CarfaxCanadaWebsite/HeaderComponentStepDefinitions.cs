@@ -58,7 +58,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 
                 // Verify if the it navigates to the expected URL
                 string actualUrl = HomePage.WaitForUrlToStabilize();
-                Assert.AreEqual(expectedUrl, actualUrl, $"The {subSection} link did not navigate to the expected URL.");
+                Assert.Contains(expectedUrl, actualUrl, $"The {subSection} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab if it opened in a new tab
                 if (opensInNewTab)

@@ -22,6 +22,22 @@
         }
         #endregion
 
+        #region Given Steps
+        [Given(@"the CARFAX Canada website footer contains links to social media pages")]
+        public void GivenTheCarfaxCanadaWebsiteFooterContainsLinksToSocialMediaPages()
+        {
+            // Scroll to the footer section to ensure it is visible on the screen
+            HomePage.ScrollToFooter();
+
+            // Verify if the footer contains the social media section
+            bool isVisible = HomePage.IsSocialMediaSectionVisible();
+            if (!isVisible)
+            {
+                throw new InvalidOperationException("Pre-condition Failed: The footer does not contain a social media section.");
+            }
+        }
+        #endregion
+
         #region Then Steps
         [Then(@"the CARFAX Canada website disclaimer text should be visible")]
         public void ThenTheCarfaxCanadaWebsiteDisclaimerTextShouldBeVisible()
@@ -71,6 +87,24 @@
                 // Close the new tab and switch back to the original tab if it opened in a new tab
                 if (opensInNewTab)
                     HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
+            }
+        }
+
+        [Then(@"all CARFAX Canada website social media links should navigate to their expected destinations")]
+        public void ThenAllCarfaxCanadaWebsiteSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
+        {
+            foreach ((string platform, string expectedUrl) in HomePage.SocialMediaLinks)
+            {
+                // Click the social media link & switch to the new tab
+                HomePage.ClickSocialMediaLink(platform);
+                HomePage.SwitchToNewTab();
+
+                // Verify if the new tab navigates to the expected URL
+                string actualUrl = HomePage.WaitForUrlToStabilize();
+                Assert.AreEqual(expectedUrl, actualUrl, $"The CARFAX Canada {platform} link did not navigate to the expected URL.");
+
+                // Close the new tab and switch back to the original tab
+                HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
             }
         }
         #endregion
