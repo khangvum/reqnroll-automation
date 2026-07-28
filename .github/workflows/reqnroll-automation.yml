@@ -53,6 +53,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # Download previous test results if this is a rerun attempt
+      - name: Download Previous Test Results
+        if: github.run_attempt > 1
+        uses: actions/download-artifact@v4
+        with:
+          name: TestReport
+          path: TestResults/ReqnrollAutomation
+        continue-on-error: true
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
