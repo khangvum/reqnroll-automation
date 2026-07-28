@@ -56,7 +56,7 @@ jobs:
       # Download previous test results if this is a rerun attempt
       - name: Download Previous Test Results
         if: github.run_attempt > 1
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: TestReport
           path: TestResults/ReqnrollAutomation
