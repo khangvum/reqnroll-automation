@@ -5,7 +5,6 @@
  * Description:     A class that represents the inventory page of Swag Labs.
  */
 
-using Microsoft.Win32;
 using ReqnrollAutomation.Core.Extensions;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
@@ -26,23 +25,42 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         }
 
         public readonly Dictionary<ValidationKey, string> Registry;
+
+        // Constants
+        // - Footer social media links
+        public readonly IReadOnlyList<(string Platform, string ExpectedUrl)> SocialMediaLinks =
+        [
+            ("Twitter", "https://x.com/saucelabs"),
+            ("Facebook", "https://www.facebook.com/saucelabs"),
+            ("LinkedIn", "https://www.linkedin.com/company/sauce-labs/")
+        ];
         #endregion
 
         #region Page Locators
         // Footer
         private readonly By _footerContainerLocator = By.CssSelector("footer.footer");
-        private readonly By _twitterLinkLocator = By.CssSelector("ul.social li.social_twitter a");
-        private readonly By _facebookLinkLocator = By.CssSelector("ul.social li.social_facebook a");
-        private readonly By _linkedInLinkLocator = By.CssSelector("ul.social li.social_linkedin a");
+        private readonly By _socialMediaSectionLocator = By.CssSelector("ul.social");
         private readonly By _copyrightTextLocator = By.CssSelector("footer.footer .footer_copy");
+
+        /// <summary>
+        /// Gets the locator for a social media link based on the platform name.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        /// <returns>The locator for the social media link.</returns>
+        private By GetSocialMediaLinkLocator(string platform) => By.CssSelector($"ul.social li.social_{platform.ToLower()} a");
         #endregion
 
         #region Page Elements
         private IWebElement FooterContainer => _driver.WaitAndFindElement(_footerContainerLocator);
-        private IWebElement TwitterLink => _driver.WaitAndFindElement(_twitterLinkLocator);
-        private IWebElement FacebookLink => _driver.WaitAndFindElement(_facebookLinkLocator);
-        private IWebElement LinkedInLink => _driver.WaitAndFindElement(_linkedInLinkLocator);
+        private IWebElement SocialMediaSection => _driver.WaitAndFindElement(_socialMediaSectionLocator);
         private IWebElement CopyrightText => _driver.WaitAndFindElement(_copyrightTextLocator);
+
+        /// <summary>
+        /// Gets the social media link element for the specified platform.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        /// <returns>The social media link element.</returns>
+        private IWebElement GetSocialMediaLink(string platform) => _driver.WaitAndFindElement(GetSocialMediaLinkLocator(platform));
         #endregion
 
         #region Constructor
@@ -68,42 +86,22 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         public bool IsCopyrightTextVisible() => CopyrightText.Displayed;
 
         /// <summary>
-        /// Retrieves the text of the footer copyright element.
+        /// Checks if the social media section in the footer is visible on the page.
         /// </summary>
-        /// <returns>The text of the copyright element.</returns>
-        public string GetCopyrightText() => CopyrightText.Text;
-
-        /// <summary>
-        /// Checks if the social media link for the specified platform is visible on the page.
-        /// </summary>
-        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
-        /// <returns>True if the link is visible, false otherwise.</returns>
-        public bool IsSocialMediaLinkVisible(string platform) => GetSocialMediaLink(platform).Displayed;
+        /// <returns>True if the section is visible, false otherwise.</returns>
+        public bool IsSocialMediaSectionVisible() => SocialMediaSection.Displayed;
 
         /// <summary>
         /// Clicks the social media link for the specified platform.
         /// </summary>
         /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
         public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
-        #endregion
 
-        #region Private Helper Methods
         /// <summary>
-        /// Gets the social media link element based on the specified platform.
+        /// Retrieves the text of the footer copyright element.
         /// </summary>
-        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
-        /// <returns>The social media link element.</returns>
-        /// <exception cref="ArgumentException">Throws if the platform is not supported.</exception>
-        private IWebElement GetSocialMediaLink(string platform)
-        {
-            return platform.ToLower() switch
-            {
-                "twitter" => TwitterLink,
-                "facebook" => FacebookLink,
-                "linkedin" => LinkedInLink,
-                _ => throw new ArgumentException($"Unsupported social media platform: {platform}")
-            };
-        }
+        /// <returns>The text of the copyright element.</returns>
+        public string GetCopyrightText() => CopyrightText.Text;
         #endregion
     }
 }
