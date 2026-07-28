@@ -125,5 +125,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: TestReport
-          path: '**/TestResults/ReqnrollAutomation/**/*'
+          path: TestResults/ReqnrollAutomation/*
           retention-days: 7
