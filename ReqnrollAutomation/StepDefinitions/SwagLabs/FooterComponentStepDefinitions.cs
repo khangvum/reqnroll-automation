@@ -23,33 +23,22 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region Given Steps
-        [Given(@"the Swag Labs footer contains a link to {} social media page")]
-        public void GivenTheFooterShouldContainALinkToSocialMediaPage(string platform)
+        [Given(@"the Swag Labs footer contains links to social media pages")]
+        public void GivenTheSwagLabFooterContainsLinksToSocialMediaPages()
         {
             // Scroll to the footer section to ensure it is visible on the screen
             InventoryPage.ScrollToFooter();
 
-            // Verify if the footer contains a link to the specified social media platform
-            bool isVisible = InventoryPage.IsSocialMediaLinkVisible(platform);
+            // Verify if the footer contains the social media section
+            bool isVisible = InventoryPage.IsSocialMediaSectionVisible();
             if (!isVisible)
             {
-                throw new InvalidOperationException($"Pre-condition Failed: The footer does not contain a link to {platform}");
+                throw new InvalidOperationException("Pre-condition Failed: The footer does not contain a social media section.");
             }
         }
         #endregion
 
-        #region When Steps
-        [When(@"I click on the Swag Labs {} social media link")]
-        public void WhenIClickOnTheSocialMediaLink(string platform)
-        {
-            // Click the social media link & switch to the new tab
-            InventoryPage.ClickSocialMediaLink(platform);
-            InventoryPage.SwitchToNewTab();
-        }
-        #endregion
-
         #region Then Steps
-        // Then Steps
         [Then(@"the Swag Labs footer copyright text should be visible")]
         public void ThenTheFooterCopyrightTextShouldBeVisible()
         {
@@ -73,12 +62,22 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             Assert.IsTrue(Regex.IsMatch(actualCopyrightText, copyrightPattern), "The footer copyright text is not displayed correctly.");
         }
 
-        [Then(@"the Swag Labs {} link should navigate to {string}")]
-        public void ThenTheSocialMediaLinkShouldNavigateTo(string platform, string expectedUrl)
+        [Then(@"all Swag Labs social media links should navigate to their expected destinations")]
+        public void ThenAllSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
         {
-            // Verify if the new tab navigates to the expected URL
-            string actualUrl = Driver.Url;
-            Assert.AreEqual(expectedUrl, actualUrl, $"The Swag Labs {platform} link did not navigate to the expected URL.");
+            foreach ((string platform, string expectedUrl) in InventoryPage.SocialMediaLinks)
+            {
+                // Click the social media link & switch to the new tab
+                InventoryPage.ClickSocialMediaLink(platform);
+                InventoryPage.SwitchToNewTab();
+
+                // Verify if the new tab navigates to the expected URL
+                string actualUrl = Driver.Url;
+                Assert.AreEqual(expectedUrl, actualUrl, $"The Swag Labs {platform} link did not navigate to the expected URL.");
+
+                // Close the new tab and switch back to the original tab
+                InventoryPage.CloseCurrentTabAndSwitchBackToOriginalTab();
+            }
         }
         #endregion
     }
