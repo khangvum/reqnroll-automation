@@ -1,8 +1,8 @@
 ﻿/**
- * Program:         ScenarioContextExtensions.cs
+ * Program:         ReqnrollContextExtensions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-12
- * Description:     A class that contains extension methods for the ScenarioContext class.
+ * Description:     A class that contains extension methods for the ReqnrollContext class.
  */
 
 using OpenQA.Selenium;
@@ -11,12 +11,12 @@ using Reqnroll;
 namespace ReqnrollAutomation.Core.Extensions
 {
     /// <summary>
-    /// A class that contains extension methods for the ScenarioContext class.
+    /// A class that contains extension methods for the ReqnrollContext class.
     /// </summary>
-    public static class ScenarioContextExtensions
+    public static class ReqnrollContextExtensions
     {
         #region Private Attributes
-        // Scenario Context Keys
+        // Reqnroll Context Keys
         private const string WebDriverKey = "WebDriver";
         #endregion
 
@@ -25,12 +25,12 @@ namespace ReqnrollAutomation.Core.Extensions
         /// Gets the WebDriver instance from the current scenario context.
         /// </summary>
         /// <remarks>Should be used by step defintions to retrieve the driver instance.</remarks>
-        /// <param name="scenarioContext">The scenario context.</param>
+        /// <param name="reqnrollContext">The Reqnroll context.</param>
         /// <returns>The WebDriver instance.</returns>
         /// <exception cref="InvalidOperationException">Throws if the WebDriver instance is not found in the scenario context.</exception>
-        public static IWebDriver GetDriver(this ScenarioContext scenarioContext)
+        public static IWebDriver GetDriver(this ReqnrollContext reqnrollContext)
         {
-            if (scenarioContext.TryGetValue(WebDriverKey, out IWebDriver driver) && driver != null)
+            if (reqnrollContext.TryGetValue(WebDriverKey, out IWebDriver driver) && driver != null)
             {
                 return driver;
             }
@@ -41,12 +41,12 @@ namespace ReqnrollAutomation.Core.Extensions
         /// <summary>
         /// Sets the WebDriver instance in the current scenario context.
         /// </summary>
-        /// <param name="scenarioContext">The scenario context.</param>
+        /// <param name="reqnrollContext">The Reqnroll context.</param>
         /// <param name="driver">The WebDriver instance.</param>
         /// <exception cref="ArgumentNullException">Thrown if the WebDriver instance is null.</exception>
-        public static void SetDriver(this ScenarioContext scenarioContext, IWebDriver driver)
+        public static void SetDriver(this ReqnrollContext reqnrollContext, IWebDriver driver)
         {
-            scenarioContext[WebDriverKey] = driver ?? throw new ArgumentNullException(nameof(driver), "WebDriver instance cannot be null.");
+            reqnrollContext[WebDriverKey] = driver ?? throw new ArgumentNullException(nameof(driver), "WebDriver instance cannot be null.");
         }
         #endregion
     }
