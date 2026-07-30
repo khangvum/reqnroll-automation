@@ -45,6 +45,34 @@
             // Verify if the actual disclaimer text matches the expected text
             Assert.AreEqual(expectedDisclaimerText, actualDisclaimerText, "The footer disclaimer text does not match the expected text.");
         }
+
+        [Then(@"all footer links should navigate to their expected destinations")]
+        public void ThenAllFooterLinksShouldNavigateToTheirExpectedDestinations()
+        {
+            foreach ((string section, string subSection, string expectedUrl) in HomePage.FooterLinks)
+            {
+                // Scroll to the footer section to ensure it is visible on the screen
+                HomePage.ScrollToFooter();
+
+                // Check if the subsection will open in a new tab (target="_blank") before clicking
+                bool opensInNewTab = HomePage.GetFooterSubsectionLinkTarget(subSection) == "_blank";
+                HomePage.ClickFooterSubsection(subSection);
+
+                // Switch to the new tab if the link opens in a new tab (target="_blank")
+                if (opensInNewTab)
+                {
+                    HomePage.SwitchToNewTab();
+                }
+
+                // Verify if the it navigates to the expected URL
+                string actualUrl = HomePage.WaitForUrlToStabilize();
+                Assert.Contains(expectedUrl, actualUrl, "The {subSection} link did not navigate to the expected URL.");
+
+                // Close the new tab and switch back to the original tab if it opened in a new tab
+                if (opensInNewTab)
+                    HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
+            }
+        }
         #endregion
     }
 }

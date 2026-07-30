@@ -12,3 +12,6 @@ Background:
 Scenario: CARFAX Canada website disclaimer information is displayed correctly
 	Then the CARFAX Canada website disclaimer text should be visible
 	And the CARFAX Canada website disclaimer text should display correctly
+
+Scenario: Footer navigation links redirect to their correct pages
+	Then all footer links should navigate to their expected destinations
