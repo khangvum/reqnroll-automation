@@ -54,9 +54,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 
                 // Switch to the new tab if the link opens in a new tab (target="_blank")
                 if (opensInNewTab)
-                {
                     HomePage.SwitchToNewTab();
-                }
 
                 // Verify if the it navigates to the expected URL
                 string actualUrl = HomePage.WaitForUrlToStabilize();
@@ -64,9 +62,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 
                 // Close the new tab and switch back to the original tab if it opened in a new tab
                 if (opensInNewTab)
-                {
                     HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
-                }
             }
         }
 

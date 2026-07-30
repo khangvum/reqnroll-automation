@@ -47,6 +47,30 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
             .ToList();
 
         // - Footer links
+        public readonly IReadOnlyList<(string Section, string SubSection, string ExpectedUrl)> FooterLinks =
+            [
+            ("Products", "CARFAX Canada Vehicle History Reports", "https://www.carfax.ca/vehicle-history/vehicle-history-report"),
+            ("Products", "CARFAX Canada VIN Fraud Check", "https://www.carfax.ca/vin-fraud-check"),
+            ("Products", "CARFAX Canada Vehicle Monitoring", "https://www.carfax.ca/vehicle-monitoring-subscription"),
+            ("Products", "CARFAX Canada History-Based Value", "https://www.carfax.ca/whats-my-car-worth/history-based-value"),
+            ("Products", "CARFAX Canada VIN Decoder", "https://www.carfax.ca/tools/vin-decode"),
+            ("Products", "CARFAX Canada Recall Check", "https://www.carfax.ca/tools/recall-check"),
+            ("Products", "CARFAX Canada Car Care", "https://www.carfax.ca/Service"),
+            ("Resources", "Learn", "https://www.carfax.ca/learn"),
+            ("Resources", "Support", "https://support.carfax.ca/en/support/home"),
+            ("Resources", "Media", "https://www.carfax.ca/media"),
+            ("Company", "About", "https://www.carfax.ca/about"),
+            ("Company", "Contact", "https://www.carfax.ca/contact"),
+            ("Company", "Careers", "https://www.carfax.ca/careers"),
+            ("Company", "Partners", "https://www.carfax.ca/partners"),
+            ("Company", "Vehicle Fraud", "https://www.carfax.ca/vehicle-fraud"),
+            ("Company", "CARFAX Canada Data", "https://www.carfax.ca/vehicle-history-data"),
+            ("Company", "CARPROOF is CARFAX Canada", "https://www.carfax.ca/carproof"),
+            ("Business Solutions", "Dealer Login", "https://authentication.carfax.ca/"),
+            ("Business Solutions", "Become a Dealer Member", "https://www.carfax.ca/become-a-member"),
+            ("Business Solutions", "Banking, Insurance and Government", "https://go.carfax.ca/en-ca/big/home"),
+            ("Business Solutions", "Automotive Remarketing and OEM", "https://go.carfax.ca/aro")
+        ];
         #endregion
 
         #region Page Locators
@@ -78,6 +102,12 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         private readonly By _footerContainerLocator = By.CssSelector("div.cfc-footer");
         private readonly By _footerDisclaimerTextLocator = By.CssSelector("p.cfc-footer__copy");
         private By GetFooterSectionLocator(string sectionName) => By.XPath($"//li[contains(@class,'cfc-footer__link-item') and .//*[normalize-space(text())='{sectionName}']]");
+
+        /// <summary>
+        /// Gets the locator for a footer subsection based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection.</param>
+        /// <returns>The locator for the footer subsection.</returns>
         private By GetFooterSubsectionLocator(string subSectionName) =>
             By.XPath($"//a[contains(@class,'cfc-footer-section__item') and normalize-space(text())='{subSectionName}']");
         #endregion
@@ -134,6 +164,16 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         public void ClickHeaderSubsection(string subSectionName)
         {
             IWebElement subSectionElement = _driver.WaitAndFindElement(GetHeaderSubsectionLocator(subSectionName));
+            subSectionElement.Click();
+        }
+
+        /// <summary>
+        /// Clicks on a subsection in the footer based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection to click.</param>
+        public void ClickFooterSubsection(string subSectionName)
+        {
+            IWebElement subSectionElement = _driver.WaitAndFindElement(GetFooterSubsectionLocator(subSectionName));
             subSectionElement.Click();
         }
 
@@ -197,6 +237,18 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         {
             IWebElement subSectionElement = _driver.WaitAndFindElement(GetHeaderSubsectionLocator(subSectionName));
             return subSectionElement.GetAttribute("target") ?? throw new InvalidOperationException($"The 'target' attribute is not found on the subsection '{subSectionName}'.");
+        }
+
+        /// <summary>
+        /// Gets the 'target' attribute of a subsection link in the footer based on the provided subsection name.
+        /// </summary>
+        /// <param name="subSectionName">The name of the subsection.</param>
+        /// <returns>The 'target' attribute of the subsection link.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the 'target' attribute is not found on the subsection link.</exception>
+        public string GetFooterSubsectionLinkTarget(string subSectionName)
+        {
+            IWebElement subSectionElement = _driver.WaitAndFindElement(GetFooterSubsectionLocator(subSectionName));
+            return subSectionElement.GetAttribute("target") ?? throw new InvalidOperationException($"The 'target' attribute is not found on the footer subsection '{subSectionName}'.");
         }
 
         /// <summary>
