@@ -1,10 +1,11 @@
 ﻿/**
-* Program:         DriverFactory.cs
-* Author:          Manh Khang Vu
-* Date:            2026-05-07
-* Description:     A class that provides a factory for creating and managing WebDriver instances for the test automation framework, streamlining parallel test execution and ensuring proper resource management.
-*/
+ * Program:         DriverFactory.cs
+ * Author:          Manh Khang Vu
+ * Date:            2026-05-07
+ * Description:     A factory for creating and managing thread-static WebDriver instances across the test framework lifecycle.
+ */
 
+using System.Collections.Concurrent;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
@@ -14,58 +15,113 @@ using ReqnrollAutomation.Core.Config;
 namespace ReqnrollAutomation.Drivers
 {
     /// <summary>
-    /// A class that provides a factory for creating and managing WebDriver instances for the test 
-    /// automation framework, streamlining parallel test execution and ensuring proper resource management.
+    /// A class that provides a factory for managing persistent, thread-safe WebDriver instances 
+    /// for parallel test execution using thread-static driver pooling.
     /// </summary>
     internal class DriverFactory
     {
+        #region Private Attributes
+        // ThreadLocal ensures each worker thread manages its own isolated IWebDriver instance
+        private static readonly ThreadLocal<IWebDriver?> LocalDriver = new ThreadLocal<IWebDriver?>(trackAllValues: true);
+        #endregion
+
         #region Public Methods
         /// <summary>
-        /// Creates a new instance of the Selenium WebDriver.
+        /// Gets the current worker thread's WebDriver instance, creating a new one if it does not exist.
         /// </summary>
-        /// <param name="browserType">The type of browser to create the driver for.</param>
-        /// <returns>The IWebDriver instance.</returns>
-        public static IWebDriver CreateDriver()
+        /// <returns>The active thread's IWebDriver instance.</returns>
+        public static IWebDriver GetOrCreateDriver()
         {
-            // Get the browser type from the configuration file
+            if (!LocalDriver.IsValueCreated || LocalDriver.Value == null)
+            {
+                LocalDriver.Value = CreateDriverInstance();
+            }
+
+            return LocalDriver.Value;
+        }
+
+        /// <summary>
+        /// Clears cookies, local storage, and session storage to reset browser state between scenario runs.
+        /// </summary>
+        public static void ResetSession()
+        {
+            if (LocalDriver.IsValueCreated && LocalDriver.Value != null)
+            {
+                try
+                {
+                    IWebDriver driver = LocalDriver.Value;
+                    driver.Manage().Cookies.DeleteAllCookies();
+
+                    if (driver is IJavaScriptExecutor js)
+                    {
+                        js.ExecuteScript("window.localStorage.clear(); window.sessionStorage.clear();");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ERROR] Failed to reset browser session on Thread {Environment.CurrentManagedThreadId}: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Quits and disposes all active WebDriver instances across all worker threads at the end of the test run.
+        /// </summary>
+        public static void QuitAllDrivers()
+        {
+            foreach (IWebDriver? driver in LocalDriver.Values)
+            {
+                if (driver != null)
+                {
+                    try { driver.Quit(); } catch { }
+                    try { driver.Dispose(); } catch { }
+                }
+            }
+
+            LocalDriver.Dispose();
+        }
+        #endregion
+
+        #region Private Helper Methods
+        /// <summary>
+        /// Instantiates a new IWebDriver based on application configuration.
+        /// </summary>
+        private static IWebDriver CreateDriverInstance()
+        {
             BrowserType browserType = ConfigManager.Browser;
 
-            // Create the appropriate options based on the specified browser type
             ChromiumOptions options = browserType switch
             {
                 BrowserType.Chrome => new ChromeOptions(),
                 BrowserType.Edge => new EdgeOptions(),
-                _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
+                _ => throw new ArgumentException($"Unsupported browser type: {browserType}")
             };
 
-            // Configure the options for headless mode and other settings
             if (ConfigManager.Headless)
             {
                 options.AddArgument("--headless=new");
                 options.AddArgument("--window-size=1920,1080");
             }
+
             options.AddArgument("--no-sandbox");
             options.AddArgument("--disable-gpu");
             options.AddArgument("--disable-dev-shm-usage");
 
-            // Disable extensions and automation banners for cleaner test runs
             DisableExtensionsAndBanners(options);
 
             IWebDriver driver = browserType switch
             {
                 BrowserType.Chrome => new ChromeDriver((ChromeOptions)options),
                 BrowserType.Edge => new EdgeDriver((EdgeOptions)options),
-                _ => throw new ArgumentException(nameof(browserType), $"Unsupported browser type: {browserType}")
+                _ => throw new ArgumentException($"Unsupported browser type: {browserType}")
             };
 
             try
             {
-                // Only attempt to maximize if not running headless
                 if (!ConfigManager.Headless)
                 {
                     driver.Manage().Window.Maximize();
                 }
-
             }
             catch { }
 
@@ -73,60 +129,16 @@ namespace ReqnrollAutomation.Drivers
         }
 
         /// <summary>
-        /// Clears all cookies and cache from the current WebDriver instance to ensure a clean state for testing.
+        /// Disables browser extensions, popups, infobars, and password management features.
         /// </summary>
-        /// <param name="driver">The WebDriver instance.</param>
-        public static void ClearCookiesAndCache(IWebDriver? driver)
-        {
-            if (driver != null)
-            {
-                try
-                {
-                    driver.Manage().Cookies.DeleteAllCookies();
-                }
-                catch { }
-            }
-        }
-
-        /// <summary>
-        /// Closes and disposes the current WebDriver instance, releasing all associated 
-        /// resources and terminating any orphaned browser driver processes.
-        /// </summary>
-        public static void QuitDriver(IWebDriver? driver)
-        {
-            if (driver != null)
-            {
-                try
-                {
-                    // Try normal quit/close first
-                    try { driver.Quit(); } catch { }
-                    try { driver.Dispose(); } catch { }
-                }
-                catch { }
-            }
-        }
-        #endregion
-
-        #region Private Helper Methods
-        /// <summary>
-        /// Disables browser extensions, popups, infobars, and password management features in Chrome to ensure a clean testing environment.
-        /// </summary>
-        /// <param name="options">The Chromium options instance.</param>
         private static void DisableExtensionsAndBanners(ChromiumOptions options)
         {
-            // - Disable the Password Generation and Manager UI
             options.AddUserProfilePreference("credentials_enable_service", false);
             options.AddUserProfilePreference("profile.password_manager_enabled", false);
-
-            // - Add the explicit key to turn off Data Breach scanning
             options.AddUserProfilePreference("profile.password_manager_leak_detection", false);
-
-            // - Disable Safe Browsing password protection/leak detection features
             options.AddUserProfilePreference("safebrowsing.password_protection_warning_trigger", 0);
             options.AddArgument("--disable-features=PasswordLeakDetection");
             options.AddArgument("--disable-features=SafeBrowsingPasswordProtection");
-
-            // - Disable popups and infobars
             options.AddArgument("--disable-popup-blocking");
             options.AddArgument("--disable-infobars");
         }
