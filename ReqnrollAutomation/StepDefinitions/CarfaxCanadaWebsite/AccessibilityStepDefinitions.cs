@@ -30,7 +30,6 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         public void GivenIAmOnTheCarfaxCanadaHomePage()
         {
             HomePage.Navigate();
-            HomePage.AcceptCookiesIfPresent();
         }
 
         [Given(@"the home page is displayed in {}")]
