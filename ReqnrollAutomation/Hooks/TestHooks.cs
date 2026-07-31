@@ -47,20 +47,30 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Test Run Hooks
+        /// <summary>
+        /// Runs before the entire test run to perform any global setup.
+        /// </summary>
+        /// <exception cref="Exception">Throws when an error occurs during setup.</exception>
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
             try
             {
+                // Initialize the configuration provider
                 ConfigProvider.Initialize(new ConfigAdapter());
 
+                // Set up Extent Reports
                 ReportManager.InitializeReport("Reqnroll Automation");
                 _extentReports = ReportManager.GetExtentReports();
                 Console.WriteLine("[LOG] Extent Reports initialized successfully.");
 
+                // Set up the directories for reports & screenshots
                 Directory.CreateDirectory(PathHelper.GetScreenshotsDirectoryPath());
+
+                // Clean up old report directories
                 CleanupOldReports();
 
+                // Log the start of the test run
                 Console.WriteLine("[LOG] Test run started");
             }
             catch (Exception ex)
@@ -69,21 +79,29 @@ namespace ReqnrollAutomation.Hooks
             }
         }
 
+        /// <summary>
+        /// Runs after the entire test run to perform any global cleanup.
+        /// </summary>
+        /// <exception cref="Exception">Throws when an error occurs during cleanup.</exception>
         [AfterTestRun]
         public static void AfterTestRun()
         {
             try
             {
+                // Log the end of the test run
                 Console.WriteLine("[LOG] Test run completed. Cleaning up all driver instances...");
 
                 // Terminate all 4 thread-bound WebDriver instances
                 DriverFactory.QuitAllDrivers();
 
+                // Flush the Extent Report
                 ReportManager.FlushReport();
 
+                // Patch the Extent Report to reflect the scenario counts
                 string reportPath = ReportManager.ReportPath;
                 ExtentReportPatcher.Patch(reportPath);
 
+                // Automatically open the Extent Report in the browser if in headfull mode
                 if (!ConfigManager.Headless && !string.IsNullOrEmpty(reportPath) && File.Exists(reportPath))
                 {
                     Console.WriteLine($"[LOG] Opening report: {reportPath}");
@@ -102,6 +120,11 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Feature Hooks
+        /// <summary>
+        /// Runs before each feature to create a node in the Extent Report for the current feature.
+        /// </summary>
+        /// <param name="featureContext">The feature context.</param>
+        /// <exception cref="Exception">Throws when an error occurs during feature setup.</exception>
         [BeforeFeature]
         public static void BeforeFeature(FeatureContext featureContext)
         {
@@ -109,8 +132,12 @@ namespace ReqnrollAutomation.Hooks
             {
                 string featureTitle = featureContext.FeatureInfo.Title;
 
+                // Lock before checking and adding to the report to prevent race conditions where
+                // multiple threads might try to create a node for the same feature at the same time
                 lock (_reportLock)
                 {
+                    // Create a node for the current feature in the Extent Report (thread-safe)
+                    // GetOrAdd() ensures only one feature node is created per feature
                     _featureNodes.GetOrAdd(featureTitle, key => _extentReports!.CreateTest(key));
                 }
 
@@ -122,9 +149,15 @@ namespace ReqnrollAutomation.Hooks
             }
         }
 
+        /// <summary>
+        /// Runs after each feature to perform any necessary cleanup.
+        /// </summary>
+        /// <param name="featureContext">The feature context.</param>
+        /// <exception cref="Exception">Throws when an error occurs during feature cleanup.</exception>
         [AfterFeature]
         public static void AfterFeature(FeatureContext featureContext)
         {
+            // Try-catch block is unnecessary here at the moment, but can be future-proofed
             try
             {
                 Console.WriteLine($"[LOG] Feature completed:  {featureContext.FeatureInfo.Title}");
@@ -138,6 +171,11 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Scenario Hooks
+        /// <summary>
+        /// Runs before each test scenario to initialize the WebDriver and 
+        /// store it in the scenario context to be used in step definitions.
+        /// </summary>
+        /// <exception cref="Exception">Throws when an error occurs during scenario setup.</exception>
         [BeforeScenario]
         public void BeforeScenario()
         {
@@ -145,11 +183,13 @@ namespace ReqnrollAutomation.Hooks
             {
                 string featureTitle = _featureContext.FeatureInfo.Title;
 
+                // Get the feature node
                 if (!_featureNodes.TryGetValue(featureTitle, out ExtentTest? feature))
                 {
                     throw new InvalidOperationException($"Feature node not found for: {featureTitle}");
                 }
 
+                // Create a node for the current scenario under the feature node in the Extent Report 
                 lock (_reportLock)
                 {
                     _scenarioNode = feature.CreateNode<Scenario>(_scenarioContext.ScenarioInfo.Title);
@@ -182,6 +222,10 @@ namespace ReqnrollAutomation.Hooks
             }
         }
 
+        /// <summary>
+        /// Runs after each test scenario to capture a screenshot, log the result, and flush the Extent Report.
+        /// </summary>
+        /// <exception cref="Exception">Throws when an error occurs during scenario cleanup.</exception>
         [AfterScenario]
         public void AfterScenario()
         {
@@ -193,6 +237,8 @@ namespace ReqnrollAutomation.Hooks
                 if (_scenarioContext.TestError != null)
                 {
                     message = $"[ERROR] Scenario failed: {_scenarioContext.TestError.Message}";
+
+                    // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"FAILED_{_scenarioContext.ScenarioInfo.Title}", driver);
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
 
@@ -204,6 +250,8 @@ namespace ReqnrollAutomation.Hooks
                 else
                 {
                     message = $"[PASS] Scenario passed";
+
+                    // Take a screenshot
                     string screenshotPath = CaptureScreenshot($"PASSED_{_scenarioContext.ScenarioInfo.Title}", driver);
                     string screenshotHtml = GetBase64ScreenshotHtml(screenshotPath);
 
@@ -241,6 +289,10 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Step Hooks
+        /// <summary>
+        /// Runs before each test step begins.
+        /// </summary>
+        /// <exception cref="Exception">Throws when an error occurs during step setup.</exception>
         [BeforeStep]
         public void BeforeStep()
         {
@@ -262,6 +314,10 @@ namespace ReqnrollAutomation.Hooks
             }
         }
 
+        /// <summary>
+        /// Runs after each test step completes to take screenshots after each step.
+        /// </summary>
+        /// <exception cref="Exception">Throws when an error occurs during step cleanup.</exception>
         [AfterStep]
         public void AfterStep()
         {
@@ -319,7 +375,12 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Private Screenshot Methods
-        private string CaptureScreenshot(string name, IWebDriver? driver)
+        /// <summary>
+        /// Captures a screenshot of the current browser window and saves it to a file with a specified name.
+        /// </summary>
+        /// <param name="name">The base name used to generate the file name.</param>
+        /// <returns>The full file path of the saved screenshot if successful; otherwise, an empty string.</returns>
+        private static string CaptureScreenshot(string name, IWebDriver? driver)
         {
             try
             {
@@ -340,7 +401,14 @@ namespace ReqnrollAutomation.Hooks
             return "";
         }
 
-        private string GetBase64ScreenshotHtml(string screenshotPath)
+        /// <summary>
+        /// Generates an HTML <img> tag containing a Base64-encoded PNG image from the specified screenshot file path.
+        /// </summary>
+        /// <remarks>This method makes the Extent Report self-contained by embedding the screenshot directly in the report.</remarks>
+        /// <param name="screenshotPath">The path to the screenshot image.</param>
+        /// <returns>A string containing an HTML <img> tag with the screenshot image embedded 
+        /// as a Base64-encoded PNG if successful; otherwise, an empty string.</returns>
+        private static string GetBase64ScreenshotHtml(string screenshotPath)
         {
             try
             {
@@ -360,6 +428,11 @@ namespace ReqnrollAutomation.Hooks
         #endregion
 
         #region Private Helper Methods
+        /// <summary>
+        /// Normalizes a file name by replacing invalid characters with underscores and truncating it to a reasonable length.
+        /// </summary>
+        /// <param name="fileName">The file name to normalize.</param>
+        /// <returns>The normalized file name.</returns>
         private static string NormalizeFileName(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -374,6 +447,9 @@ namespace ReqnrollAutomation.Hooks
             return fileName.Length > 50 ? fileName.Substring(0, 50) : fileName;
         }
 
+        /// <summary>
+        /// Cleans up old report directories, keeping only the 15 most recent ones.
+        /// </summary>
         private static void CleanupOldReports()
         {
             try
