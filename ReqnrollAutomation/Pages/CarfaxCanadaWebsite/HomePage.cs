@@ -1,4 +1,7 @@
-﻿using ReqnrollAutomation.Core.Extensions;
+﻿using OpenQA.Selenium.Support.UI;
+using ReqnrollAutomation.Config;
+using ReqnrollAutomation.Core.Extensions;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
@@ -71,6 +74,16 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
             ("Business Solutions", "Banking, Insurance and Government", "https://go.carfax.ca/en-ca/big/home"),
             ("Business Solutions", "Automotive Remarketing and OEM", "https://go.carfax.ca/aro")
         ];
+
+        // Constants
+        // - Footer social media links
+        public readonly IReadOnlyList<(string Platform, string ExpectedUrl)> SocialMediaLinks =
+        [
+            ("Facebook", "https://www.facebook.com/CARFAXCanada/"),
+            ("Instagram", "https://www.instagram.com/carfaxca/?hl=en"),
+            ("LinkedIn", "https://www.linkedin.com/company/carfax-canada/"),
+            ("YouTube", "https://www.youtube.com/user/CarProof")
+        ];
         #endregion
 
         #region Page Locators
@@ -101,7 +114,6 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // Footer locators
         private readonly By _footerContainerLocator = By.CssSelector("div.cfc-footer");
         private readonly By _footerDisclaimerTextLocator = By.CssSelector("p.cfc-footer__copy");
-        private By GetFooterSectionLocator(string sectionName) => By.XPath($"//li[contains(@class,'cfc-footer__link-item') and .//*[normalize-space(text())='{sectionName}']]");
 
         /// <summary>
         /// Gets the locator for a footer subsection based on the provided subsection name.
@@ -110,6 +122,19 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// <returns>The locator for the footer subsection.</returns>
         private By GetFooterSubsectionLocator(string subSectionName) =>
             By.XPath($"//a[contains(@class,'cfc-footer-section__item') and normalize-space(text())='{subSectionName}']");
+
+        private readonly By _socialMediaSectionLocator = By.CssSelector("cfc-footer__logos");
+
+        /// <summary>
+        /// Gets the locator for a social media link based on the provided platform name.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Facebook", "Instagram", "LinkedIn", "YouTube").</param>
+        /// <returns>The locator for the social media link.</returns>
+        private By GetSocialMediaLinkLocator(string platform) => By.XPath($"//ul[contains(@class,'cfc-footer__logos')]//img[contains(@alt,'{platform}')]/ancestor::a");
+
+        // Cookie banner locators
+        private readonly By _cookieBannerContainerLocator = By.CssSelector("div.cookie-banner");
+        private readonly By _cookieBannerAcceptButtonLocator = By.CssSelector("div.cookie-banner button.cookie-banner-accept");
         #endregion
 
         #region Page Elements
@@ -126,6 +151,18 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // Footer elements
         private IWebElement FooterContainer => _driver.WaitAndFindElement(_footerContainerLocator);
         private IWebElement FooterDisclaimerText => _driver.WaitAndFindElement(_footerDisclaimerTextLocator);
+        private IWebElement SocialMediaSection => _driver.WaitAndFindElement(_socialMediaSectionLocator);
+
+        /// <summary>
+        /// Gets the social media link element for the specified platform.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Facebook", "Instagram", "LinkedIn", "YouTube").</param>
+        /// <returns>The social media link element.</returns>
+        private IWebElement GetSocialMediaLink(string platform) => _driver.WaitAndFindElement(GetSocialMediaLinkLocator(platform));
+
+        // Cookie banner elements
+        private IWebElement CookieBannerContainer => _driver.WaitAndFindElement(_cookieBannerContainerLocator);
+        private IWebElement CookieBannerAcceptButton => _driver.WaitAndFindElement(_cookieBannerAcceptButtonLocator);
         #endregion
 
         #region Constructor
@@ -139,6 +176,32 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Checks if the cookie banner is present and accepts cookies if it is displayed.
+        /// </summary>
+        public void AcceptCookiesIfPresent()
+        {
+            // Use shorter wait to check for the presence of the cookie banner
+            WebDriverWait shortWait = new(_driver, TimeSpan.FromSeconds(ConfigManager.DefaultTimeout / 5));
+
+            try
+            {
+                IWebElement cookieBannerAcceptButton = shortWait.Until(driver =>
+                {
+                    ReadOnlyCollection<IWebElement> elements = driver.FindElements(_cookieBannerAcceptButtonLocator);
+                    return elements.Count > 0 && elements[0].Displayed ? elements[0] : null;
+                });
+
+                Console.WriteLine("[LOG] Cookie banner is displayed. Accepting cookies...");
+                cookieBannerAcceptButton.Click();
+            }
+            catch (Exception ex) when (ex is NoSuchElementException || ex is WebDriverTimeoutException)
+            {
+                // Cookie banner is not present, do nothing
+                Console.WriteLine("[LOG] Cookie banner is not present. No action taken.");
+            }
+        }
+
         /// <summary>
         /// Clicks on a section in the header based on the provided section name.
         /// </summary>
@@ -176,6 +239,12 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
             IWebElement subSectionElement = _driver.WaitAndFindElement(GetFooterSubsectionLocator(subSectionName));
             subSectionElement.Click();
         }
+
+        /// <summary>
+        /// Clicks on a social media link in the footer based on the provided platform name.
+        /// </summary>
+        /// <param name="platform">The social media platform (e.g., "Facebook", "Instagram", "LinkedIn", "YouTube").</param>
+        public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
 
         /// <summary>
         /// Gets the current language code of the website by retrieving the 'lang' attribute from the <html> element.
@@ -262,6 +331,12 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// </summary>
         /// <returns>True if the disclaimer text is visible, otherwise false.</returns>
         public bool IsDisclaimerTextVisible() => FooterDisclaimerText.Displayed;
+
+        /// <summary>
+        /// Checks if the social media section in the footer is visible on the page.
+        /// </summary>
+        /// <returns>True if the social media section is visible, otherwise false.</returns>
+        public bool IsSocialMediaSectionVisible() => SocialMediaSection.Displayed;
 
         /// <summary>
         /// Toggles the language of the website by clicking on the language toggle element.
