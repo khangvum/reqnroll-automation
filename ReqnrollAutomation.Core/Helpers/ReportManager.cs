@@ -35,7 +35,7 @@ namespace ReqnrollAutomation.Core.Helpers
         /// <summary>
         /// Initializes the ExtentReports and configures the report settings.
         /// </summary>
-        public static void InitializeReport(string productName)
+        public static void InitializeReport()
         {
             // If the report is already initialized, skip re-initialization
             if (ProductName != null)
@@ -43,11 +43,7 @@ namespace ReqnrollAutomation.Core.Helpers
                 return; // Report is already initialized
             }
 
-            if (string.IsNullOrEmpty(productName))
-            {
-                throw new ArgumentNullException(nameof(productName), "Product name must be provided.");
-            }
-
+            string productName = ConfigProvider.TargetProject;
             ProductName = productName;
 
             // Set up the report path
@@ -58,8 +54,8 @@ namespace ReqnrollAutomation.Core.Helpers
 
             // Set up the ExtentSparkReporter
             _extentSparkReporter = new(_reportPath);
-            _extentSparkReporter.Config.DocumentTitle = $"{ProductName} Test Report";
-            _extentSparkReporter.Config.ReportName = $"{ProductName} Tests";
+            _extentSparkReporter.Config.DocumentTitle = $"{ProductName} Automation Test Report";
+            _extentSparkReporter.Config.ReportName = $"{ProductName} Automation Tests";
             _extentSparkReporter.Config.Theme = Theme.Dark;
 
             // Set up the ExtentReports
@@ -67,8 +63,8 @@ namespace ReqnrollAutomation.Core.Helpers
             _extentReports.AttachReporter(_extentSparkReporter);
 
             _extentReports.AddSystemInfo("Environment", ConfigProvider.TestEnvironment);
-            _extentReports.AddSystemInfo("Tester", Environment.UserName);
             _extentReports.AddSystemInfo("Browser", ConfigProvider.Browser.ToString());
+            _extentReports.AddSystemInfo("Tester", Environment.UserName);
             _extentReports.AddSystemInfo("OS", Environment.OSVersion.ToString());
 
             Console.WriteLine("[LOG] Report initialized successfully.");
@@ -82,7 +78,7 @@ namespace ReqnrollAutomation.Core.Helpers
         {
             if (_extentReports == null)
             {
-                InitializeReport("Unknown Product");
+                InitializeReport();
             }
             return _extentReports!;
         }
