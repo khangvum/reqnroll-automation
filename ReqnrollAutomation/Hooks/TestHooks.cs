@@ -60,7 +60,7 @@ namespace ReqnrollAutomation.Hooks
                 ConfigProvider.Initialize(new ConfigAdapter());
 
                 // Set up Extent Reports
-                ReportManager.InitializeReport("Reqnroll Automation");
+                ReportManager.InitializeReport();
                 _extentReports = ReportManager.GetExtentReports();
                 Console.WriteLine("[LOG] Extent Reports initialized successfully.");
 
