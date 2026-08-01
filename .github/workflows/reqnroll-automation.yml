@@ -63,19 +63,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # Set up .NET early to evaluate project names
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      # Normalize and set target project environment variable (stripping spaces)
+      - name: Normalize Target Project Environment Variable
+        shell: powershell
+        run: |
+          $targetProject = "${{ inputs.target_project }}"
+          if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "CarfaxCanadaWebsite" }
+
+          # Strip spaces
+          $targetProject = $targetProject.Replace(' ', '')
+
+          echo "TARGET_PROJECT=$targetProject" >> $env:GITHUB_ENV
+          Write-Host "Target Project: $targetProject"
+
       # Download previous test results if this is a rerun attempt
       - name: Download Previous Test Results
         if: github.run_attempt > 1
         uses: actions/download-artifact@v8
         with:
           name: TestReport
-          path: TestResults/ReqnrollAutomation
+          path: TestResults/${{ env.TARGET_PROJECT }}
         continue-on-error: true
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: "10.0.x"
 
       # Dynamically logs into personal NuGet feed using the stored secret
       - name: Authenticate NuGet Feed
@@ -91,13 +105,6 @@ jobs:
       - name: Run Test
         shell: powershell
         run: |
-          # Safe fallback values for push events where inputs are null
-          $targetProject = "${{ inputs.target_project }}"
-          if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "CarfaxCanadaWebsite" }
-
-          # Normalize target_project by stripping all spaces
-          $targetProject = $targetProject.Replace(' ', '')
-
           $executionMode = "${{ inputs.execution_mode }}"
           if ([string]::IsNullOrWhiteSpace($executionMode)) { $executionMode = "parallel" }
 
@@ -105,8 +112,8 @@ jobs:
 
           # Build the filter value
           $filterValue = ""
-          if (-not [string]::IsNullOrWhiteSpace($targetProject)) {
-            $filterValue = "FullyQualifiedName~$targetProject"
+          if (-not [string]::IsNullOrWhiteSpace($env:TARGET_PROJECT)) {
+            $filterValue = "FullyQualifiedName~$env:TARGET_PROJECT"
           }
 
           # Append category filter if present
@@ -138,5 +145,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: TestReport
-          path: TestResults/ReqnrollAutomation/*
+          path: TestResults/${{ env.TARGET_PROJECT }}/*
           retention-days: 7
