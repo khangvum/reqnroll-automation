@@ -59,6 +59,6 @@ namespace ReqnrollAutomation.Core.Config
         /// Initializes the ConfigProvider with the specified IConfigAdapter.
         /// </summary>
         /// <param name="adapter">The IConfigAdapter to use for configuration settings.</param>
-        public static void Initialize(IConfigAdapter adapter) => ConfigAdapter ??= adapter;
+        public static void Initialize(IConfigAdapter adapter) => ConfigAdapter = adapter;
     }
 }
