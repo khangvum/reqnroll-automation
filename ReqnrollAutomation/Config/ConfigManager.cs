@@ -58,6 +58,11 @@ namespace ReqnrollAutomation.Config
                        Environment.GetEnvironmentVariable("CI") == "true";
             }
         }
+
+        /// <summary>
+        /// Gets the configured target project name, defaulting to "Reqnroll" if not specified.
+        /// </summary>
+        public static string TargetProject => GetValue(nameof(TargetProject), "Reqnroll");
         #endregion
 
         // Constructor

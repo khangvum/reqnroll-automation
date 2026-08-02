@@ -28,5 +28,10 @@ namespace ReqnrollAutomation.Core.Config
         /// Gets the configured default timeout in seconds for waiting operations.
         /// </summary>
         int DefaultTimeout { get; }
+
+        /// <summary>
+        /// Gets the configured target project for the automation tests.
+        /// </summary>
+        string TargetProject { get; }
     }
 }
