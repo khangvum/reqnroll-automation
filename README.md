@@ -40,7 +40,7 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 │   │   └── <img src=".github/assets/icons/csharp.svg" width="16"/> SwagLabsCredentials.cs
 │   ├── <img src=".github/assets/icons/folder-views.svg" width="16"/> <b>Pages</b>
 │   │   ├── <img src=".github/assets/icons/folder-project.svg" width="16"/> CarfaxCanadaWebsite
-│   │   │   ├── <img src=".github/assets/icons/cucumber.svg" width="16"/> HomePage.cs
+│   │   │   ├── <img src=".github/assets/icons/csharp.svg" width="16"/> HomePage.cs
 │   │   │   └── ...
 │   │   ├── <img src=".github/assets/icons/folder-project.svg" width="16"/> SwagLabs
 │   │   │   ├── <img src=".github/assets/icons/csharp.svg" width="16"/> InventoryPage.cs
