@@ -40,7 +40,7 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 │   │   └── <img src=".github/assets/icons/csharp.svg" width="16"/> SwagLabsCredentials.cs
 │   ├── <img src=".github/assets/icons/folder-views.svg" width="16"/> <b>Pages</b>
 │   │   ├── <img src=".github/assets/icons/folder-project.svg" width="16"/> CarfaxCanadaWebsite
-│   │   │   ├── <img src=".github/assets/icons/cucumber.svg" width="16"/> HomePage.cs
+│   │   │   ├── <img src=".github/assets/icons/csharp.svg" width="16"/> HomePage.cs
 │   │   │   └── ...
 │   │   ├── <img src=".github/assets/icons/folder-project.svg" width="16"/> SwagLabs
 │   │   │   ├── <img src=".github/assets/icons/csharp.svg" width="16"/> InventoryPage.cs
@@ -64,7 +64,6 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 │   └── <img src=".github/assets/icons/visualstudio.svg" width="16"/> ReqnrollAutomation.csproj
 ├── <img src=".github/assets/icons/folder-src.svg" width="16"/> <b>ReqnrollAutomation.Core</b>
 │   ├── <img src=".github/assets/icons/folder-config.svg" width="16"/> <b>Config</b>
-│   │   ├── <img src=".github/assets/icons/json.svg" width="16"/> config.json
 │   │   ├── <img src=".github/assets/icons/csharp.svg" width="16"/> ConfigProvider.cs
 │   │   └── <img src=".github/assets/icons/csharp.svg" width="16"/> IConfigAdapter.cs
 │   ├── <img src=".github/assets/icons/folder-plugin.svg" width="16"/> <b>Extensions</b>
@@ -100,3 +99,25 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
     - **_Google Chrome_**
     - **_Microsoft Edge_**
 3.  **_Visual Studio 2026_** set up (with **_Reqnroll for Visual Studio 2022 and 2026_** extension configured).
+
+## Parallel Execution
+
+The framework leverages **_MSTest_** `.runsettings` configurations to enforce an **_isolated multi-worker execution strategy_**, maximizing test throughput while preserving scenario independence.
+
+### Browser Session Pooling
+
+To eliminate process initialization overhead, the test suite instantiates a persistent **_pool of 4 browser instances_** at execution start-up:
+
+- **Worker Allocation:** Provisions **_4 parallel threads_**, assigning a dedicated **_WebDriver instance_** to each worker.
+- **Session Lifecycle:** Maintains active browser processes across sequential scenarios within the same execution thread.
+- **State Sanitation:** Clears cookies, cache, and browser storage via scenario lifecycle hooks to ensure full test isolation.
+
+### Execution Modes
+
+| Mode           | Command                                         | Scope                                                                |
+| :------------- | :---------------------------------------------- | :------------------------------------------------------------------- |
+| **Sequential** | `dotnet test --settings sequential.runsettings` | **_Single-threaded_** execution for local **_debugging_**.           |
+| **Parallel**   | `dotnet test --settings parallel.runsettings`   | **_Multi-threaded_** execution across 4 concurrent worker instances. |
+
+> [!TIP]
+> Worker thread capacity can be adjusted by modifying the `<Workers>4</Workers>` node within the `<Parallelize>` element in `parallel.runsettings`.
