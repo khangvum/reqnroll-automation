@@ -11,28 +11,6 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 
 ## Architecture Overview
 
-```
-ReqnrollAutomation
-└── etc
-    └── nixos
-        └── .dotfiles
-            ├── secrets
-            │   ├── password
-            │   └── ssh
-            ├── system
-            │   ├── docker.nix
-            │   ├── ssh.nix
-            │   └── wsl.nix
-            ├── user
-            │   ├── bash.nix
-            │   └── git.nix
-            ├── flake.nix
-            ├── flake.lock
-            ├── configuration.nix
-            └── home.nix
-```
-## Architecture Overview
-
 <pre>
 <b>ReqnrollAutomation</b>
 ├── <img src=".github/assets/icons/folder-github.svg" width="16"/> <b>.github</b>
@@ -114,3 +92,4 @@ ReqnrollAutomation
 ├── <img src=".github/assets/icons/settings.svg" width="16"/> sequential.runsettings
 └── <img src=".github/assets/icons/visualstudio.svg" width="16"/> ReqnrollAutomation.slnx
 </pre>
+
