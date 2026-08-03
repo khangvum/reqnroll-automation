@@ -108,16 +108,16 @@ The framework leverages **_MSTest_** `.runsettings` configurations to enforce an
 
 To eliminate process initialization overhead, the test suite instantiates a persistent **_pool of 4 browser instances_** at execution start-up:
 
-- **_Worker Allocation:_** Provisions **_4 parallel threads_**, assigning a dedicated **_WebDriver instance_** to each worker.
-- **_Session Lifecycle:_** Maintains active browser processes across sequential scenarios within the same execution thread.
-- **_State Sanitation:_** Clears cookies, cache, and browser storage via scenario lifecycle hooks to ensure full test isolation.
+- **Worker Allocation:** Provisions **_4 parallel threads_**, assigning a dedicated **_WebDriver instance_** to each worker.
+- **Session Lifecycle:** Maintains active browser processes across sequential scenarios within the same execution thread.
+- **State Sanitation:** Clears cookies, cache, and browser storage via scenario lifecycle hooks to ensure full test isolation.
 
 ### Execution Modes
 
-| Mode             | Command                                         | Scope                                                          |
-| :--------------- | :---------------------------------------------- | :------------------------------------------------------------- |
-| **_Sequential_** | `dotnet test --settings sequential.runsettings` | **_Single-threaded_** execution for local **_debugging_**.                 |
-| **_Parallel_**   | `dotnet test --settings parallel.runsettings`   | **_Multi-threaded_** execution across 4 concurrent worker instances. |
+| Mode           | Command                                         | Scope                                                                |
+| :------------- | :---------------------------------------------- | :------------------------------------------------------------------- |
+| **Sequential** | `dotnet test --settings sequential.runsettings` | **_Single-threaded_** execution for local **_debugging_**.           |
+| **Parallel**   | `dotnet test --settings parallel.runsettings`   | **_Multi-threaded_** execution across 4 concurrent worker instances. |
 
 > [!TIP]
 > Worker thread capacity can be adjusted by modifying the `<Workers>4</Workers>` node within the `<Parallelize>` element in `parallel.runsettings`.
