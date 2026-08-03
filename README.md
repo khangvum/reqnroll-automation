@@ -98,6 +98,17 @@ ReqnrollAutomation
 │       ├── <img src=".github/assets/icons/csharp.svg" width="16"/> LogMessageFormatter.cs
 │       ├── <img src=".github/assets/icons/csharp.svg" width="16"/> PathHelper.cs
 │       └── <img src=".github/assets/icons/csharp.svg" width="16"/> ReportManager.cs
+├── <img src=".github/assets/icons/folder-coverage.svg" width="16"/> <b>TestResults</b>
+│   ├── <img src=".github/assets/icons/folder-project.svg" width="16"/> CarfaxCanadaWebsite
+│   │   ├── <img src=".github/assets/icons/folder-update.svg" width="16"/> 2026-08-01_135952
+│   │   │   ├── <img src=".github/assets/icons/folder-docs.svg" width="16"/> Reports
+│   │   │   │   └── <img src=".github/assets/icons/html.svg" width="16"/> ExtentReport.html
+│   │   │   └── <img src=".github/assets/icons/folder-images.svg" width="16"/> Screenshots
+│   │   │       ├── <img src=".github/assets/icons/image.svg" width="16"/> PASSED_Accessibility_toggle_enables_theme_contrast_140001_8.png
+│   │   │       └── ...
+│   │   └── ...
+│   └── <img src=".github/assets/icons/folder-project.svg" width="16"/> SwagLabs
+│       └── ...
 ├── <img src=".github/assets/icons/nuget.svg" width="16"/> nuget.config
 ├── <img src=".github/assets/icons/settings.svg" width="16"/> parallel.runsettings
 ├── <img src=".github/assets/icons/settings.svg" width="16"/> sequential.runsettings
