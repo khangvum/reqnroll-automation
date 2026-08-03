@@ -64,7 +64,6 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 │   └── <img src=".github/assets/icons/visualstudio.svg" width="16"/> ReqnrollAutomation.csproj
 ├── <img src=".github/assets/icons/folder-src.svg" width="16"/> <b>ReqnrollAutomation.Core</b>
 │   ├── <img src=".github/assets/icons/folder-config.svg" width="16"/> <b>Config</b>
-│   │   ├── <img src=".github/assets/icons/json.svg" width="16"/> config.json
 │   │   ├── <img src=".github/assets/icons/csharp.svg" width="16"/> ConfigProvider.cs
 │   │   └── <img src=".github/assets/icons/csharp.svg" width="16"/> IConfigAdapter.cs
 │   ├── <img src=".github/assets/icons/folder-plugin.svg" width="16"/> <b>Extensions</b>
