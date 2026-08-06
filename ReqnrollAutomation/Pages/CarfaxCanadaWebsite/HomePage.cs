@@ -395,7 +395,11 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// <summary>
         /// Scrolls the page to the footer section.
         /// </summary>
-        public void ScrollToFooter() => ScrollIntoView(FooterContainer);
+        public void ScrollToFooter()
+        {
+            ScrollIntoView(FooterContainer);
+            AcceptCookiesIfPresent();
+        }
         #endregion
     }
 }
