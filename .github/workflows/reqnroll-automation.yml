@@ -24,6 +24,14 @@ on:
         required: false
         default: ""
         type: string
+      browser:
+        description: "Browser"
+        required: true
+        default: "Chrome"
+        type: choice
+        options:
+          - Chrome
+          - Edge
       test_environment:
         description: "Test Environment"
         required: true
@@ -46,6 +54,7 @@ jobs:
     runs-on: windows-latest
     env:
       Headless: "true"
+      Browser: ${{ inputs.browser || 'Chrome' }}
       # Fallback to QA if triggered via push instead of workflow_dispatch
       TestEnvironment: ${{ inputs.test_environment || 'QA' }}
 
