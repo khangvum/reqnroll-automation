@@ -6,10 +6,10 @@ on:
       target_project:
         description: "Target Project"
         required: true
-        default: "CarfaxCanadaWebsite"
+        default: "Carfax Canada Website"
         type: choice
         options:
-          - CarfaxCanadaWebsite
+          - "Carfax Canada Website"
           - SwagLabs
       execution_mode:
         description: "Execution Mode"
@@ -54,6 +54,7 @@ jobs:
     runs-on: windows-latest
     env:
       Headless: "true"
+      TargetProject: ${{ inputs.target_project || 'Reqnroll Automation' }}
       Browser: ${{ inputs.browser || 'Chrome' }}
       # Fallback to QA if triggered via push instead of workflow_dispatch
       TestEnvironment: ${{ inputs.test_environment || 'QA' }}
@@ -93,6 +94,9 @@ jobs:
           # Safe fallback values for push events where inputs are null
           $targetProject = "${{ inputs.target_project }}"
           if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "CarfaxCanadaWebsite" }
+
+          # Normalize target_project by stripping all spaces
+          $targetProject = $targetProject.Replace(' ', '')
 
           $executionMode = "${{ inputs.execution_mode }}"
           if ([string]::IsNullOrWhiteSpace($executionMode)) { $executionMode = "parallel" }
