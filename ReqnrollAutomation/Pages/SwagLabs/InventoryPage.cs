@@ -37,7 +37,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #endregion
 
         #region Page Locators
-        // Footer
+        // Footer locators
         private readonly By _footerContainerLocator = By.CssSelector("footer.footer");
         private readonly By _socialMediaSectionLocator = By.CssSelector("ul.social");
         private readonly By _copyrightTextLocator = By.CssSelector("footer.footer .footer_copy");
@@ -48,9 +48,14 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
         /// <returns>The locator for the social media link.</returns>
         private By GetSocialMediaLinkLocator(string platform) => By.CssSelector($"ul.social li.social_{platform.ToLower()} a");
+
+        // Inventory List locators
+        private readonly By _inventoryListLocator = By.CssSelector("div.inventory_list[data-test='inventory-list']");
+        private readonly By _inventoryItemLocator = By.CssSelector("div.inventory_item[data-test='inventory-item']");
         #endregion
 
         #region Page Elements
+        // Footer elements
         private IWebElement FooterContainer => _driver.WaitAndFindElement(_footerContainerLocator);
         private IWebElement SocialMediaSection => _driver.WaitAndFindElement(_socialMediaSectionLocator);
         private IWebElement CopyrightText => _driver.WaitAndFindElement(_copyrightTextLocator);
@@ -61,6 +66,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
         /// <returns>The social media link element.</returns>
         private IWebElement GetSocialMediaLink(string platform) => _driver.WaitAndFindElement(GetSocialMediaLinkLocator(platform));
+
+        // Inventory List elements
+        private IReadOnlyList<IWebElement> InventoryItems => _driver.FindElements(_inventoryItemLocator);
         #endregion
 
         #region Constructor
