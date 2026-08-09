@@ -24,5 +24,8 @@ namespace ReqnrollAutomation.Config
 
         /// <inheritdoc/>
         public int DefaultTimeout => ConfigManager.DefaultTimeout;
+
+        /// <inheritdoc/>
+        public string TargetProject => ConfigManager.TargetProject;
     }
 }
