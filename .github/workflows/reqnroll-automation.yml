@@ -54,7 +54,7 @@ jobs:
     runs-on: windows-latest
     env:
       Headless: "true"
-      TargetProject: ${{ inputs.target_project || 'Carfax Canada Website'' }}
+      TargetProject: ${{ inputs.target_project || 'Carfax Canada Website' }}
       Browser: ${{ inputs.browser || 'Chrome' }}
       # Fallback to QA if triggered via push instead of workflow_dispatch
       TestEnvironment: ${{ inputs.test_environment || 'QA' }}
