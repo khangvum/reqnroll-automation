@@ -52,6 +52,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         // Inventory List locators
         private readonly By _inventoryListLocator = By.CssSelector("div.inventory_list[data-test='inventory-list']");
         private readonly By _inventoryItemLocator = By.CssSelector("div.inventory_item[data-test='inventory-item']");
+
+        // Inventory Item locators (relative to each inventory item)
+        private readonly By _itemNameLocator = By.CssSelector(".inventory_item_name");
+        private readonly By _itemDescLocator = By.CssSelector(".inventory_item_desc");
+        private readonly By _itemPriceLocator = By.CssSelector(".inventory_item_price");
+        private readonly By _itemAddToCartButtonLocator = By.CssSelector("button.btn_inventory");
         #endregion
 
         #region Page Elements
@@ -110,6 +116,42 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// </summary>
         /// <returns>The text of the copyright element.</returns>
         public string GetCopyrightText() => CopyrightText.Text;
+
+        /// <summary>
+        /// Adds a random number of inventory items to the cart and returns their details.
+        /// </summary>
+        /// <returns>A list of tuples containing the name, description, and price of each added item.</returns>
+        /// <exception cref="InvalidOperationException">Throws if no inventory items are found on the page.</exception>
+        public IReadOnlyList<(string Name, string Description, decimal Price)> AddRandomInventoryItems()
+        {
+            // Check if there are any inventory items available
+            if (InventoryItems.Count == 0)
+                throw new InvalidOperationException("No inventory items found on the page.");
+
+            // Determine a random number of items to add
+            int itemsToAdd = Random.Shared.Next(1, InventoryItems.Count + 1);
+
+            // Randomly select unique inventory items to add
+            List<IWebElement> selectedItems = [.. InventoryItems.OrderBy(_ => Random.Shared.Next()).Take(itemsToAdd)];
+
+            List<(string Name, string Description, decimal Price)> addedItemsDetails = [];
+            foreach (IWebElement item in selectedItems)
+            {
+                // Get the details of each selected item
+                string name = item.FindElement(_itemNameLocator).Text;
+                string description = item.FindElement(_itemDescLocator).Text;
+                string priceText = item.FindElement(_itemPriceLocator).Text.Replace("$", "");
+                decimal price = decimal.Parse(priceText);
+
+                // Click the "Add to cart" button for the item
+                item.FindElement(_itemAddToCartButtonLocator).Click();
+
+                // Store the details of the added item
+                addedItemsDetails.Add((name, description, price));
+            }
+
+            return addedItemsDetails;
+        }
         #endregion
     }
 }
