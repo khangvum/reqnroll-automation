@@ -6,6 +6,7 @@
  */
 
 using ReqnrollAutomation.Core.Extensions;
+using ReqnrollAutomation.Models.SwagLabs;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
 {
@@ -128,9 +129,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// <summary>
         /// Adds a random number of inventory items to the cart and returns their details.
         /// </summary>
-        /// <returns>A list of tuples containing the name, description, and price of each added item.</returns>
+        /// <returns>A list of InventoryItemDetails objects containing the name, description, and price of each added item.</returns>
         /// <exception cref="InvalidOperationException">Throws if no inventory items are found on the page.</exception>
-        public IReadOnlyList<(string Name, string Description, decimal Price)> AddRandomInventoryItems()
+        public IReadOnlyList<InventoryItemDetails> AddRandomInventoryItems()
         {
             // Check if there are any inventory items available
             if (InventoryItems.Count == 0)
@@ -142,7 +143,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
             // Randomly select unique inventory items to add
             List<IWebElement> selectedItems = [.. InventoryItems.OrderBy(_ => Random.Shared.Next()).Take(itemsToAdd)];
 
-            List<(string Name, string Description, decimal Price)> addedItemsDetails = [];
+            List<InventoryItemDetails> addedItemsDetails = [];
             foreach (IWebElement item in selectedItems)
             {
                 // Get the details of each selected item
@@ -155,7 +156,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
                 item.FindElement(_itemAddToCartButtonLocator).Click();
 
                 // Store the details of the added item
-                addedItemsDetails.Add((name, description, price));
+                addedItemsDetails.Add(new InventoryItemDetails
+                {
+                    Name = name,
+                    Description = description,
+                    Price = price,
+                });
             }
 
             return addedItemsDetails;
