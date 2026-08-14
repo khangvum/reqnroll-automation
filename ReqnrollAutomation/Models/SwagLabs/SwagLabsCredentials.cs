@@ -10,7 +10,7 @@ namespace ReqnrollAutomation.Models.SwagLabs
     /// <summary>
     /// A class that represents the credentials for Swag Labs.
     /// </summary>
-    internal class SwagLabsCredentials
+    public class SwagLabsCredentials
     {
         public Dictionary<string, string> Accounts { get; set; } = new();
         public string SharedPassword { get; set; } = "";
