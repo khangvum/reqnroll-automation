@@ -4,8 +4,7 @@
  * Date:            2026-06-10
  * Description:     A class that represents the credentials for Swag Labs.
  */
-
-namespace ReqnrollAutomation.Models
+namespace ReqnrollAutomation.Models.SwagLabs
 {
     /// <summary>
     /// A class that represents the credentials for Swag Labs.

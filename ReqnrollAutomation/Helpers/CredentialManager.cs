@@ -6,7 +6,7 @@
  */
 
 using Microsoft.Extensions.Configuration;
-using ReqnrollAutomation.Models;
+using ReqnrollAutomation.Models.SwagLabs;
 using System.Text;
 
 namespace ReqnrollAutomation.Helpers
