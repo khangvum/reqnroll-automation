@@ -58,6 +58,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private readonly By _itemDescLocator = By.CssSelector(".inventory_item_desc");
         private readonly By _itemPriceLocator = By.CssSelector(".inventory_item_price");
         private readonly By _itemAddToCartButtonLocator = By.CssSelector("button.btn_inventory");
+
+        // Cart Link locator
+        private readonly By _cartLinkLocator = By.CssSelector("a.shopping_cart_link");
         #endregion
 
         #region Page Elements
@@ -75,6 +78,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // Inventory List elements
         private IReadOnlyList<IWebElement> InventoryItems => _driver.FindElements(_inventoryItemLocator);
+
+        // Cart Link element
+        public IWebElement CartLink => _driver.WaitAndFindElement(_cartLinkLocator);
         #endregion
 
         #region Constructor
@@ -88,10 +94,19 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #endregion
 
         #region Public Methods
+        public void ClickCartLink() => CartLink.Click();
+
         /// <summary>
-        /// Scrolls the page to the footer section.
+        /// Clicks the social media link for the specified platform.
         /// </summary>
-        public void ScrollToFooter() => ScrollIntoView(FooterContainer);
+        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
+        public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
+
+        /// <summary>
+        /// Retrieves the text of the footer copyright element.
+        /// </summary>
+        /// <returns>The text of the copyright element.</returns>
+        public string GetCopyrightText() => CopyrightText.Text;
 
         /// <summary>
         /// Checks if the footer copyright text is visible on the page.
@@ -106,16 +121,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         public bool IsSocialMediaSectionVisible() => SocialMediaSection.Displayed;
 
         /// <summary>
-        /// Clicks the social media link for the specified platform.
+        /// Scrolls the page to the footer section.
         /// </summary>
-        /// <param name="platform">The social media platform (e.g., "Twitter", "Facebook", "LinkedIn").</param>
-        public void ClickSocialMediaLink(string platform) => GetSocialMediaLink(platform).Click();
-
-        /// <summary>
-        /// Retrieves the text of the footer copyright element.
-        /// </summary>
-        /// <returns>The text of the copyright element.</returns>
-        public string GetCopyrightText() => CopyrightText.Text;
+        public void ScrollToFooter() => ScrollIntoView(FooterContainer);
 
         /// <summary>
         /// Adds a random number of inventory items to the cart and returns their details.
