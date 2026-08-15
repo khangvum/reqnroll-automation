@@ -1,6 +1,7 @@
 ﻿
 
-using AventStack.ExtentReports.Gherkin.Model;
+using ReqnrollAutomation.Core.Extensions;
+using ReqnrollAutomation.Models.SwagLabs;
 
 /**
  * Program:         InventoryItemStepDefinitions.cs
@@ -8,7 +9,6 @@ using AventStack.ExtentReports.Gherkin.Model;
  * Date:            2026-08-12
  * Description:     A class that defines the step definitions for the inventory item feature on Swag Labs website.
  */
-
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     /// <summary>
@@ -27,8 +27,8 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         [When(@"I add inventory items to the cart")]
         public void WhenIAddInventoryItemsToTheCart()
         {
-            IReadOnlyList<(string Name, string Description, decimal Price)> addedItemsDetails = InventoryPage.AddRandomInventoryItems();
-            _scenarioContext[AddedInventoryItemsDetailsKey] = addedItemsDetails;
+            IReadOnlyList<InventoryItemDetails> addedItemsDetails = InventoryPage.AddRandomInventoryItems();
+            _scenarioContext.SetValue(AddedInventoryItemsDetailsKey, addedItemsDetails);
         }
 
         [When(@"I navigate to the cart page")]
@@ -43,13 +43,30 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         public void ThenTheCartShouldDisplayTheCorrectNumberOfItemsAdded()
         {
             // Retrieve the details of the added items from the scenario context
-            IReadOnlyList<(string Name, string Description, decimal Price)> addedItemsDetails = _scenarioContext[AddedInventoryItemsDetailsKey] as IReadOnlyList<(string Name, string Description, decimal Price)> 
-                ?? throw new InvalidOperationException("Added inventory items details not found in the scenario context.");
+            IReadOnlyList<InventoryItemDetails> addedItemsDetails = _scenarioContext.GetValue<IReadOnlyList<InventoryItemDetails>>(AddedInventoryItemsDetailsKey);
 
             // Check if the number of items in the cart matches the number of items added
             int expectedItemCount = addedItemsDetails.Count;
-            int actualItemCount = CartPage.CartItems.Count;
+            int actualItemCount = CartPage.GetCartItemsDetails().Count;
             Assert.AreEqual(expectedItemCount, actualItemCount, $"Expected {expectedItemCount} items in the cart, but found {actualItemCount}.");
+        }
+
+        [Then(@"the items' details and pricing should match the product page")]
+        public void ThenTheItemsDetailsAndPricingShouldMatchTheProductPage()
+        {
+            // Retrieve the details of the added items from the scenario context
+            IReadOnlyList<InventoryItemDetails> addedItemsDetails = _scenarioContext.GetValue<IReadOnlyList<InventoryItemDetails>>(AddedInventoryItemsDetailsKey);
+            IReadOnlyList<InventoryItemDetails> cartItemsDetails = CartPage.GetCartItemsDetails();
+
+            // Check if the details of each item in the cart match the details of the items added
+            for (int i = 0; i < addedItemsDetails.Count; i++)
+            {
+                InventoryItemDetails addedItem = addedItemsDetails[i];
+                InventoryItemDetails cartItem = cartItemsDetails[i];
+                Assert.AreEqual(addedItem.Name, cartItem.Name, $"Name for item at index {i} does not match.");
+                Assert.AreEqual(addedItem.Description, cartItem.Description, $"Description for item '{addedItem.Name}' does not match.");
+                Assert.AreEqual(addedItem.Price, cartItem.Price, $"Price for item '{addedItem.Name}' does not match.");
+            }
         }
         #endregion
     }
