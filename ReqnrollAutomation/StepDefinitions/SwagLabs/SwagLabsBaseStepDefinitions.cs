@@ -16,6 +16,7 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         private LoginPage? _loginPage;
         private InventoryPage? _inventoryPage;
         private CartPage? _cartPage;
+        private CheckoutPage? _checkoutPage;
         #endregion
 
         #region Protected Attributes
@@ -59,9 +60,18 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
                 return _cartPage;
             }
         }
+
+        public CheckoutPage CheckoutPage
+        {
+            get
+            {
+                _checkoutPage ??= new(Driver);
+                return _checkoutPage;
+            }
+        }
         #endregion
 
-        #region Constructor
+            #region Constructor
         public SwagLabsBaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext) : base(scenarioContext, featureContext)
         {
         }
