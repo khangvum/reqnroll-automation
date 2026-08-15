@@ -5,7 +5,6 @@
  * Description:     A factory for creating and managing thread-static WebDriver instances across the test framework lifecycle.
  */
 
-using System.Collections.Concurrent;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
