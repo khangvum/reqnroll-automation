@@ -5,7 +5,6 @@
  * Description:     A factory for creating and managing thread-static WebDriver instances across the test framework lifecycle.
  */
 
-using System.Collections.Concurrent;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
@@ -22,7 +21,7 @@ namespace ReqnrollAutomation.Drivers
     {
         #region Private Attributes
         // ThreadLocal ensures each worker thread manages its own isolated IWebDriver instance
-        private static readonly ThreadLocal<IWebDriver?> LocalDriver = new ThreadLocal<IWebDriver?>(trackAllValues: true);
+        private static readonly ThreadLocal<IWebDriver?> LocalDriver = new(trackAllValues: true);
         #endregion
 
         #region Public Methods
