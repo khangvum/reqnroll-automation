@@ -15,6 +15,12 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         // Pages
         private LoginPage? _loginPage;
         private InventoryPage? _inventoryPage;
+        private CartPage? _cartPage;
+        #endregion
+
+        #region Protected Attributes
+        // Context Keys
+        protected const string AddedInventoryItemsDetailsKey = nameof(AddedInventoryItemsDetailsKey);
         #endregion
 
         #region Public Properties
@@ -39,6 +45,18 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             {
                 _inventoryPage ??= new(Driver);
                 return _inventoryPage;
+            }
+        }
+
+        /// <summary>
+        /// Lazy initialization of the CartPage instance.
+        /// </summary>
+        public CartPage CartPage
+        {
+            get
+            {
+                _cartPage ??= new(Driver);
+                return _cartPage;
             }
         }
         #endregion
