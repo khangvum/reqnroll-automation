@@ -1,7 +1,17 @@
-﻿using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+﻿/**
+ * Program:         FooterComponentStepDefinitions.cs
+ * Author:          Manh Khang Vu
+ * Date:            2026-08-15
+ * Description:     A class that defines the step definitions for the footer component on CARFAX Canada website.
+ */
+
+using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
 
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
+    /// <summary>
+    /// A class that defines the step definitions for the footer component on CARFAX Canada website.
+    /// </summary>
     [Binding]
     public class FooterComponentStepDefinitions : CarfaxCanadaBaseStepDefinitions
     {
