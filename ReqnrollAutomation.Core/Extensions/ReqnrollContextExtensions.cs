@@ -48,6 +48,37 @@ namespace ReqnrollAutomation.Core.Extensions
         {
             reqnrollContext[WebDriverKey] = driver ?? throw new ArgumentNullException(nameof(driver), "WebDriver instance cannot be null.");
         }
+
+        /// <summary>
+        /// Gets a value of type T from the ReqnrollContext using the specified key.
+        /// </summary>
+        /// <typeparam name="T">The type of the value to retrieve.</typeparam>
+        /// <param name="reqnrollContext">The Reqnroll context.</param>
+        /// <param name="key">The key of the value to retrieve.</param>
+        /// <returns>The value of type T.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the value is not found or is not of the expected type.</exception>
+        public static T GetValue<T>(this ReqnrollContext reqnrollContext, string key)
+        {
+            if (reqnrollContext.TryGetValue(key, out object value) && value is T typedValue)
+            {
+                return typedValue;
+            }
+
+            throw new InvalidOperationException($"Value for key '{key}' not found or is not of type {typeof(T).Name}.");
+        }
+
+        /// <summary>
+        /// Sets a value of type T in the ReqnrollContext using the specified key.
+        /// </summary>
+        /// <typeparam name="T">The type of the value to set.</typeparam>
+        /// <param name="reqnrollContext">The Reqnroll context.</param>
+        /// <param name="key">The key of the value to set.</param>
+        /// <param name="value">The value to set.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the value is null.</exception>
+        public static void SetValue<T>(this ReqnrollContext reqnrollContext, string key, T value)
+        {
+            reqnrollContext[key] = value ?? throw new ArgumentNullException(nameof(value), $"Value for key '{key}' cannot be null.");
+        }
         #endregion
     }
 }
