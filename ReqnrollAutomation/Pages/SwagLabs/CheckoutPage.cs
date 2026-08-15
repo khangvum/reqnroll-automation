@@ -1,13 +1,11 @@
-﻿
-
-using ReqnrollAutomation.Models.SwagLabs;
-
-/**
+﻿/**
  * Program:         CartPage.cs
  * Author:          Manh Khang Vu
  * Date:            2026-08-20
  * Description:     A class that represents the checkout page of Swag Labs.
  */
+
+using ReqnrollAutomation.Models.SwagLabs;
 
 namespace ReqnrollAutomation.Pages.SwagLabs
 {

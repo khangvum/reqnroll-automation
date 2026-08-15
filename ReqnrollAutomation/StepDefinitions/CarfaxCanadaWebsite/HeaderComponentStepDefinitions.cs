@@ -1,13 +1,12 @@
-﻿
-
-using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
-
-/**
+﻿/**
  * Program:         HeaderStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-07-21
  * Description:     A class that defines the step definitions for the header component verification feature on CARFAX Canada website.
  */
+
+using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     /// <summary>
