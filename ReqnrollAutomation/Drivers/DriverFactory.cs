@@ -22,7 +22,7 @@ namespace ReqnrollAutomation.Drivers
     {
         #region Private Attributes
         // ThreadLocal ensures each worker thread manages its own isolated IWebDriver instance
-        private static readonly ThreadLocal<IWebDriver?> LocalDriver = new ThreadLocal<IWebDriver?>(trackAllValues: true);
+        private static readonly ThreadLocal<IWebDriver?> LocalDriver = new(trackAllValues: true);
         #endregion
 
         #region Public Methods
