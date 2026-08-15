@@ -18,4 +18,4 @@ Scenario: Adding inventory items reflects correct details and pricing in the car
 	When I navigate to the cart page
 	Then the cart badge on should reflect the number of items added
 	And the cart should display the correct number of items added
-	And the items' details and pricing should match the product page
+	And the items' details and pricing in the cart should match the product page
