@@ -1,13 +1,12 @@
-﻿
-
-using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
-
-/**
+﻿/**
  * Program:         AccessibilityStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-07-18
  * Description:     A class that defines the step definitions for the accessibility feature on CARFAX Canada website.
  */
+
+using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
+
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     /// <summary>
