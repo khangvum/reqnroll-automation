@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using ReqnrollAutomation.Config;
 using ReqnrollAutomation.Core.Extensions;
+using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -23,22 +24,22 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         // Constants
         // - Header links
         /// <summary>
-        /// A read-only list of tuples representing the header links on the CARFAX Canada website.
+        /// A read-only list of navigation links representing the header links on the CARFAX Canada website.
         /// </summary>
-        public readonly IReadOnlyList<(string Section, string SubSection, string ExpectedUrl)> HeaderLinks =
+        public readonly IReadOnlyList<NavigationLink> HeaderLinks =
         [
-            ("Vehicle History", "Vehicle History Reports", "https://www.carfax.ca/vehicle-history/vehicle-history-report"),
-            ("Vehicle History", "View a Sample Report", "https://www.carfax.ca/vehicle-history/sample-report"),
-            ("Vehicle Fraud", "What is VIN Fraud?", "https://www.carfax.ca/what-is-vin-fraud"),
-            ("Vehicle Fraud", "VIN Fraud Check", "https://www.carfax.ca/vin-fraud-check"),
-            ("Vehicle Fraud", "Vehicle Monitoring Subscription", "https://www.carfax.ca/vehicle-monitoring-subscription"),
-            ("What’s My Car Worth", "Car Value", "https://www.carfax.ca/whats-my-car-worth/car-value/ymm"),
-            ("What’s My Car Worth", "History Based Value", "https://www.carfax.ca/whats-my-car-worth/history-based-value"),
-            ("Tools", "VIN Decoder", "https://www.carfax.ca/tools/vin-decode"),
-            ("Tools", "Recall Check", "https://www.carfax.ca/tools/recall-check"),
-            ("Tools", "Car Care", "https://www.carfax.ca/Service"),
-            ("Resources", "Learn", "https://www.carfax.ca/learn"),
-            ("Resources", "Support", "https://support.carfax.ca/en/support/home")
+            new() { Section = "Vehicle History", SubSection = "Vehicle History Reports", ExpectedUrl = "https://www.carfax.ca/vehicle-history/vehicle-history-report" },
+            new() { Section = "Vehicle History", SubSection = "View a Sample Report", ExpectedUrl = "https://www.carfax.ca/vehicle-history/sample-report" },
+            new() { Section = "Vehicle Fraud", SubSection = "What is VIN Fraud?", ExpectedUrl = "https://www.carfax.ca/what-is-vin-fraud" },
+            new() { Section = "Vehicle Fraud", SubSection = "VIN Fraud Check", ExpectedUrl = "https://www.carfax.ca/vin-fraud-check" },
+            new() { Section = "Vehicle Fraud", SubSection = "Vehicle Monitoring Subscription", ExpectedUrl = "https://www.carfax.ca/vehicle-monitoring-subscription" },
+            new() { Section = "What’s My Car Worth", SubSection = "Car Value", ExpectedUrl = "https://www.carfax.ca/whats-my-car-worth/car-value/ymm" },
+            new() { Section = "What’s My Car Worth", SubSection = "History Based Value", ExpectedUrl = "https://www.carfax.ca/whats-my-car-worth/history-based-value" },
+            new() { Section = "Tools", SubSection = "VIN Decoder", ExpectedUrl = "https://www.carfax.ca/tools/vin-decode" },
+            new() { Section = "Tools", SubSection = "Recall Check", ExpectedUrl = "https://www.carfax.ca/tools/recall-check" },
+            new() { Section = "Tools", SubSection = "Car Care", ExpectedUrl = "https://www.carfax.ca/Service" },
+            new() { Section = "Resources", SubSection = "Learn", ExpectedUrl = "https://www.carfax.ca/learn" },
+            new() { Section = "Resources", SubSection = "Support", ExpectedUrl = "https://support.carfax.ca/en/support/home" }
         ];
 
         /// <summary>
@@ -51,55 +52,55 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
 
         // - Footer links
         /// <summary>
-        /// A read-only list of tuples representing the footer links on the CARFAX Canada website, including section, subsection, and expected URL.
+        /// A read-only list of navigation links representing the footer links on the CARFAX Canada website.
         /// </summary>
-        public readonly IReadOnlyList<(string Section, string SubSection, string ExpectedUrl)> FooterLinks =
+        public readonly IReadOnlyList<NavigationLink> FooterLinks =
         [
-            ("Products", "CARFAX Canada Vehicle History Reports", "https://www.carfax.ca/vehicle-history/vehicle-history-report"),
-            ("Products", "CARFAX Canada VIN Fraud Check", "https://www.carfax.ca/vin-fraud-check"),
-            ("Products", "CARFAX Canada Vehicle Monitoring", "https://www.carfax.ca/vehicle-monitoring-subscription"),
-            ("Products", "CARFAX Canada History-Based Value", "https://www.carfax.ca/whats-my-car-worth/history-based-value"),
-            ("Products", "CARFAX Canada VIN Decoder", "https://www.carfax.ca/tools/vin-decode"),
-            ("Products", "CARFAX Canada Recall Check", "https://www.carfax.ca/tools/recall-check"),
-            ("Products", "CARFAX Canada Car Care", "https://www.carfax.ca/Service"),
-            ("Resources", "Learn", "https://www.carfax.ca/learn"),
-            ("Resources", "Support", "https://support.carfax.ca/en/support/home"),
-            ("Resources", "Media", "https://www.carfax.ca/media"),
-            ("Company", "About", "https://www.carfax.ca/about"),
-            ("Company", "Contact", "https://www.carfax.ca/contact"),
-            ("Company", "Careers", "https://www.carfax.ca/careers"),
-            ("Company", "Partners", "https://www.carfax.ca/partners"),
-            ("Company", "Vehicle Fraud", "https://www.carfax.ca/vehicle-fraud"),
-            ("Company", "CARFAX Canada Data", "https://www.carfax.ca/vehicle-history-data"),
-            ("Company", "CARPROOF is CARFAX Canada", "https://www.carfax.ca/carproof"),
-            ("Business Solutions", "Dealer Login", "https://authentication.carfax.ca/"),
-            ("Business Solutions", "Become a Dealer Member", "https://www.carfax.ca/become-a-member"),
-            ("Business Solutions", "Banking, Insurance and Government", "https://go.carfax.ca/en-ca/big/home"),
-            ("Business Solutions", "Automotive Remarketing and OEM", "https://go.carfax.ca/aro")
+            new() { Section = "Products", SubSection = "CARFAX Canada Vehicle History Reports", ExpectedUrl = "https://www.carfax.ca/vehicle-history/vehicle-history-report" },
+            new() { Section = "Products", SubSection = "CARFAX Canada VIN Fraud Check", ExpectedUrl = "https://www.carfax.ca/vin-fraud-check" },
+            new() { Section = "Products", SubSection = "CARFAX Canada Vehicle Monitoring", ExpectedUrl = "https://www.carfax.ca/vehicle-monitoring-subscription" },
+            new() { Section = "Products", SubSection = "CARFAX Canada History-Based Value", ExpectedUrl = "https://www.carfax.ca/whats-my-car-worth/history-based-value" },
+            new() { Section = "Products", SubSection = "CARFAX Canada VIN Decoder", ExpectedUrl = "https://www.carfax.ca/tools/vin-decode" },
+            new() { Section = "Products", SubSection = "CARFAX Canada Recall Check", ExpectedUrl = "https://www.carfax.ca/tools/recall-check" },
+            new() { Section = "Products", SubSection = "CARFAX Canada Car Care", ExpectedUrl = "https://www.carfax.ca/Service" },
+            new() { Section = "Resources", SubSection = "Learn", ExpectedUrl = "https://www.carfax.ca/learn" },
+            new() { Section = "Resources", SubSection = "Support", ExpectedUrl = "https://support.carfax.ca/en/support/home" },
+            new() { Section = "Resources", SubSection = "Media", ExpectedUrl = "https://www.carfax.ca/media" },
+            new() { Section = "Company", SubSection = "About", ExpectedUrl = "https://www.carfax.ca/about" },
+            new() { Section = "Company", SubSection = "Contact", ExpectedUrl = "https://www.carfax.ca/contact" },
+            new() { Section = "Company", SubSection = "Careers", ExpectedUrl = "https://www.carfax.ca/careers" },
+            new() { Section = "Company", SubSection = "Partners", ExpectedUrl = "https://www.carfax.ca/partners" },
+            new() { Section = "Company", SubSection = "Vehicle Fraud", ExpectedUrl = "https://www.carfax.ca/vehicle-fraud" },
+            new() { Section = "Company", SubSection = "CARFAX Canada Data", ExpectedUrl = "https://www.carfax.ca/vehicle-history-data" },
+            new() { Section = "Company", SubSection = "CARPROOF is CARFAX Canada", ExpectedUrl = "https://www.carfax.ca/carproof" },
+            new() { Section = "Business Solutions", SubSection = "Dealer Login", ExpectedUrl = "https://authentication.carfax.ca/" },
+            new() { Section = "Business Solutions", SubSection = "Become a Dealer Member", ExpectedUrl = "https://www.carfax.ca/become-a-member" },
+            new() { Section = "Business Solutions", SubSection = "Banking, Insurance and Government", ExpectedUrl = "https://go.carfax.ca/en-ca/big/home" },
+            new() { Section = "Business Solutions", SubSection = "Automotive Remarketing and OEM", ExpectedUrl = "https://go.carfax.ca/aro" }
         ];
 
         // - Footer social media links
         /// <summary>
-        /// A read-only list of tuples representing the social media links in the footer of the CARFAX Canada website, including platform name and expected URL.
+        /// A read-only list of social media links in the footer of the CARFAX Canada website.
         /// </summary>
-        public readonly IReadOnlyList<(string Platform, string ExpectedUrl)> SocialMediaLinks =
+        public readonly IReadOnlyList<SocialMediaLink> SocialMediaLinks =
         [
-            ("Facebook", "https://www.facebook.com/CARFAXCanada/"),
-            //("Instagram", "https://www.instagram.com/carfaxca/?hl=en"),   // Instagram will force to login page if not logged in
-            ("LinkedIn", "https://www.linkedin.com/company/carfax-canada/"),
-            ("YouTube", "https://www.youtube.com/user/CarProof")
+            new() { Platform = "Facebook", ExpectedUrl = "https://www.facebook.com/CARFAXCanada/" },
+            //new() { Platform = "Instagram", ExpectedUrl = "https://www.instagram.com/carfaxca/?hl=en" },   // Instagram will force to login page if not logged in
+            new() { Platform = "LinkedIn", ExpectedUrl = "https://www.linkedin.com/company/carfax-canada/" },
+            new() { Platform = "YouTube", ExpectedUrl = "https://www.youtube.com/user/CarProof" }
         ];
 
         // - Footer utility links
         /// <summary>
-        /// A read-only list of tuples representing the utility links in the footer of the CARFAX Canada website, including utility item name and expected URL.
+        /// A read-only list of utility links in the footer of the CARFAX Canada website.
         /// </summary>
-        public readonly IReadOnlyList<(string UtilityItem, string ExpectedUrl)> UtilityLinks =
+        public readonly IReadOnlyList<UtilityLink> UtilityLinks =
         [
-            ("Privacy/Legal", "https://www.carfax.ca/privacy-legal"),
-            ("Accessibility", "https://www.carfax.ca/accessibility"),
-            ("Conditions Of Use", "https://www.carfax.ca/privacy-legal/conditions-of-use"),
-            ("© 2026 CARFAX Canada ULC. All Rights Reserved.", "#")
+            new() { UtilityItem = "Privacy/Legal", ExpectedUrl = "https://www.carfax.ca/privacy-legal" },
+            new() { UtilityItem = "Accessibility", ExpectedUrl = "https://www.carfax.ca/accessibility" },
+            new() { UtilityItem = "Conditions Of Use", ExpectedUrl = "https://www.carfax.ca/privacy-legal/conditions-of-use" },
+            new() { UtilityItem = "© 2026 CARFAX Canada ULC. All Rights Reserved.", ExpectedUrl = "#" }
         ];
         #endregion
 
