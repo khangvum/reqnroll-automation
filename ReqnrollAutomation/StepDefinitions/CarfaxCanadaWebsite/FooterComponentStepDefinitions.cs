@@ -1,4 +1,6 @@
-﻿namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
+﻿using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+
+namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     [Binding]
     public class FooterComponentStepDefinitions : CarfaxCanadaBaseStepDefinitions
@@ -79,14 +81,14 @@
         [Then(@"all footer links should navigate to their expected destinations")]
         public void ThenAllFooterLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach ((string section, string subSection, string expectedUrl) in HomePage.FooterLinks)
+            foreach (NavigationLink footerLink in HomePage.FooterLinks)
             {
                 // Scroll to the footer section to ensure it is visible on the screen
                 HomePage.ScrollToFooter();
 
                 // Check if the subsection will open in a new tab (target="_blank") before clicking
-                bool opensInNewTab = HomePage.GetFooterSubsectionLinkTarget(subSection) == "_blank";
-                HomePage.ClickFooterSubsection(subSection);
+                bool opensInNewTab = HomePage.GetFooterSubsectionLinkTarget(footerLink.SubSection) == "_blank";
+                HomePage.ClickFooterSubsection(footerLink.SubSection);
 
                 // Switch to the new tab if the link opens in a new tab (target="_blank")
                 if (opensInNewTab)
@@ -96,7 +98,7 @@
 
                 // Verify if the it navigates to the expected URL
                 string actualUrl = HomePage.WaitForUrlToStabilize();
-                Assert.Contains(expectedUrl, actualUrl, "The {subSection} link did not navigate to the expected URL.");
+                Assert.Contains(footerLink.ExpectedUrl, actualUrl, $"The {footerLink.SubSection} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab if it opened in a new tab
                 if (opensInNewTab)
@@ -107,15 +109,15 @@
         [Then(@"all CARFAX Canada website social media links should navigate to their expected destinations")]
         public void ThenAllCarfaxCanadaWebsiteSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach ((string platform, string expectedUrl) in HomePage.SocialMediaLinks)
+            foreach (SocialMediaLink socialMediaLink in HomePage.SocialMediaLinks)
             {
                 // Click the social media link & switch to the new tab
-                HomePage.ClickSocialMediaLink(platform);
+                HomePage.ClickSocialMediaLink(socialMediaLink.Platform);
                 HomePage.SwitchToNewTab();
 
                 // Verify if the new tab navigates to the expected URL
                 string actualUrl = HomePage.WaitForUrlToStabilize();
-                Assert.AreEqual(expectedUrl, actualUrl, $"The CARFAX Canada {platform} link did not navigate to the expected URL.");
+                Assert.AreEqual(socialMediaLink.ExpectedUrl, actualUrl, $"The CARFAX Canada {socialMediaLink.Platform} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab
                 HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
@@ -125,23 +127,23 @@
         [Then(@"all CARFAX Canada website footer utility links should navigate to their expected destinations")]
         public void ThenAllCarfaxCanadaWebsiteFooterUtilityLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach ((string utilityItem, string expectedUrl) in HomePage.UtilityLinks)
+            foreach (UtilityLink utilityLink in HomePage.UtilityLinks)
             {
                 // Scroll to the footer section to ensure it is visible on the screen
                 HomePage.ScrollToFooter();
 
                 // Click the utility link
-                HomePage.ClickFooterUtilityLink(utilityItem);
+                HomePage.ClickFooterUtilityLink(utilityLink.UtilityItem);
 
                 // Verify if the it navigates to the expected URL
                 string actualUrl = HomePage.WaitForUrlToStabilize();
-                if (expectedUrl.EndsWith("#"))
+                if (utilityLink.ExpectedUrl.EndsWith("#"))
                 {
-                    Assert.EndsWith("#", actualUrl, $"The {utilityItem} utility link did not navigate to the expected URL.");
+                    Assert.EndsWith("#", actualUrl, $"The {utilityLink.UtilityItem} utility link did not navigate to the expected URL.");
                 }
                 else
                 {
-                    Assert.Contains(expectedUrl, actualUrl, $"The {utilityItem} utility link did not navigate to the expected URL.");
+                    Assert.Contains(utilityLink.ExpectedUrl, actualUrl, $"The {utilityLink.UtilityItem} utility link did not navigate to the expected URL.");
                 }
             }
         }

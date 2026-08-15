@@ -1,10 +1,13 @@
-﻿/**
+﻿
+
+using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+
+/**
  * Program:         HeaderStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-07-21
  * Description:     A class that defines the step definitions for the header component verification feature on CARFAX Canada website.
  */
-
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 {
     /// <summary>
@@ -43,14 +46,14 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         [Then(@"all header links should navigate to their expected destinations")]
         public void ThenAllHeaderLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach ((string section, string subSection, string expectedUrl) in HomePage.HeaderLinks)
+            foreach (NavigationLink headerLink in HomePage.HeaderLinks)
             {
                 // Hover over the section to reveal the subsections
-                HomePage.HoverHeaderSection(section);
+                HomePage.HoverHeaderSection(headerLink.Section);
 
                 // Check if the subsection will open in a new tab (target="_blank") before clicking
-                bool opensInNewTab = HomePage.GetHeaderSubsectionLinkTarget(subSection) == "_blank";
-                HomePage.ClickHeaderSubsection(subSection);
+                bool opensInNewTab = HomePage.GetHeaderSubsectionLinkTarget(headerLink.SubSection) == "_blank";
+                HomePage.ClickHeaderSubsection(headerLink.SubSection);
 
                 // Switch to the new tab if the link opens in a new tab (target="_blank")
                 if (opensInNewTab)
@@ -58,7 +61,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
 
                 // Verify if the it navigates to the expected URL
                 string actualUrl = HomePage.WaitForUrlToStabilize();
-                Assert.Contains(expectedUrl, actualUrl, $"The {subSection} link did not navigate to the expected URL.");
+                Assert.Contains(headerLink.ExpectedUrl, actualUrl, $"The {headerLink.SubSection} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab if it opened in a new tab
                 if (opensInNewTab)
