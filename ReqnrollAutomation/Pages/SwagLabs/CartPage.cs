@@ -5,6 +5,8 @@
  * Description:     A class that represents the cart page of Swag Labs.
  */
 
+using ReqnrollAutomation.Models.SwagLabs;
+
 namespace ReqnrollAutomation.Pages.SwagLabs
 {
     /// <summary>
@@ -29,7 +31,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         #region Page Elements
         // Cart List elements
-        public IReadOnlyList<IWebElement> CartItems => _driver.FindElements(_cartItemLocator);
+        private IReadOnlyList<IWebElement> CartItems => _driver.FindElements(_cartItemLocator);
         #endregion
 
         #region Constructor
@@ -43,9 +45,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// Gets the details of all items in the cart, including their name, description, and price.
         /// </summary>
         /// <returns>A list of tuples containing the name, description, and price of each item in the cart.</returns>
-        public IReadOnlyList<(string Name, string Description, decimal Price)> GetCartItemsDetails()
+        public IReadOnlyList<InventoryItemDetails> GetCartItemsDetails()
         {
-            List<(string Name, string Description, decimal Price)> cartItemsDetails = [];
+            List<InventoryItemDetails> cartItemsDetails = [];
             foreach (IWebElement cartItem in CartItems)
             {
                 // Get the details of each item
@@ -55,7 +57,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
                 decimal price = decimal.Parse(priceText);
 
                 // Store the details of the item
-                cartItemsDetails.Add((name, description, price));
+                cartItemsDetails.Add(new InventoryItemDetails
+                {
+                    Name = name,
+                    Description = description,
+                    Price = price,
+                });
             }
 
             return cartItemsDetails;
