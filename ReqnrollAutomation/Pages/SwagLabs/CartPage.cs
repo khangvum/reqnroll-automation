@@ -44,7 +44,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// <summary>
         /// Gets the details of all items in the cart, including their name, description, and price.
         /// </summary>
-        /// <returns>A list of tuples containing the name, description, and price of each item in the cart.</returns>
+        /// <returns>A list of InventoryItemDetails objects containing the name, description, and price of each item in the cart.</returns>
         public IReadOnlyList<InventoryItemDetails> GetCartItemsDetails()
         {
             List<InventoryItemDetails> cartItemsDetails = [];
