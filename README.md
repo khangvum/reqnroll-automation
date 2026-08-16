@@ -7,7 +7,7 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 - **_BDD-driven testing_** powered by **_Reqnroll_** and **_Gherkin syntax_** for clear **_human-readable_** scenario specification.
 - **_Cross-browser testing_** supporting **_Chrome_** and **_Edge_** in both **_headed_** and **_headless_** modes.
 - **_Parallel execution_** capability using custom **_MSTest_** `.runsettings` configurations for accelerated pipeline feedback.
-- **_CI/CD integrated_**  via **_GitHub Actions_** with automated artifact uploading, rerun handling, and custom NuGet authentication.
+- **_CI/CD integrated_** via **_GitHub Actions_** with automated artifact uploading, rerun handling, and custom NuGet authentication.
 
 ## Architecture Overview
 
@@ -93,3 +93,10 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 └── <img src=".github/assets/icons/visualstudio.svg" width="16"/> ReqnrollAutomation.slnx
 </pre>
 
+## Prerequisites
+
+1.  **_.NET 10 SDK_** installed.
+2.  **_Supported Web Browsers_** installed:
+    - **_Google Chrome_**
+    - **_Microsoft Edge_**
+3.  **_Visual Studio 2026_** set up (with **_Reqnroll for Visual Studio 2022 and 2026_** extension configured).
