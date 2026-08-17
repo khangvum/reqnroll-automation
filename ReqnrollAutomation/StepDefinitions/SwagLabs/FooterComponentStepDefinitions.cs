@@ -1,5 +1,5 @@
 ﻿/**
- * Program:         FooterComponentVerificationStepDefinitions.cs
+ * Program:         FooterComponentStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-06-14
  * Description:     A class that defines the step definitions for the footer component verification feature on Swag Labs website.
