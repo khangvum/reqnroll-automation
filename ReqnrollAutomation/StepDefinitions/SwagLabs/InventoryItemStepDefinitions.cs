@@ -1,14 +1,13 @@
-﻿
-
-using ReqnrollAutomation.Core.Extensions;
-using ReqnrollAutomation.Models.SwagLabs;
-
-/**
+﻿/**
  * Program:         InventoryItemStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-08-12
  * Description:     A class that defines the step definitions for the inventory item feature on Swag Labs website.
  */
+
+using ReqnrollAutomation.Core.Extensions;
+using ReqnrollAutomation.Models.SwagLabs;
+
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs
 {
     /// <summary>
