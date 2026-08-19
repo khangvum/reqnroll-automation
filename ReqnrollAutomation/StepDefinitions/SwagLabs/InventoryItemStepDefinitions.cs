@@ -38,6 +38,18 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         #endregion
 
         #region Then Steps
+        [Then(@"the cart badge on should reflect the number of items added")]
+        public void ThenTheCartBadgeOnShouldReflectTheNumberOfItemsAdded()
+        {
+            // Retrieve the details of the added items from the scenario context
+            IReadOnlyList<InventoryItemDetails> addedItemsDetails = _scenarioContext.GetValue<IReadOnlyList<InventoryItemDetails>>(AddedInventoryItemsDetailsKey);
+
+            // Check if the cart badge reflects the correct number of items added
+            int expectedItemCount = addedItemsDetails.Count;
+            int actualItemCount = InventoryPage.GetCartBadgeItemCount();
+            Assert.AreEqual(expectedItemCount, actualItemCount, $"Expected cart badge count to be {expectedItemCount}, but found {actualItemCount}.");
+        }
+
         [Then(@"the cart should display the correct number of items added")]
         public void ThenTheCartShouldDisplayTheCorrectNumberOfItemsAdded()
         {

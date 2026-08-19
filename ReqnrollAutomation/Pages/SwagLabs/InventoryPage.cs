@@ -62,6 +62,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // Cart Link locator
         private readonly By _cartLinkLocator = By.CssSelector("a.shopping_cart_link");
+        private readonly By _cartBadgeLocator = By.CssSelector("span.shopping_cart_badge");
         #endregion
 
         #region Page Elements
@@ -82,6 +83,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // Cart Link element
         public IWebElement CartLink => _driver.WaitAndFindElement(_cartLinkLocator);
+        public IWebElement CartBadge => _driver.WaitAndFindElement(_cartBadgeLocator);
         #endregion
 
         #region Constructor
@@ -108,6 +110,22 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// </summary>
         /// <returns>The text of the copyright element.</returns>
         public string GetCopyrightText() => CopyrightText.Text;
+
+        /// <summary>
+        /// Retrieves the number of items displayed in the cart badge.
+        /// </summary>
+        /// <returns>The number of items in the cart.</returns>
+        public int GetCartBadgeItemCount()
+        {
+            try
+            {
+                return int.Parse(CartBadge.Text);
+            }
+            catch (NoSuchElementException)
+            {
+                throw new InvalidOperationException("Cart badge is not present on the page.");
+            }
+        }
 
         /// <summary>
         /// Checks if the footer copyright text is visible on the page.
