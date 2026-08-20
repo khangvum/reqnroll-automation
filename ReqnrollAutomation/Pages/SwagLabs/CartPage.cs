@@ -27,11 +27,17 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private readonly By _itemNameLocator = By.CssSelector(".inventory_item_name");
         private readonly By _itemDescLocator = By.CssSelector(".inventory_item_desc");
         private readonly By _itemPriceLocator = By.CssSelector(".inventory_item_price");
+
+        // Checkout Button locators
+        private readonly By _checkoutButtonLocator = By.CssSelector("button#checkout");
         #endregion
 
         #region Page Elements
         // Cart List elements
         private IReadOnlyList<IWebElement> CartItems => _driver.FindElements(_cartItemLocator);
+
+        // Checkout Button elements
+        private IWebElement CheckoutButton => _driver.FindElement(_checkoutButtonLocator);
         #endregion
 
         #region Constructor
@@ -41,6 +47,11 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #endregion
 
         #region Page Methods
+        /// <summary>
+        /// Clicks the checkout button on the cart page to proceed to the checkout information page.
+        /// </summary>
+        public void ClickCheckoutButton() => CheckoutButton.Click();
+
         /// <summary>
         /// Gets the details of all items in the cart, including their name, description, and price.
         /// </summary>
