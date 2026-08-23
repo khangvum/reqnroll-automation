@@ -26,6 +26,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private readonly By _lastNameInputLocator = By.CssSelector("input#last-name");
         private readonly By _postalCodeInputLocator = By.CssSelector("input#postal-code");
         private readonly By _continueButtonLocator = By.CssSelector("input#continue");
+
+        // Checkout Step Two Page locators
+        private readonly By _finishButtonLocator = By.CssSelector("button#finish");
         #endregion
 
         #region Page Elements
@@ -34,6 +37,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private IWebElement LastNameInput => _driver.FindElement(_lastNameInputLocator);
         private IWebElement PostalCodeInput => _driver.FindElement(_postalCodeInputLocator);
         private IWebElement ContinueButton => _driver.FindElement(_continueButtonLocator);
+
+        // Checkout Step Two Page elements
+        private IWebElement FinishButton => _driver.FindElement(_finishButtonLocator);
         #endregion
 
         #region Page Methods
@@ -41,6 +47,11 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         /// Clicks the continue button on the checkout information page to proceed to the next step of the checkout process.
         /// </summary>
         public void ClickContinue() => ContinueButton.Click();
+
+        /// <summary>
+        /// Clicks the finish button on the checkout overview page to complete the checkout process.
+        /// </summary>
+        public void ClickFinish() => FinishButton.Click();
 
         /// <summary>
         /// Enters the checkout information including first name, last name, and postal code into the respective input fields.
