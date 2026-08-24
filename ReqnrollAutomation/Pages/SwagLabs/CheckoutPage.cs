@@ -12,11 +12,25 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         #region Public Properties
         // URL
         public override string PageUrl => "https://www.saucedemo.com/checkout-step-one.html";
+
+        // Registry
+        public enum ValidationKey
+        {
+            OrderConfirmationHeader,
+            OrderConfirmationMessage
+        }
+
+        public readonly Dictionary<ValidationKey, string> Registry;
         #endregion
 
         #region Constructor
         public CheckoutPage(IWebDriver driver) : base(driver)
         {
+            Registry = new()
+            {
+                { ValidationKey.OrderConfirmationHeader, "Thank you for your order!" },
+                { ValidationKey.OrderConfirmationMessage, "Your order has been dispatched, and will arrive just as fast as the pony can get there!" }
+            };
         }
         #endregion
 
@@ -29,6 +43,10 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // Checkout Step Two Page locators
         private readonly By _finishButtonLocator = By.CssSelector("button#finish");
+
+        // Checkout Completion Page locators
+        private readonly By _orderConfirmationHeaderLocator = By.CssSelector("h2.complete-header");
+        private readonly By _orderConfirmationMessageLocator = By.CssSelector("div.complete-text");
         #endregion
 
         #region Page Elements
@@ -40,6 +58,10 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // Checkout Step Two Page elements
         private IWebElement FinishButton => _driver.FindElement(_finishButtonLocator);
+
+        // Checkout Completion Page elements
+        private IWebElement OrderConfirmationHeader => _driver.FindElement(_orderConfirmationHeaderLocator);
+        private IWebElement OrderConfirmationMessage => _driver.FindElement(_orderConfirmationMessageLocator);
         #endregion
 
         #region Page Methods
@@ -80,6 +102,18 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
             EnterCheckoutInformation(firstName, lastName, postalCode);
         }
+
+        /// <summary>
+        /// Retrieves the text of the order confirmation header displayed on the checkout completion page.
+        /// </summary>
+        /// <returns>The text of the order confirmation header.</returns>
+        public string GetOrderConfirmationHeader() => OrderConfirmationHeader.Text;
+
+        /// <summary>
+        /// Retrieves the text of the order confirmation message displayed on the checkout completion page.
+        /// </summary>
+        /// <returns>The text of the order confirmation message.</returns>
+        public string GetOrderConfirmationMessage() => OrderConfirmationMessage.Text;
         #endregion
 
         #region Private Helper Methods
