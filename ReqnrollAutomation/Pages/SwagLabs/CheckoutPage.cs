@@ -25,6 +25,9 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         }
 
         public readonly Dictionary<ValidationKey, string> Registry;
+
+        // Constants
+        public const decimal TaxRate = 0.08m; // 8% tax rate
         #endregion
 
         #region Constructor
@@ -55,6 +58,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private readonly By _itemPriceLocator = By.CssSelector(".inventory_item_price");
 
         // 2. Checkout Step Two Page locators
+        // - Price Total locators
+        private readonly By _itemTotalLocator = By.CssSelector("div.summary_subtotal_label");
+        private readonly By _taxLocator = By.CssSelector("div.summary_tax_label");
+        private readonly By _totalLocator = By.CssSelector("div.summary_total_label");
+
+        // - Finish Button locators
         private readonly By _finishButtonLocator = By.CssSelector("button#finish");
 
         // 3. Checkout Completion Page locators
@@ -74,6 +83,12 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         private IReadOnlyList<IWebElement> CartItems => _driver.FindElements(_cartItemLocator);
 
         // 2. Checkout Step Two Page elements
+        // - Price Total elements
+        private IWebElement ItemTotal => _driver.FindElement(_itemTotalLocator);
+        private IWebElement Tax => _driver.FindElement(_taxLocator);
+        private IWebElement Total => _driver.FindElement(_totalLocator);
+
+        // - Finish Button elements
         private IWebElement FinishButton => _driver.FindElement(_finishButtonLocator);
 
         // 3. Checkout Completion Page elements
@@ -118,6 +133,36 @@ namespace ReqnrollAutomation.Pages.SwagLabs
             string postalCode = GenerateRandomCanadianPostalCode();
 
             EnterCheckoutInformation(firstName, lastName, postalCode);
+        }
+
+        /// <summary>
+        /// Retrieves the item total amount displayed on the checkout overview page.
+        /// </summary>
+        /// <returns>The item total amount as a decimal.</returns>
+        public decimal GetItemTotal()
+        {
+            string itemTotalText = ItemTotal.Text.Replace("Item total: $", "");
+            return decimal.Parse(itemTotalText);
+        }
+
+        /// <summary>
+        /// Retrieves the tax amount displayed on the checkout overview page.
+        /// </summary>
+        /// <returns>The tax amount as a decimal.</returns>
+        public decimal GetTax()
+        {
+            string taxText = Tax.Text.Replace("Tax: $", "");
+            return decimal.Parse(taxText);
+        }
+
+        /// <summary>
+        /// Retrieves the total amount displayed on the checkout overview page, which includes the item total and tax.
+        /// </summary>
+        /// <returns>The total amount as a decimal.</returns>
+        public decimal GetTotal()
+        {
+            string totalText = Total.Text.Replace("Total: $", "");
+            return decimal.Parse(totalText);
         }
 
         /// <summary>
