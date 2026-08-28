@@ -59,7 +59,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // 2. Checkout Step Two Page locators
         // - Price Total locators
-        private readonly By _itemTotalLocator = By.CssSelector("div.summary_subtotal_label");
+        private readonly By _subtotalLocator = By.CssSelector("div.summary_subtotal_label");
         private readonly By _taxLocator = By.CssSelector("div.summary_tax_label");
         private readonly By _totalLocator = By.CssSelector("div.summary_total_label");
 
@@ -84,7 +84,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
 
         // 2. Checkout Step Two Page elements
         // - Price Total elements
-        private IWebElement ItemTotal => _driver.FindElement(_itemTotalLocator);
+        private IWebElement Subtotal => _driver.FindElement(_subtotalLocator);
         private IWebElement Tax => _driver.FindElement(_taxLocator);
         private IWebElement Total => _driver.FindElement(_totalLocator);
 
@@ -136,13 +136,13 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         }
 
         /// <summary>
-        /// Retrieves the item total amount displayed on the checkout overview page.
+        /// Retrieves the subtotal amount displayed on the checkout overview page.
         /// </summary>
-        /// <returns>The item total amount as a decimal.</returns>
-        public decimal GetItemTotal()
+        /// <returns>The subtotal amount as a decimal.</returns>
+        public decimal GetSubtotal()
         {
-            string itemTotalText = ItemTotal.Text.Replace("Item total: $", "");
-            return decimal.Parse(itemTotalText);
+            string subtotalText = Subtotal.Text.Replace("Item total: $", "");
+            return decimal.Parse(subtotalText);
         }
 
         /// <summary>
