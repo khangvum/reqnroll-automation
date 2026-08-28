@@ -18,3 +18,10 @@ Scenario: Completing the checkout process successfully finishes the order
 	And I click the continue button
 	And I finish the checkout overview
 	Then the checkout completion page should display a successful order confirmation message
+
+Scenario: Checkout overview calculates the correct item subtotal, tax, and total price
+	When I proceed to the checkout information page
+	And I provide valid checkout details
+	And I click the continue button
+	Then the checkout overview should display the correct number of items added
+	And the checkout overview should calculate the correct subtotal, tax, and total price
