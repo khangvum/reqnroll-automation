@@ -62,8 +62,8 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             Assert.AreEqual(expectedItemCount, actualItemCount, $"Expected {expectedItemCount} items in the cart, but found {actualItemCount}.");
         }
 
-        [Then(@"the items' details and pricing should match the product page")]
-        public void ThenTheItemsDetailsAndPricingShouldMatchTheProductPage()
+        [Then(@"the items' details and pricing in the cart should match the product page")]
+        public void ThenTheItemsDetailsAndPricingInTheCartShouldMatchTheProductPage()
         {
             // Retrieve the details of the added items from the scenario context
             IReadOnlyList<InventoryItemDetails> addedItemsDetails = _scenarioContext.GetValue<IReadOnlyList<InventoryItemDetails>>(AddedInventoryItemsDetailsKey);
