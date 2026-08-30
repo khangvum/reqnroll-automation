@@ -99,6 +99,24 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
             decimal actualTotal = CheckoutPage.GetTotal();
             Assert.AreEqual(expectedTotal, actualTotal, $"Expected total: {expectedTotal}, but found: {actualTotal}.");
         }
+
+        [Then(@"the items' details and pricing in the checkout overview should match the product page")]
+        public void ThenTheItemsDetailsAndPricingInTheCheckoutOverviewShouldMatchTheProductPage()
+        {
+            // Retrieve the details of the added items from the scenario context
+            IReadOnlyList<InventoryItemDetails> addedItemsDetails = _scenarioContext.GetValue<IReadOnlyList<InventoryItemDetails>>(AddedInventoryItemsDetailsKey);
+            IReadOnlyList<InventoryItemDetails> checkoutItemsDetails = CheckoutPage.GetCheckoutOverviewItemsDetails();
+
+            // Check if the details of each item in the cart match the details of the items added
+            for (int i = 0; i < addedItemsDetails.Count; i++)
+            {
+                InventoryItemDetails addedItem = addedItemsDetails[i];
+                InventoryItemDetails checkoutItem = checkoutItemsDetails[i];
+                Assert.AreEqual(addedItem.Name, checkoutItem.Name, $"Name for item at index {i} does not match.");
+                Assert.AreEqual(addedItem.Description, checkoutItem.Description, $"Description for item '{addedItem.Name}' does not match.");
+                Assert.AreEqual(addedItem.Price, checkoutItem.Price, $"Price for item '{addedItem.Name}' does not match.");
+            }
+        }
         #endregion
     }
 }

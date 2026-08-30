@@ -25,3 +25,10 @@ Scenario: Checkout overview calculates the correct item subtotal, tax, and total
 	And I click the continue button
 	Then the checkout overview should display the correct number of items added
 	And the checkout overview should calculate the correct subtotal, tax, and total price
+
+Scenario: Checkout overview reflects correct details and pricing for each item
+	When I proceed to the checkout information page
+	And I provide valid checkout details
+	And I click the continue button
+	Then the checkout overview should display the correct number of items added
+	And the items' details and pricing in the checkout overview should match the product page
