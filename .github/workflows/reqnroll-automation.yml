@@ -58,9 +58,9 @@ jobs:
       # Dynamically logs into personal NuGet feed using the stored secret
       - name: Authenticate NuGet Feed
         run: |
-          dotnet nuget update source "khangvum-nuget" \
-            --username "khangvum" \
-            --password "${{ secrets.PAT_PACKAGE_READ_TOKEN }}" \
+          dotnet nuget update source "khangvum-nuget" `
+            --username "khangvum" `
+            --password "${{ secrets.PAT_PACKAGE_READ_TOKEN }}" `
             --store-password-in-clear-text
 
       - name: Restore
