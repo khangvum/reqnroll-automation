@@ -33,6 +33,7 @@ on:
           - QA
           - Dev
           - Prod
+
   # Automatically trigger the workflow on push to the master branch
   push:
     branches:
@@ -44,8 +45,10 @@ jobs:
   test:
     runs-on: windows-latest
     env:
-      Headless: true
-      TestEnvironment: ${{ inputs.test_environment }}
+      Headless: "true"
+      # Fallback to QA if triggered via push instead of workflow_dispatch
+      TestEnvironment: ${{ inputs.test_environment || 'QA' }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -67,45 +70,51 @@ jobs:
         run: dotnet restore
 
       - name: Run Test
+        shell: powershell
         run: |
-          # Fallback to parallel execution if the input mode is blank
+          # Safe fallback values for push events where inputs are null
+          $targetProject = "${{ inputs.target_project }}"
+          if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "CarfaxCanadaWebsite" }
+
           $executionMode = "${{ inputs.execution_mode }}"
-          if ([string]::IsNullOrEmpty($executionMode)) {
-            $executionMode = "parallel"
+          if ([string]::IsNullOrWhiteSpace($executionMode)) { $executionMode = "parallel" }
+
+          $category = "${{ inputs.category }}"
+
+          # Build the filter value
+          $filterValue = ""
+          if (-not [string]::IsNullOrWhiteSpace($targetProject)) {
+            $filterValue = "FullyQualifiedName~$targetProject"
           }
 
-          # Filter tests based on the selected target project if provided
-          $filterArg = ""
-          if ("${{ inputs.target_project }}") {
-            $filterArg = "FullyQualifiedName~${{ inputs.target_project }}"
-          }
-
-          # Append the category tag condition if provided
-          if ("${{ inputs.category }}") {
-            if ($filterArg) {
-              $filterArg = "$filterArg&TestCategory=${{ inputs.category }}"
+          # Append category filter if present
+          if (-not [string]::IsNullOrWhiteSpace($category)) {
+            if ($filterValue) {
+              $filterValue = "$filterValue&TestCategory=$category"
             } else {
-              $filterArg = "TestCategory=${{ inputs.category }}"
+              $filterValue = "TestCategory=$category"
             }
           }
 
-          # Prepend the --filter flag prefix only if a filter string is constructed
-          if ($filterArg) {
-            $filterArg = "--filter $filterArg"
+          # Build argument list
+          $testArgs = @(
+              "test",
+              "--configuration", "Release",
+              "--no-restore",
+              "--settings", "./$executionMode.runsettings"
+          )
+
+          if ($filterValue) {
+            $testArgs += @("--filter", $filterValue)
           }
 
-          # Execute the target suite
-          dotnet test `
-            --configuration Release `
-            --no-restore `
-            --settings ./$executionMode.runsettings `
-            $filterArg
+          # Execute dotnet test with splatted arguments
+          dotnet @testArgs
 
       - name: Upload Test Results
-        if: always() # Ensure this step runs even if the tests fail
+        if: always() # Ensure this step runs even if tests fail
         uses: actions/upload-artifact@v7
         with:
           name: TestReport
           path: '**/TestResults/ReqnrollAutomation/**/*'
           retention-days: 7
- 
