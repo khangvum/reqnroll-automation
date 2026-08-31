@@ -85,7 +85,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         public readonly IReadOnlyList<(string Platform, string ExpectedUrl)> SocialMediaLinks =
         [
             ("Facebook", "https://www.facebook.com/CARFAXCanada/"),
-            ("Instagram", "https://www.instagram.com/carfaxca/?hl=en"),
+            //("Instagram", "https://www.instagram.com/carfaxca/?hl=en"),   // Instagram will force to login page if not logged in
             ("LinkedIn", "https://www.linkedin.com/company/carfax-canada/"),
             ("YouTube", "https://www.youtube.com/user/CarProof")
         ];
