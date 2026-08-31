@@ -35,11 +35,10 @@ namespace ReqnrollAutomation.Core.Extensions
                 return wait.Until(driver =>
                 {
                     ReadOnlyCollection<IWebElement> elements = driver.FindElements(locator);
-                    if (elements.Count > 0 && elements[0].Displayed)
-                    {
-                        return elements[0];
-                    }
-                    return null;
+                    // Find the first element in the collection that is currently visible
+                    IWebElement? visibleElement = elements.FirstOrDefault(e => e.Displayed);
+
+                    return visibleElement;
                 }) ?? throw new WebDriverTimeoutException($"Element with locator {locator} was not found or not visible within the timeout period.");
             }
             catch (WebDriverTimeoutException ex)
