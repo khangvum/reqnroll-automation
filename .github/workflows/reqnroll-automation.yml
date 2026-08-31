@@ -69,34 +69,37 @@ jobs:
       - name: Run Test
         run: |
           # Fallback to parallel execution if the input mode is blank
-          EXECUTION_MODE="${{ inputs.execution_mode }}"
-          EXECUTION_MODE="${EXECUTION_MODE:-parallel}"
+          $executionMode = "${{ inputs.execution_mode }}"
+          if ([string]::IsNullOrEmpty($executionMode)) {
+            $executionMode = "parallel"
+          }
 
           # Filter tests based on the selected target project if provided
-          if [ -n "${{ inputs.target_project }}" ]; then
-            FILTER_ARG="FullyQualifiedName~${{ inputs.target_project }}"
-          fi
+          $filterArg = ""
+          if ("${{ inputs.target_project }}") {
+            $filterArg = "FullyQualifiedName~${{ inputs.target_project }}"
+          }
 
           # Append the category tag condition if provided
-          if [ -n "${{ inputs.category }}" ]; then
-            if [ -n "$FILTER_ARG" ]; then
-              FILTER_ARG="${FILTER_ARG}&TestCategory=${{ inputs.category }}"
-            else
-              FILTER_ARG="TestCategory=${{ inputs.category }}"
-            fi
-          fi
+          if ("${{ inputs.category }}") {
+            if ($filterArg) {
+              $filterArg = "$filterArg&TestCategory=${{ inputs.category }}"
+            } else {
+              $filterArg = "TestCategory=${{ inputs.category }}"
+            }
+          }
 
           # Prepend the --filter flag prefix only if a filter string is constructed
-          if [ -n "$FILTER_ARG" ]; then
-            FILTER_ARG="--filter $FILTER_ARG"
-          fi
+          if ($filterArg) {
+            $filterArg = "--filter $filterArg"
+          }
 
           # Execute the target suite
-          dotnet test \
-            --configuration Release \
-            --no-restore \
-            --settings ./${EXECUTION_MODE}.runsettings \
-            $FILTER_ARG
+          dotnet test `
+            --configuration Release `
+            --no-restore `
+            --settings ./$executionMode.runsettings `
+            $filterArg
 
       - name: Upload Test Results
         if: always() # Ensure this step runs even if the tests fail
