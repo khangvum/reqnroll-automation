@@ -54,7 +54,7 @@ namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
         /// A read-only list of tuples representing the footer links on the CARFAX Canada website, including section, subsection, and expected URL.
         /// </summary>
         public readonly IReadOnlyList<(string Section, string SubSection, string ExpectedUrl)> FooterLinks =
-            [
+        [
             ("Products", "CARFAX Canada Vehicle History Reports", "https://www.carfax.ca/vehicle-history/vehicle-history-report"),
             ("Products", "CARFAX Canada VIN Fraud Check", "https://www.carfax.ca/vin-fraud-check"),
             ("Products", "CARFAX Canada Vehicle Monitoring", "https://www.carfax.ca/vehicle-monitoring-subscription"),
