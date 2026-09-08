@@ -1,4 +1,11 @@
-﻿using OpenQA.Selenium.Support.UI;
+﻿/**
+ * Program:         HomePage.cs
+ * Author:          Manh Khang Vu
+ * Date:            2026-08-18
+ * Description:     A class that represents the home page of the CARFAX Canada website.
+ */
+
+using OpenQA.Selenium.Support.UI;
 using ReqnrollAutomation.Config;
 using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
@@ -7,6 +14,9 @@ using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite
 {
+    /// <summary>
+    /// A class that represents the home page of the CARFAX Canada website.
+    /// </summary>
     public class HomePage : BasePage
     {
         #region Public Properties
