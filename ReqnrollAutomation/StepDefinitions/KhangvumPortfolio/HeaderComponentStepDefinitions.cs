@@ -1,5 +1,5 @@
 ﻿/**
- * Program:         HeaderStepDefinitions.cs
+ * Program:         HeaderComponentStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-09-09
  * Description:     A class that defines the step definitions for the header component verification feature on the Khangvum Portfolio website.
