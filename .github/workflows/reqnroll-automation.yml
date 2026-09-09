@@ -59,7 +59,7 @@ on:
 
 jobs:
   test:
-    name: Execute Automation Tests for ${{ inputs.target_project }} in ${{ inputs.test_environment }} Environment
+    name: Execute Automation Tests for ${{ inputs.target_project || 'Khangvum Portfolio' }} in ${{ inputs.test_environment || 'QA' }} Environment
     runs-on: windows-latest
     env:
       # Variables to be passed to C# code
