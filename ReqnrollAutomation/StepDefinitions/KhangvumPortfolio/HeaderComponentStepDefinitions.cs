@@ -6,7 +6,6 @@
  */
 
 using ReqnrollAutomation.Models.KhangvumPortfolio;
-using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
 
 namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
 {
