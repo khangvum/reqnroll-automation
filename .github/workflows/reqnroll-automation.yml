@@ -62,11 +62,13 @@ jobs:
     name: Execute Automation Tests for ${{ inputs.target_project }} in ${{ inputs.test_environment }} Environment
     runs-on: windows-latest
     env:
+      # Variables to be passed to C# code
       Headless: "true"
       TargetProject: ${{ inputs.target_project || 'Khangvum Portfolio' }}
       Browser: ${{ inputs.browser || 'Chrome' }}
-      # Fallback to QA if triggered via push instead of workflow_dispatch
-      TestEnvironment: ${{ inputs.test_environment || 'QA' }}
+      TestEnvironment: ${{ inputs.test_environment || 'QA' }} # Fallback to QA if triggered via push instead of workflow_dispatch
+      # Variables for internal workflow use
+      NORMALIZED_TARGET_PROJECT: ""
 
     steps:
       - name: Checkout
@@ -86,10 +88,10 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "KhangvumPortfolio" }
 
           # Strip spaces
-          $targetProject = $targetProject.Replace(' ', '')
+          $normalizedTargetProject = $targetProject.Replace(' ', '')
 
-          echo "TARGET_PROJECT=$targetProject" >> $env:GITHUB_ENV
-          Write-Host "Target Project: $targetProject"
+          echo "NORMALIZED_TARGET_PROJECT=$normalizedTargetProject" >> $env:GITHUB_ENV
+          Write-Host "Normalized Target Project: $normalizedTargetProject"
 
       # Download previous test results if this is a rerun attempt
       - name: Download Previous Test Results
@@ -97,7 +99,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: TestReport
-          path: TestResults/$TARGET_PROJECT
+          path: TestResults/${{ env.NORMALIZED_TARGET_PROJECT }}
         continue-on-error: true
 
       # Dynamically logs into personal NuGet feed using the stored secret
@@ -121,8 +123,8 @@ jobs:
 
           # Build the filter value
           $filterValue = ""
-          if (-not [string]::IsNullOrWhiteSpace($env:TARGET_PROJECT)) {
-            $filterValue = "FullyQualifiedName~$env:TARGET_PROJECT"
+          if (-not [string]::IsNullOrWhiteSpace($env:NORMALIZED_TARGET_PROJECT)) {
+            $filterValue = "FullyQualifiedName~$env:NORMALIZED_TARGET_PROJECT"
           }
 
           # Append category filter if present
@@ -154,5 +156,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: TestReport
-          path: TestResults/$TARGET_PROJECT/*
+          path: TestResults/${{ env.NORMALIZED_TARGET_PROJECT }}/*
           retention-days: 7
