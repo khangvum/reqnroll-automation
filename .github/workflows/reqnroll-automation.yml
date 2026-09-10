@@ -97,7 +97,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: TestReport
-          path: TestResults/${{ env.TargetProject }}
+          path: TestResults/$TARGET_PROJECT
         continue-on-error: true
 
       # Dynamically logs into personal NuGet feed using the stored secret
@@ -154,5 +154,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: TestReport
-          path: TestResults/${{ env.TargetProject }}/*
+          path: TestResults/$TARGET_PROJECT/*
           retention-days: 7
