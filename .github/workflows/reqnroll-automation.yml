@@ -6,10 +6,11 @@ on:
       target_project:
         description: "Target Project"
         required: true
-        default: "Carfax Canada Website"
+        default: "Khangvum Portfolio"
         type: choice
         options:
           - "Carfax Canada Website"
+          - "Khangvum Portfolio"
           - SwagLabs
       execution_mode:
         description: "Execution Mode"
@@ -62,7 +63,7 @@ jobs:
     runs-on: windows-latest
     env:
       Headless: "true"
-      TargetProject: ${{ inputs.target_project || 'Carfax Canada Website' }}
+      TargetProject: ${{ inputs.target_project || 'Khangvum Portfolio' }}
       Browser: ${{ inputs.browser || 'Chrome' }}
       # Fallback to QA if triggered via push instead of workflow_dispatch
       TestEnvironment: ${{ inputs.test_environment || 'QA' }}
@@ -82,7 +83,7 @@ jobs:
         shell: powershell
         run: |
           $targetProject = "${{ inputs.target_project }}"
-          if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "CarfaxCanadaWebsite" }
+          if ([string]::IsNullOrWhiteSpace($targetProject)) { $targetProject = "KhangvumPortfolio" }
 
           # Strip spaces
           $targetProject = $targetProject.Replace(' ', '')
