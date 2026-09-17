@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   pack-nuget:
+    name: Pack and Publish NuGet Package V1.0.${{ github.run_number }}
     runs-on: windows-latest
     steps:
       - name: Checkout
