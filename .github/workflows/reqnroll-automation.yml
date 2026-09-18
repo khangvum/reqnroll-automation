@@ -42,6 +42,13 @@ on:
           - Dev
           - Prod
 
+  # Trigger automatically when a pull request is opened
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'ReqnrollAutomation/**'
+
   # Automatically trigger the workflow on push to the master branch
   push:
     branches:
