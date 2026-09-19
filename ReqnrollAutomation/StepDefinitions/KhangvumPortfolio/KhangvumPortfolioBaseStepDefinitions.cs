@@ -16,6 +16,11 @@ namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
         private PortfolioPage? _portfolioPage;
         #endregion
 
+        #region Protected Attributes
+        // Context Keys
+        protected const string ProjectCardKey = nameof(ProjectCardKey);
+        #endregion
+
         #region Public Properties
         /// <summary>
         /// Lazy initialization of the LoginPage instance.
