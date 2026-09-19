@@ -28,7 +28,7 @@ namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
         [Given(@"the Khangvum Portfolio website footer contains links to social media pages")]
         public void GivenTheKhangvumPortfolioWebsiteFooterContainsLinksToSocialMediaPages()
         {
-            PortfolioPage.ClickHeaderLink("Contact");
+            PortfolioPage.ScrollToFooter();
         }
         #endregion
 
@@ -37,8 +37,10 @@ namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
         [Then(@"all Khangvum Portfolio website social media links should navigate to their expected destinations")]
         public void ThenAllKhangvumPortfolioWebsiteSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach (SocialMediaLink socialMediaLink in PortfolioPage.SocialMediaLinks)
+            for (int i = 0; i < PortfolioPage.SocialMediaLinks.Count; i++)
             {
+                SocialMediaLink socialMediaLink = PortfolioPage.SocialMediaLinks[i];
+
                 // Skip Gmail link verification as it opens the default email client instead of a web page
                 if (socialMediaLink.ExpectedUrl.StartsWith("mailto:"))
                 {
@@ -54,7 +56,10 @@ namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
                 Assert.AreEqual(socialMediaLink.ExpectedUrl, actualUrl, $"The Khangvum Portfolio {socialMediaLink.Platform} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab
-                PortfolioPage.CloseCurrentTabAndSwitchBackToOriginalTab();
+                if (i < PortfolioPage.SocialMediaLinks.Count - 1)
+                {
+                    PortfolioPage.CloseCurrentTabAndSwitchBackToOriginalTab();
+                }
             }
         }
         #endregion

@@ -31,7 +31,7 @@ namespace ReqnrollAutomation.Pages.SwagLabs
         // - Footer social media links
         public readonly IReadOnlyList<(string Platform, string ExpectedUrl)> SocialMediaLinks =
         [
-            ("Twitter", "https://x.com/saucelabs"),
+            ("X", "https://x.com/saucelabs"),
             ("Facebook", "https://www.facebook.com/saucelabs"),
             ("LinkedIn", "https://www.linkedin.com/company/sauce-labs/")
         ];

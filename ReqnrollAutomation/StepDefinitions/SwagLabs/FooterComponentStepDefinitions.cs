@@ -65,8 +65,10 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
         [Then(@"all Swag Labs social media links should navigate to their expected destinations")]
         public void ThenAllSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach ((string platform, string expectedUrl) in InventoryPage.SocialMediaLinks)
+            for (int i = 0; i < InventoryPage.SocialMediaLinks.Count; i++)
             {
+                (string platform, string expectedUrl) = InventoryPage.SocialMediaLinks[i];
+
                 // Click the social media link & switch to the new tab
                 InventoryPage.ClickSocialMediaLink(platform);
                 InventoryPage.SwitchToNewTab();
@@ -76,7 +78,10 @@ namespace ReqnrollAutomation.StepDefinitions.SwagLabs
                 Assert.AreEqual(expectedUrl, actualUrl, $"The Swag Labs {platform} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab
-                InventoryPage.CloseCurrentTabAndSwitchBackToOriginalTab();
+                if (i < InventoryPage.SocialMediaLinks.Count - 1)
+                {
+                    InventoryPage.CloseCurrentTabAndSwitchBackToOriginalTab();
+                }
             }
         }
         #endregion
