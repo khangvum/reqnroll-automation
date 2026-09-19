@@ -15,7 +15,7 @@ namespace ReqnrollAutomation.Pages.KhangvumPortfolio
         /// </summary>
         public readonly IReadOnlyList<HeaderLink> HeaderLinks =
         [
-            new() { Section = "About", ExpectedUrl = "https://khangvum.com/#about" },
+            new(){ Section = "About", ExpectedUrl = "https://khangvum.com/#about" },
             new(){ Section = "Experience", ExpectedUrl = "https://khangvum.com/#experience" },
             new(){ Section = "Projects", ExpectedUrl = "https://khangvum.com/#projects" },
             new(){ Section = "Contact", ExpectedUrl = "https://khangvum.com/#contact" }
