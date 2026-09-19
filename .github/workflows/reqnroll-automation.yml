@@ -46,14 +46,14 @@ on:
   # Trigger automatically when a pull request is opened
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - 'ReqnrollAutomation/**'
 
-  # Automatically trigger the workflow on push to the master branch
+  # Automatically trigger the workflow on push to the main branch
   push:
     branches:
-      - master
+      - main
     paths:
       - 'ReqnrollAutomation/**'
 
