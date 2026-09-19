@@ -2,10 +2,10 @@ name: Reqnroll Automation Core
 
 on:
   workflow_dispatch:
-  # Automatically trigger the workflow on push to the master branch
+  # Automatically trigger the workflow on push to the main branch
   push:
     branches:
-      - master
+      - main
     paths:
       - 'ReqnrollAutomation.Core/**'
 
