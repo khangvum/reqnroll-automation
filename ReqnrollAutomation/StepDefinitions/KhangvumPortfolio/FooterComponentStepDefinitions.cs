@@ -28,7 +28,7 @@ namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio
         [Given(@"the Khangvum Portfolio website footer contains links to social media pages")]
         public void GivenTheKhangvumPortfolioWebsiteFooterContainsLinksToSocialMediaPages()
         {
-            PortfolioPage.ClickHeaderLink("Contact");
+            PortfolioPage.ScrollToFooter();
         }
         #endregion
 
