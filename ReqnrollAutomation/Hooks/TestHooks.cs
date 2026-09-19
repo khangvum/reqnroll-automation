@@ -13,6 +13,7 @@ using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Core.Helpers;
 using ReqnrollAutomation.Drivers;
 using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -282,6 +283,16 @@ namespace ReqnrollAutomation.Hooks
                     Console.WriteLine($"[ERROR] Failed to flush report: {ex.Message}");
                 }
 
+                // Close any extra tabs that may have been opened during the scenario to ensure a clean state for the next scenario
+                try
+                {
+                    CloseExtraTabs(_scenarioContext.GetDriver());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ERROR] Failed to close extra tabs: {ex.Message}");
+                }
+
                 // Reset state so the driver is clean for the next scenario on this worker thread
                 DriverFactory.ResetSession();
             }
@@ -445,6 +456,39 @@ namespace ReqnrollAutomation.Hooks
                 fileName = fileName.Replace(invalidChar, '_');
 
             return fileName.Length > 50 ? fileName.Substring(0, 50) : fileName;
+        }
+
+        /// <summary>
+        /// Closes any extra browser tabs that may have been opened during the scenario, leaving only the original tab open.
+        /// </summary>
+        /// <param name="driver">The WebDriver instance.</param>
+        private static void CloseExtraTabs(IWebDriver driver)
+        {
+            try
+            {
+                ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+                // If only one tab is open, nothing to close
+                if (windowHandles.Count <= 1)
+                {
+                    return;
+                }
+
+
+                // Close every tab starting from the last opened back to index 1
+                string originalHandle = windowHandles[0];
+                for (int i = windowHandles.Count - 1; i > 0; i--)
+                {
+                    driver.SwitchTo().Window(windowHandles[i]);
+                    driver.Close();
+                }
+
+                // Switch focus back to the primary base tab
+                driver.SwitchTo().Window(originalHandle);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Failed to close extra tabs: {ex.Message}");
+            }
         }
 
         /// <summary>
