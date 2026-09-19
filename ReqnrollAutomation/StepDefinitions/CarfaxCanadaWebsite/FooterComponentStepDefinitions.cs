@@ -91,8 +91,9 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         [Then(@"all footer links should navigate to their expected destinations")]
         public void ThenAllFooterLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach (NavigationLink footerLink in HomePage.FooterLinks)
+            for (int i = 0; i < HomePage.FooterLinks.Count; i++)
             {
+                NavigationLink footerLink = HomePage.FooterLinks[i];
                 // Scroll to the footer section to ensure it is visible on the screen
                 HomePage.ScrollToFooter();
 
@@ -111,7 +112,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
                 Assert.Contains(footerLink.ExpectedUrl, actualUrl, $"The {footerLink.SubSection} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab if it opened in a new tab
-                if (opensInNewTab)
+                if (opensInNewTab && i < HomePage.FooterLinks.Count - 1)
                     HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
             }
         }
@@ -119,8 +120,10 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         [Then(@"all CARFAX Canada website social media links should navigate to their expected destinations")]
         public void ThenAllCarfaxCanadaWebsiteSocialMediaLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach (SocialMediaLink socialMediaLink in HomePage.SocialMediaLinks)
+            for (int i = 0; i < HomePage.SocialMediaLinks.Count; i++)
             {
+                SocialMediaLink socialMediaLink = HomePage.SocialMediaLinks[i];
+
                 // Click the social media link & switch to the new tab
                 HomePage.ClickSocialMediaLink(socialMediaLink.Platform);
                 HomePage.SwitchToNewTab();
@@ -130,7 +133,10 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
                 Assert.AreEqual(socialMediaLink.ExpectedUrl, actualUrl, $"The CARFAX Canada {socialMediaLink.Platform} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab
-                HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
+                if (i < HomePage.SocialMediaLinks.Count - 1) 
+                {
+                    HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
+                }
             }
         }
 

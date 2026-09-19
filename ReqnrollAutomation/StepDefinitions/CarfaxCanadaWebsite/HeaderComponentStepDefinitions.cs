@@ -45,8 +45,10 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
         [Then(@"all header links should navigate to their expected destinations")]
         public void ThenAllHeaderLinksShouldNavigateToTheirExpectedDestinations()
         {
-            foreach (NavigationLink headerLink in HomePage.HeaderLinks)
+            for (int i = 0; i < HomePage.HeaderLinks.Count; i++)
             {
+                NavigationLink headerLink = HomePage.HeaderLinks[i];
+
                 // Hover over the section to reveal the subsections
                 HomePage.HoverHeaderSection(headerLink.Section);
 
@@ -63,7 +65,7 @@ namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite
                 Assert.Contains(headerLink.ExpectedUrl, actualUrl, $"The {headerLink.SubSection} link did not navigate to the expected URL.");
 
                 // Close the new tab and switch back to the original tab if it opened in a new tab
-                if (opensInNewTab)
+                if (opensInNewTab && i < HomePage.HeaderLinks.Count - 1)
                     HomePage.CloseCurrentTabAndSwitchBackToOriginalTab();
             }
         }
