@@ -2,6 +2,10 @@
 
 A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_**) and **_Selenium WebDriver_**, driven by the **_MSTest_** framework and structured around the **_Page Object Model_** (**_POM_**) architectural pattern.
 
+[![Reqnroll Automation](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation.yml)
+[![Reqnroll Automation Core](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation-core.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation-core.yml)
+[![Security Scan](https://github.com/khangvum/reqnroll-automation/actions/workflows/security.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/security.yml)
+
 ## Features
 
 - **_BDD-driven testing_** powered by **_Reqnroll_** and **_Gherkin syntax_** for clear **_human-readable_** scenario specification.
