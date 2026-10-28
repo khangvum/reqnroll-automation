@@ -4,6 +4,7 @@ A **_browser-based test automation_** solution utilizing **_Reqnroll_** (**_BDD_
 
 [![Reqnroll Automation](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation.yml)
 [![Reqnroll Automation Core](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation-core.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/reqnroll-automation-core.yml)
+[![Build](https://github.com/khangvum/reqnroll-automation/actions/workflows/build.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/build.yml)
 [![Security Scan](https://github.com/khangvum/reqnroll-automation/actions/workflows/security.yml/badge.svg)](https://github.com/khangvum/reqnroll-automation/actions/workflows/security.yml)
 
 ## Features
