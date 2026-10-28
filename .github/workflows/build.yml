@@ -1,0 +1,11 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  call-csharp-build:
+    uses: khangvum/workflows/.github/workflows/csharp-build.yml@main
