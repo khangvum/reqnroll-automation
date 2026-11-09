@@ -26,11 +26,14 @@ public class PortfolioPage : BasePage
     /// </summary>
     public readonly IReadOnlyList<ProjectCard> ProjectCards =
     [
-        new(){ ProjectName = "Infrastructure as Code (IaC) Homelab", ExpectedUrl = "https://github.com/khangvum/homelab-iac" },
+        new(){ ProjectName = "Ansible Configuration", ExpectedUrl = "https://github.com/khangvum-com/ansible-config" },
+        new(){ ProjectName = "Infrastructure Provisioning", ExpectedUrl = "https://github.com/khangvum-com/terraform-infra" },
+        new(){ ProjectName = "Ansible Collection for Microsoft Hyper-V", ExpectedUrl = "https://github.com/khangvum-com/khangvum.hyperv" },
         new(){ ProjectName = "Answer Files", ExpectedUrl = "https://github.com/khangvum/answer-files" },
-        new(){ ProjectName = "Reqnroll Automation", ExpectedUrl = "https://github.com/khangvum/reqnroll-automation" },
-        new(){ ProjectName = "Expression Evaluator", ExpectedUrl = "https://github.com/khangvum/exprevaluator" },
         new(){ ProjectName = "NixOS-WSL Configuration", ExpectedUrl = "https://github.com/khangvum/nixos-wsl" },
+        new(){ ProjectName = "Expression Evaluator", ExpectedUrl = "https://github.com/khangvum/exprevaluator" },
+        new(){ ProjectName = "Portfolio", ExpectedUrl = "https://github.com/khangvum/portfolio" },
+        new(){ ProjectName = "Reqnroll Automation", ExpectedUrl = "https://github.com/khangvum/reqnroll-automation" },
         new(){ ProjectName = "Chemical Equation Balancer", ExpectedUrl = "https://github.com/khangvum/chemicalbalancer" }
     ];
 
