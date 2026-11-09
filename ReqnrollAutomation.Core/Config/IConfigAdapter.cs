@@ -7,6 +7,7 @@
  */
 
 namespace ReqnrollAutomation.Core.Config;
+
 /// <summary>
 /// An interface for adapting configuration settings for the
 /// Reqnroll automation framework from external sources.

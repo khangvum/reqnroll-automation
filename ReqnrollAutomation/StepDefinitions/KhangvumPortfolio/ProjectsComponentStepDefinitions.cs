@@ -1,16 +1,15 @@
-﻿
-
-using ReqnrollAutomation.Core.Extensions;
-using ReqnrollAutomation.Models.KhangvumPortfolio;
-
-/**
+﻿/**
  * Program:         ProjectsComponentStepDefinitions.cs
  * Author:          Manh Khang Vu
  * Date:            2026-09-18
  * Description:     A class that defines the step definitions for the projects component verification feature on the Khangvum Portfolio website.
  */
 
+using ReqnrollAutomation.Core.Extensions;
+using ReqnrollAutomation.Models.KhangvumPortfolio;
+
 namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio;
+
 /// <summary>
 /// A class that defines the step definitions for the projects component verification feature on the Khangvum Portfolio website.
 /// </summary>

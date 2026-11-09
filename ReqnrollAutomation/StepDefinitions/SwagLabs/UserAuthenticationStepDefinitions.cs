@@ -10,6 +10,7 @@ using ReqnrollAutomation.Helpers;
 using ReqnrollAutomation.Pages.SwagLabs;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs;
+
 /// <summary>
 /// A class that defines the step definitions for the user authentication feature on Swag Labs website.
 /// </summary>

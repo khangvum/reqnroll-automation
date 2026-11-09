@@ -11,6 +11,7 @@ using ReqnrollAutomation.Core.Config;
 using System.Collections.ObjectModel;
 
 namespace ReqnrollAutomation.Core.Extensions;
+
 /// <summary>
 /// A class that contains extension methods for the IWebDriver interface.
 /// </summary>

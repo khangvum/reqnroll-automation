@@ -9,6 +9,7 @@ using ReqnrollAutomation.Pages.SwagLabs;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs;
+
 /// <summary>
 /// A class that defines the step definitions for the footer component verification feature on Swag Labs website.
 /// </summary>

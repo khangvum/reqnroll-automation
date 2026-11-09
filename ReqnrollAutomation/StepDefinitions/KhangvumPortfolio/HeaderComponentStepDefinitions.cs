@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Models.KhangvumPortfolio;
 
 namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio;
+
 /// <summary>
 /// A class that defines the step definitions for the header component verification feature on the Khangvum Portfolio website.
 /// </summary>

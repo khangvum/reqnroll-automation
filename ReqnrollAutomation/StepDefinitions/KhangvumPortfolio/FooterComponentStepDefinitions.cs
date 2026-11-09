@@ -11,6 +11,7 @@ using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
  */
 
 namespace ReqnrollAutomation.StepDefinitions.KhangvumPortfolio;
+
 /// <summary>
 /// A class that defines the step definitions for the footer component verification feature on the Khangvum Portfolio website.
 /// </summary>

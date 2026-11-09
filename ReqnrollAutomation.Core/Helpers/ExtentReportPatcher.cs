@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Core.Helpers;
+
 /// <summary>
 /// A class that patches the Extent Report HTML file to correct dashboard summary card counts
 /// to reflect the scenario counts instead of feature counts, since the Extent Report calculates

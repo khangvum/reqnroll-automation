@@ -9,6 +9,7 @@ using OpenQA.Selenium;
 using Reqnroll;
 
 namespace ReqnrollAutomation.Core.Extensions;
+
 /// <summary>
 /// A class that contains extension methods for the ReqnrollContext class.
 /// </summary>

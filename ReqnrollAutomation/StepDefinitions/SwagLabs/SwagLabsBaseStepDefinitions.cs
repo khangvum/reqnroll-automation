@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Pages.SwagLabs;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs;
+
 public class SwagLabsBaseStepDefinitions : BaseStepDefinitions
 {
     #region Private Attributes

@@ -7,6 +7,7 @@
  */
 
 namespace ReqnrollAutomation.Core.Config;
+
 /// <summary>
 /// Specifies the type of browser to be used for testing.
 /// </summary>

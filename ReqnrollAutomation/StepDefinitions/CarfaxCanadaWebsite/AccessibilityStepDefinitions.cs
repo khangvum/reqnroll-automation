@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
 
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite;
+
 /// <summary>
 /// A class that defines the step definitions for the accessibility feature on CARFAX Canada website.
 /// </summary>
