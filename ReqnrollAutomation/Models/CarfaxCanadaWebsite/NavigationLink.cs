@@ -5,15 +5,13 @@
  * Description:     A class that represents a navigation link with section, subsection, and expected URL.
  */
 
-namespace ReqnrollAutomation.Models.CarfaxCanadaWebsite
+namespace ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+/// <summary>
+/// A class that represents a navigation link with section, subsection, and expected URL.
+/// </summary>
+public class NavigationLink
 {
-    /// <summary>
-    /// A class that represents a navigation link with section, subsection, and expected URL.
-    /// </summary>
-    public class NavigationLink
-    {
-        public string Section { get; init; } = "";
-        public string SubSection { get; init; } = "";
-        public string ExpectedUrl { get; init; } = "";
-    }
+    public string Section { get; init; } = "";
+    public string SubSection { get; init; } = "";
+    public string ExpectedUrl { get; init; } = "";
 }

@@ -5,14 +5,12 @@
  * Description:     A class that represents a project link on the Khangvum Portfolio website with a project name and expected URL.
  */
 
-namespace ReqnrollAutomation.Models.KhangvumPortfolio
+namespace ReqnrollAutomation.Models.KhangvumPortfolio;
+/// <summary>
+/// A class that represents a project link on the Khangvum Portfolio website with a project name and expected URL.
+/// </summary>
+public class ProjectCard
 {
-    /// <summary>
-    /// A class that represents a project link on the Khangvum Portfolio website with a project name and expected URL.
-    /// </summary>
-    public class ProjectCard
-    {
-        public string ProjectName { get; init; } = "";
-        public string ExpectedUrl { get; init; } = "";
-    }
+    public string ProjectName { get; init; } = "";
+    public string ExpectedUrl { get; init; } = "";
 }

@@ -5,15 +5,13 @@
  * Description:     A class that represents the details of an inventory item in Swag Labs.
  */
 
-namespace ReqnrollAutomation.Models.SwagLabs
+namespace ReqnrollAutomation.Models.SwagLabs;
+/// <summary>
+/// A class that represents the details of an inventory item in Swag Labs.
+/// </summary>
+public class InventoryItemDetails
 {
-    /// <summary>
-    /// A class that represents the details of an inventory item in Swag Labs.
-    /// </summary>
-    public class InventoryItemDetails
-    {
-        public string Name { get; init; } = "";
-        public string Description { get; init; } = "";
-        public decimal Price { get; init; }
-    }
+    public string Name { get; init; } = "";
+    public string Description { get; init; } = "";
+    public decimal Price { get; init; }
 }

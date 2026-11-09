@@ -7,37 +7,35 @@
 
 using ReqnrollAutomation.Core.Extensions;
 
-namespace ReqnrollAutomation.StepDefinitions
+namespace ReqnrollAutomation.StepDefinitions;
+public class BaseStepDefinitions
 {
-    public class BaseStepDefinitions
+    #region Private & Protected Attributes
+    // Driver & Contexts
+    private IWebDriver? _driver;
+    protected readonly ScenarioContext _scenarioContext;
+    protected readonly FeatureContext _featureContext;
+    #endregion
+
+    #region Public Properties
+    /// <summary>
+    /// Lazy initialization of the WebDriver instance from the ScenarioContext.
+    /// </summary>
+    public IWebDriver Driver
     {
-        #region Private & Protected Attributes
-        // Driver & Contexts
-        private IWebDriver? _driver;
-        protected readonly ScenarioContext _scenarioContext;
-        protected readonly FeatureContext _featureContext;
-        #endregion
-
-        #region Public Properties
-        /// <summary>
-        /// Lazy initialization of the WebDriver instance from the ScenarioContext.
-        /// </summary>
-        public IWebDriver Driver
+        get
         {
-            get
-            {
-                _driver ??= _scenarioContext.GetDriver();
-                return _driver;
-            }
+            _driver ??= _scenarioContext.GetDriver();
+            return _driver;
         }
-        #endregion
-
-        #region Constructor
-        public BaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext)
-        {
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
-        }
-        #endregion
     }
+    #endregion
+
+    #region Constructor
+    public BaseStepDefinitions(ScenarioContext scenarioContext, FeatureContext featureContext)
+    {
+        _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
+        _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
+    }
+    #endregion
 }

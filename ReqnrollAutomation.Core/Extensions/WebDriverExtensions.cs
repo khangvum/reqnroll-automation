@@ -10,42 +10,40 @@ using OpenQA.Selenium.Support.UI;
 using ReqnrollAutomation.Core.Config;
 using System.Collections.ObjectModel;
 
-namespace ReqnrollAutomation.Core.Extensions
+namespace ReqnrollAutomation.Core.Extensions;
+/// <summary>
+/// A class that contains extension methods for the IWebDriver interface.
+/// </summary>
+public static class WebDriverExtensions
 {
     /// <summary>
-    /// A class that contains extension methods for the IWebDriver interface.
+    /// Waits for an element to be present in the DOM and visible on the page before locating it.
     /// </summary>
-    public static class WebDriverExtensions
+    /// <param name="driver">The IWebDriver instance.</param>
+    /// <param name="locator">The locator of the element.</param>
+    /// <returns>The located element.</returns>
+    /// <exception cref="WebDriverTimeoutException">Throws if the element is not found or not visible within the timeout period.</exception>
+    public static IWebElement WaitAndFindElement(this IWebDriver driver, By locator)
     {
-        /// <summary>
-        /// Waits for an element to be present in the DOM and visible on the page before locating it.
-        /// </summary>
-        /// <param name="driver">The IWebDriver instance.</param>
-        /// <param name="locator">The locator of the element.</param>
-        /// <returns>The located element.</returns>
-        /// <exception cref="WebDriverTimeoutException">Throws if the element is not found or not visible within the timeout period.</exception>
-        public static IWebElement WaitAndFindElement(this IWebDriver driver, By locator)
+        WebDriverWait wait = new(driver, TimeSpan.FromSeconds(ConfigProvider.DefaultTimeout));
+        // Ignore common transient exceptions that may occur while waiting for the element to be present and visible.
+        wait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
+
+        try
         {
-            WebDriverWait wait = new(driver, TimeSpan.FromSeconds(ConfigProvider.DefaultTimeout));
-            // Ignore common transient exceptions that may occur while waiting for the element to be present and visible.
-            wait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
-
-            try
+            return wait.Until(driver =>
             {
-                return wait.Until(driver =>
-                {
-                    ReadOnlyCollection<IWebElement> elements = driver.FindElements(locator);
-                    // Find the first element in the collection that is currently visible
-                    IWebElement? visibleElement = elements.FirstOrDefault(e => e.Displayed);
+                ReadOnlyCollection<IWebElement> elements = driver.FindElements(locator);
+                // Find the first element in the collection that is currently visible
+                IWebElement? visibleElement = elements.FirstOrDefault(e => e.Displayed);
 
-                    return visibleElement;
-                }) ?? throw new WebDriverTimeoutException($"Element with locator {locator} was not found or not visible within the timeout period.");
-            }
-            catch (WebDriverTimeoutException ex)
-            {
-                // Re-throw with a more descriptive message for ExtentReports
-                throw new WebDriverTimeoutException($"Timed out after {ConfigProvider.DefaultTimeout} seconds waiting for element with locator {locator}.", ex);
-            }
+                return visibleElement;
+            }) ?? throw new WebDriverTimeoutException($"Element with locator {locator} was not found or not visible within the timeout period.");
+        }
+        catch (WebDriverTimeoutException ex)
+        {
+            // Re-throw with a more descriptive message for ExtentReports
+            throw new WebDriverTimeoutException($"Timed out after {ConfigProvider.DefaultTimeout} seconds waiting for element with locator {locator}.", ex);
         }
     }
 }
