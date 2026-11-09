@@ -9,6 +9,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 
 namespace ReqnrollAutomation.Core.Extensions;
+
 /// <summary>
 /// A class that contains extension methods for the IWebElement interface.
 /// </summary>

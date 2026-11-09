@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Models.SwagLabs;
+
 /// <summary>
 /// A class that represents the details of an inventory item in Swag Labs.
 /// </summary>

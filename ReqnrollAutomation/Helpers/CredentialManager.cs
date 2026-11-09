@@ -10,6 +10,7 @@ using ReqnrollAutomation.Models.SwagLabs;
 using System.Text;
 
 namespace ReqnrollAutomation.Helpers;
+
 /// <summary>
 /// A class that handles parsing and retrieving the credentials for Swag Labs from credentials.json file.
 /// </summary>

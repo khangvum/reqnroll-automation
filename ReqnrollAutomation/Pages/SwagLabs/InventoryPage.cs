@@ -9,6 +9,7 @@ using ReqnrollAutomation.Core.Extensions;
 using ReqnrollAutomation.Models.SwagLabs;
 
 namespace ReqnrollAutomation.Pages.SwagLabs;
+
 /// <summary>
 /// A class that represents the inventory page of Swag Labs.
 /// </summary>

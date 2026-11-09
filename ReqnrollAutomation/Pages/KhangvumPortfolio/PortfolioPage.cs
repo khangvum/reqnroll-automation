@@ -2,6 +2,7 @@
 using ReqnrollAutomation.Models.KhangvumPortfolio;
 
 namespace ReqnrollAutomation.Pages.KhangvumPortfolio;
+
 public class PortfolioPage : BasePage
 {
     #region Public Properties

@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
 
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite;
+
 public class CarfaxCanadaBaseStepDefinitions : BaseStepDefinitions
 {
     #region Private Attributes

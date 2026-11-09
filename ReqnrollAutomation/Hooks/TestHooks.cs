@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Hooks;
+
 /// <summary>
 /// A class that provides hooks for setting up and tearing down test environments using Selenium WebDriver.
 /// </summary>

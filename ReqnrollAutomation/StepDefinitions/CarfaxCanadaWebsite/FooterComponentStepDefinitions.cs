@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Models.CarfaxCanadaWebsite;
 
 namespace ReqnrollAutomation.StepDefinitions.CarfaxCanadaWebsite;
+
 /// <summary>
 /// A class that defines the step definitions for the footer component on CARFAX Canada website.
 /// </summary>

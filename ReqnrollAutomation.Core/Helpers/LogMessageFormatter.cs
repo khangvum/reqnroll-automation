@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Core.Helpers;
+
 /// <summary>
 /// A class that includes helper methods for formatting HTML log messages and exceptions.
 /// </summary>
