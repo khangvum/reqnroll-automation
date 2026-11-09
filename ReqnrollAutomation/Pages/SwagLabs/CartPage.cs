@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Models.SwagLabs;
 
 namespace ReqnrollAutomation.Pages.SwagLabs;
+
 /// <summary>
 /// A class that represents the cart page of Swag Labs.
 /// </summary>

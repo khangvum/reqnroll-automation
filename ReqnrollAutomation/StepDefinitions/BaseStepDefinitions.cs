@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Core.Extensions;
 
 namespace ReqnrollAutomation.StepDefinitions;
+
 public class BaseStepDefinitions
 {
     #region Private & Protected Attributes

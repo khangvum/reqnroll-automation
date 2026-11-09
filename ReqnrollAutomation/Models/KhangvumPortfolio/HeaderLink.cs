@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Models.KhangvumPortfolio;
+
 /// <summary>
 /// A class that represents a header link on the Khangvum Portfolio website with section and expected URL.
 /// </summary>

@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace ReqnrollAutomation.Pages.CarfaxCanadaWebsite;
+
 /// <summary>
 /// A class that represents the home page of the CARFAX Canada website.
 /// </summary>

@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Models.SwagLabs;
+
 /// <summary>
 /// A class that represents the credentials for Swag Labs.
 /// </summary>

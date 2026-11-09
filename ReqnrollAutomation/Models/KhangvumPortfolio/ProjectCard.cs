@@ -6,6 +6,7 @@
  */
 
 namespace ReqnrollAutomation.Models.KhangvumPortfolio;
+
 /// <summary>
 /// A class that represents a project link on the Khangvum Portfolio website with a project name and expected URL.
 /// </summary>

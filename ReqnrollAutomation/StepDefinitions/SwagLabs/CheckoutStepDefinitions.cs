@@ -10,6 +10,7 @@ using ReqnrollAutomation.Models.SwagLabs;
 using ReqnrollAutomation.Pages.SwagLabs;
 
 namespace ReqnrollAutomation.StepDefinitions.SwagLabs;
+
 /// <summary>
 ///  A class that defines the step definitions for the checkout feature on Swag Labs website.
 /// </summary>

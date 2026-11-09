@@ -8,6 +8,7 @@
 using ReqnrollAutomation.Models.SwagLabs;
 
 namespace ReqnrollAutomation.Pages.SwagLabs;
+
 public class CheckoutPage : BasePage
 {
     #region Public Properties

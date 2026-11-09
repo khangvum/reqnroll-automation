@@ -12,6 +12,7 @@ using AventStack.ExtentReports.Reporter.Config;
 using ReqnrollAutomation.Core.Config;
 
 namespace ReqnrollAutomation.Core.Helpers;
+
 /// <summary>
 /// A class that manages the creation and configuration of ExtentReports
 /// for test reporting in the Reqnroll automation framework.
