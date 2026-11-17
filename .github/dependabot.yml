@@ -3,7 +3,7 @@ version: 2
 updates:
   # 1. NuGet dependencies (.csproj)
   - package-ecosystem: nuget
-    directory:
+    directories:
       - "ReqnrollAutomation"
       - "ReqnrollAutomation.Core"
     schedule:
