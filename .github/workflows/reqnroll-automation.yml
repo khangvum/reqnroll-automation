@@ -59,6 +59,7 @@ on:
 
 jobs:
   test:
+    if: github.actor != 'dependabot[bot]'
     name: Execute Automation Tests for ${{ inputs.target_project || 'Khangvum Portfolio' }} in ${{ inputs.test_environment || 'QA' }} Environment
     runs-on: windows-latest
     env:
