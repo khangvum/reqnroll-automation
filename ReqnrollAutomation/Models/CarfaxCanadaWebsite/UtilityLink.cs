@@ -5,14 +5,12 @@
  * Description:     A class that represents a utility link with item name and expected URL.
  */
 
-namespace ReqnrollAutomation.Models.CarfaxCanadaWebsite
+namespace ReqnrollAutomation.Models.CarfaxCanadaWebsite;
+/// <summary>
+/// A class that represents a utility link with item name and expected URL.
+/// </summary>
+public class UtilityLink
 {
-    /// <summary>
-    /// A class that represents a utility link with item name and expected URL.
-    /// </summary>
-    public class UtilityLink
-    {
-        public string UtilityItem { get; init; } = "";
-        public string ExpectedUrl { get; init; } = "";
-    }
+    public string UtilityItem { get; init; } = "";
+    public string ExpectedUrl { get; init; } = "";
 }
